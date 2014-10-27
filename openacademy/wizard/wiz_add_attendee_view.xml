@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+        <record model="ir.ui.view" id="view_wiz_add_attendee_form">
+            <field name="name">Add Atttendee Wizard Form</field>
+            <field name="model">wiz.add.attendee</field>
+            <field name="arch" type="xml">
+                <form string="Add Attendees">
+                    <group string="Add Attendees">
+                        <field name="attendee_ids" nolabel="1" colspan="4"/>
+                    </group>
+                    <footer>
+                        <button name="add_attendee" type="object" string="Add Attendees" class="oe_highlight"/> or <button special="cancel" string="Cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+    <record model="ir.actions.act_window" id="action_add_attendee_view_form">
+        <field name="name">Add Attendees</field>
+        <field name="res_model">wiz.add.attendee</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_wiz_add_attendee_form"/>
+        <field name="target">new</field>
+        <field name="context">{}</field>
+        <field name="domain">[]</field>
+    </record>   
+
+    </data>
+</openerp>

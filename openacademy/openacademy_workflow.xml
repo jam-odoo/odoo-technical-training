@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        <record model="workflow" id="wkf_session">
+            <field name="name">Session Workflow</field>
+            <field name="osv">openacademy.session</field>
+            <field name="on_create">True</field>
+        </record>
+    
+        <record model="workflow.activity" id="act_new">
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="name">new</field>
+            <field name="flow_start">True</field>
+        </record>
+
+        <record model="workflow.activity" id="act_approv">
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="name">approve</field>
+            <field name="kind">function</field>
+            <field name="action">action_approve()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_reject">
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="name">reject</field>
+            <field name="kind">stopall</field>
+            <field name="action">action_reject()</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+        <record model="workflow.activity" id="act_open">
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="name">open</field>
+            <field name="kind">function</field>
+            <field name="action">action_open()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_cancel">
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="name">cancel</field>
+            <field name="kind">stopall</field>
+            <field name="action">action_reject()</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+        <record model="workflow.activity" id="act_confirm">
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="name">confirm</field>
+            <field name="kind">function</field>
+            <field name="action">action_confirm()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_done">
+            <field name="wkf_id" ref="wkf_session"/>
+            <field name="name">done</field>
+            <field name="kind">stopall</field>
+            <field name="action">action_done()</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+
+
+        <record model="workflow.transition" id="trans_new_approv">
+            <field name="act_from" ref="act_new"/>
+            <field name="act_to" ref="act_approv"/>
+            <field name="signal">approve</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_new_reject">
+            <field name="act_from" ref="act_new"/>
+            <field name="act_to" ref="act_reject"/>
+            <field name="signal">reject</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_approve_open">
+            <field name="act_from" ref="act_approv"/>
+            <field name="act_to" ref="act_open"/>
+            <field name="signal">open</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_open_cancel">
+            <field name="act_from" ref="act_open"/>
+            <field name="act_to" ref="act_cancel"/>
+            <field name="signal">cancel</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_open_confirm">
+            <field name="act_from" ref="act_open"/>
+            <field name="act_to" ref="act_confirm"/>
+            <field name="signal">confirm</field>
+        </record>
+        <record model="workflow.transition" id="trans_confirm_done">
+            <field name="act_from" ref="act_confirm"/>
+            <field name="act_to" ref="act_done"/>
+            <field name="signal">done</field>
+        </record>
+
+
+    </data>
+</openerp>

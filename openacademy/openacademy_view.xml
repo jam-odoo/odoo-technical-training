@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!--OpenAcademy Tree View-->
+        <record model="ir.ui.view" id="view_openacandemy_session_tree">
+            <field name="name">OpenAcademy Tree View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Sessions" color="blue:state==new">
+                    <field name="name"/>
+                    <field name="active" string="Active"/>
+                    <field name="start_date"/>
+                    <field name="duration" sum="Total Duration"/>
+                    <field name="end_date"/>
+                    <field name="rem_seat_per" widget="progressbar"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <!--OpenAcademy Form View-->
+        <record model="ir.ui.view" id="view_openacandemy_session_form">
+            <field name="name">OpenAcademy Form View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <form string="Session">
+                    <header>
+                        <button type="workflow" name="approve" string="Aprrove Session" class="oe_highlight" states="new"/>
+                        <button type="workflow" name="reject" groups="openacademy.group_open_manager" string="Reject Proposal" states="new"/>
+                        <button type="workflow" name="open" string="Open Proposal" states="approv" class="oe_highlight" groups="openacademy.group_open_manager"/>
+                        <button type="workflow" name="confirm" string="Confirm Session" states="open" class="oe_highlight"/>
+                        <button type="workflow" name="done" string="Done" states=" confirm" class="oe_highlight"/>
+                        <button type="workflow" name="cancel" string="Cancel" states="approv"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,approv,open,confirm,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_right oe_button_box" name="buttons" groups="openacademy.group_open_manager">
+                            <button class="oe_inline oe_stat_button" name="%(action_add_attendee_view_form)d" type="action" string="Add Attendees" icon="fa-list" states="open,confirm,approv"/>
+                        </div>
+                        <div class="oe_left">
+                            <div>
+                                <label for="name"  class="oe_edit_only"/>
+                                <h1>
+                                <field name="name" placeholder="Name of the Session e.g. Odoo Technical Trianing" attrs="{'readonly':[('state', 'in', ('open', 'done'))]}"/>
+                                </h1>
+                            </div>
+
+                            <div groups="openacademy.group_open_manager">
+                                <h1>
+                                    <label for="course_id" class="oe_edit_only"/> <field name="course_id" class="oe_inline" />
+                                </h1>
+                            </div>
+                            <div groups="openacademy.group_open_manager">
+                                <h1>
+                                    <label for="instructor_id" class="oe_edit_only"/> <field name="instructor_id" class="oe_inline"  domain="[('instructor', '=', True)]"/>
+                                </h1>
+                            </div>
+                            <div>
+                                <label string="Timing Information"/>
+                                Starts on <field name="start_date" class="oe_inline"/> -
+                                <field name="duration" class="oe_inline" widget="float_time" attrs="{'required': [('start_date', '!=', False)]}"/> -
+                                <field name="end_date" class="oe_inline"/>
+                            </div>
+                        </div>
+                        <notebook>
+                            <page string="Information">
+                                <group>
+                                    <field name="active"/>
+                                    <field name="max_att"/>
+                                    <field name="min_att"/>
+                                    <field name="rem_seat_per" widget="progressbar"/>
+                                    <field name="attendee_count" string="Total Attendee Count"/>
+                                    <field name="code"/>
+                                    <separator string="Attendees" colspan="4"/>
+                                    <field name="att_ids" readonly="1" colspan="2" nolabel="1"/>
+                                </group>
+                            </page>
+                            <page string="Banner">
+                                <field name="banner" nolabel="1" colspan="2" widget="image" height="200" width="200"/>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes" nolabel="1" colspan="2"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacandemy_session_search">
+            <field name="name">OpenAcademy Search View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <search string="Sessions">
+                    <field name="name" string="sessions"/>
+                    <field name="code"/>
+                    <field name="instructor_id" domain="[('instructor', '=', True)]"/>
+                    <field name="course_id"/>
+                    <newline/>
+                    <filter name="new" string="New Sessions" domain="[('state', '=', 'new')]"/>
+                    <filter name="approv" string="Approved Sessions" domain="[('state', '=', 'approv')]"/>
+                    <newline/>
+                    <filter name="confirm" string="Confirmed Sessions" domain="[('state', '=', 'confirm')]"/>
+                    <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                    <group string="Group By...">
+                        <filter name="grpstate" string="State" context="{'group_by': 'state'}"/>
+                        <filter name="instructorgro" string="Instructor" context="{'group_by': 'instructor_id'}"/>
+                        <filter name="coursegor" string="Course" context="{'group_by': 'course_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacandemy_session_calendar">
+            <field name="name">OpenAcademy Calendar View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <calendar string="Sessions" date_start="start_date" date_stop="end_date" color='course_id'>
+                    <field name="name"/>
+                    <field name="code"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacandemy_session_graph">
+            <field name="name">OpenAcademy Graph View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <graph string="Sessions" type="pie">
+                    <field name="course_id"/>
+                    <field name="rem_seat_per" operator="+"/>
+                </graph>
+            </field>
+        </record>
+
+        <record id="view_openacandemy_session_gantt" model="ir.ui.view">
+            <field name="name">OpenAcademy Gantt View</field>
+            <field name="model">openacademy.session</field>
+            <field eval="2" name="priority"/>
+            <field name="arch" type="xml">
+                <gantt date_start="start_date" date_stop="end_date" progress="progress" string="Sessions" default_group_by="course_id">
+                    <field name="name"/>
+                </gantt>
+            </field>
+        </record>
+
+
+        <!--        action for openacademy session-->
+        <record model="ir.actions.act_window" id="action_openacademy_session_view">
+            <field name="name">All Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph,calendar,gantt</field>
+            <field name='context'>{'search_default_grpstate':True}</field>
+            <field name='domain'>[]</field>
+            <field name="search_view_id" ref="view_openacandemy_session_search"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_openacademy_session_new">
+            <field name="name">New Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name='context'>{'default_max_att': 20}</field>
+            <field name='domain'>[('state', '=', 'new')]</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_openacademy_session_upcome">
+            <field name="name">Up Coming Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name='context'>{}</field>
+            <field name='domain'>[('state', '=', 'open')]</field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_openacademy_session_done">
+            <field name="name">DoneSessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name='context'>{}</field>
+            <field name='domain'>[('state', '=', 'done')]</field>
+        </record>
+
+        <menuitem id="menu_open_root" name="OpenAcademy" sequence="10"/>
+
+        <menuitem id="menu_open_session"
+                  name="OpenAcademy Session" 
+                  parent="menu_open_root"
+                  sequence="0"/>
+
+        <menuitem id="menu_open_session_sub_new" parent="menu_open_session" action="action_openacademy_session_new"/>
+        <menuitem id="menu_open_session_sub_upcome" parent="menu_open_session" action="action_openacademy_session_upcome"/>
+        <menuitem id="menu_open_session_sub_done" parent="menu_open_session" action="action_openacademy_session_done"/>
+        <menuitem id="menu_open_session_sub" parent="menu_open_session" action="action_openacademy_session_view"/>
+
+
+        <!--OpenAcademy Tree View-->
+        <record model="ir.ui.view" id="view_openacandemy_course_tree">
+            <field name="name">OpenAcademy Tree View</field>
+            <field name="model">openacademy.course</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Courses">
+                    <field name="name"/>
+                    <field name="active" string="Active"/>
+                    <field name="code"/>
+                    <field name="attendee_count"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacandemy_course_form">
+            <field name="name">OpenAcademy Form View</field>
+            <field name="model">openacademy.course</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <form string="Courses">
+                    <sheet>
+                        <div>
+                            <label for="name"  class="oe_edit_only"/>
+                            <h1>
+                            <field name="name" placeholder="Name of the Session e.g. Odoo Technical Trianing"/>
+                            </h1>
+                        </div>
+                        <div>
+                            <h4>
+                                <label for="user_id" class="oe_inline"/> <field name="user_id" class="oe_inline" widget="selection"/>
+                            </h4>
+                        </div>
+
+                        <div class="oe_edit_only">
+                            <field name="active"/><label for="active"/>
+                        </div>
+                        <notebook>
+                            <page string="Information">
+                                <group>
+                                    <field name="attendee_count" string="Total Attendee Count"/>
+                                    <field name="code"/>
+                                    <field name="notes" nolabel="1" colspan="2"/>
+                                </group>
+                            </page>
+                            <page string="Sessions">
+                                <group>
+                                    <field name="session_ids" readonly="1" nolabel="1" colspan="2">
+                                        <tree string="Sessions">
+                                            <field name="name"/>
+                                            <field name="start_date"/>
+                                            <field name="duration"/>
+                                            <field name="end_date"/>
+                                            <field name="state"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--        action for openacademy session-->
+        <record model="ir.actions.act_window" id="action_openacademy_course_view">
+            <field name="name">Courses</field>
+            <field name="res_model">openacademy.course</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name='context'>{}</field>
+            <field name='domain'>[]</field>
+        </record>
+
+        <menuitem id="menu_open_course"
+                  name="OpenAcademy Courses" 
+                  parent="menu_open_root"
+                  sequence="0"/>
+
+        <menuitem id="menu_open_course_sub"
+                  parent="menu_open_course"
+                  action="action_openacademy_course_view"
+                  name="Courses"/>
+
+
+    <record model="ir.ui.view" id="view_res_patner_form_inherit">
+        <field name="name">OpenAcademy Partner Inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <data>
+                <xpath expr="//notebook/page[@name='sales_purchases']/group/group[2]/field[@name='customer']" position="attributes">
+                    <attribute name="string">Prospect</attribute>
+                </xpath>
+                <xpath expr="//notebook/page[@name='sales_purchases']/group/group[2]/field[@name='supplier']" position="after">
+                    <field name="instructor"/>
+                </xpath>
+            </data>
+        </field>
+    </record>
+
+
+    </data>
+</openerp>

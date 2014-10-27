@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+    
+        <report
+            id="report_openacademy_session"
+            model="openacademy.session"
+            string="Sesion(s)"
+            report_type="qweb-pdf"
+            name="openacademy.report_openacademysession"
+            file="openacademy.report_openacademy"/>
+        
+    </data>
+</openerp>
