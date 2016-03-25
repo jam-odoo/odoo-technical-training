@@ -125,7 +125,7 @@
             <field name="arch" type="xml">
                 <tree string="Sessions">
                     <field name="name"/>
-                    <field name="active"/>
+                    <field name="active" groups="opeacademy.group_openacademy_manager" />
                     <field name="start_date"/>
                     <field name="duration"/>
                     <field name="end_date"/>
@@ -143,7 +143,7 @@
             <field name="arch" type="xml">
                 <form string="Session">
                     <header>
-                        <button string="Approve" type="workflow" name="session_approved" class="oe_highlight" states="new"/>
+                        <button string="Approve" type="workflow" name="session_approved" class="oe_highlight" states="new" groups="opeacademy.group_openacademy_manager"/>
                         <button string="Reject" type="workflow" name="session_reject" states="new"/>
                         <button string="Reset to New" type="object" name="session_reset" states="reject"/>
                         <button string="Open For Registration" type="workflow" name="session_open" class="oe_highlight" states="approve"/>
@@ -180,10 +180,10 @@
                                 ) <field name="end_date" class="oe_inline" attrs="{'readonly': [('duration', '>', 0)]}"/>
                             </h3>
                         </div>
-                        <group>
+                        <group groups="opeacademy.group_openacademy_manager">
                             <field name="course_id" context="{'name_join': True}"/>
                             <field name="instructor_id" domain="[('instructor', '=', True)]"/>
-                            <field name="active"/>
+                            <field name="active" groups="opeacademy.group_openacademy_manager"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                         </group>
                         <notebook>
@@ -211,23 +211,85 @@
                             </page>
                         </notebook>
                     </sheet>
-                    <div class="oe_chatter">
+                        <div class="oe_chatter">
                         <field name="message_follower_ids" widget="mail_followers"/>
                         <field name="message_ids" widget="mail_thread"/>
                     </div> 
                 </form>
             </field>
         </record>
+
+        <record model="ir.ui.view" id="view_openacademy_sessions_calendar">
+            <field name="name">OpenAcademy Sessions Calendar View</field>
+            <field name="model">openacademy.sessions</field>
+            <field name="arch" type="xml">
+                <calendar string="Sessions" date_start="start_date" date_stop="end_date" color="course_id">
+                    <field name="name"/>
+                    <field name="instructor_id"/>
+                </calendar>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_openacademy_sessions_graph">
+            <field name="name">OpenAcademy Sessions Graph View</field>
+            <field name="model">openacademy.sessions</field>
+            <field name="arch" type="xml">
+                <graph string="Sessions" type="bar" orientation="vertical" stacked="True">
+                    <field name="course_id" type="col"/>
+                    <field name="confirm_seats" type="measure"/>
+                </graph>
+            </field>
+        </record>
  
+        <record model="ir.ui.view" id="view_openacademy_sessions_pivot">
+            <field name="name">OpenAcademy Sessions Pivot View</field>
+            <field name="model">openacademy.sessions</field>
+            <field name="arch" type="xml">
+                <pivot string="Sessions" >
+                    <field name="course_id" type="row"/>
+                    <field name="confirm_seats" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_openacademy_sessions_search">
+            <field name="name">OpenAcademy Sessions Search View</field>
+            <field name="model">openacademy.sessions</field>
+            <field name="arch" type="xml">
+                <search string="Sessions" >
+                    <field name="name" filter_domain="['|', ('name', 'ilike', self), ('notes', 'ilike', self)]" string="Session"/>
+                    <field name="tag_ids" filter_domain="[('tag_ids', 'ilike', self)]"/>
+                    <field name="course_id"/>
+                    <field name="instructor_id" domain="[('instructor', '=', True)]"/>
+                    <separator/>
+                    <filter name="upcoming_session" string="Upcoming Sessions" domain="[('start_date', '>=', datetime.datetime.now().strftime('%Y-%m-%d') + ' 00:00:00')]"/>
+                    <separator/>
+                    <filter string="New Sessions" domain="[('state', '=', 'new')]"/>
+                    <filter string="Open Sessions" domain="[('state', '=', 'open')]"/>
+                    <separator/>
+                    <filter string="Rejected Sessions" domain="[('state', '=', 'reject')]"/>
+                   <group expand="0" string="Group By">
+                        <filter string="Course" name="groupby_course" domain="[]" context="{'group_by':'course_id'}"/>
+
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
         <record model="ir.actions.act_window" id="action_views_openacademy_sessions">
             <field name="name">All Sessions</field>
             <field name="res_model">openacademy.sessions</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot</field>
+            <field name="search_view_id" ref="view_openacademy_sessions_search"/>
+            <field name="context">{'search_default_upcoming_session': 1}</field>
         </record>
         <record model="ir.actions.act_window" id="action_views_openacademy_sessions_new">
             <field name="name">New Sessions</field>
             <field name="res_model">openacademy.sessions</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot</field>
             <field name="domain">[('state', '=', 'new')]</field>
         </record>
 
