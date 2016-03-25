@@ -53,6 +53,8 @@ class OpenAcademySession(models.Model):
     """OpenAcademy Session Managment"""
     _name = "openacademy.sessions"
 
+    _inherit = ["mail.thread"]
+
     _OS_STATES = [
         ("new", "New Session"),
         ("approve", "Approved"),
@@ -63,14 +65,14 @@ class OpenAcademySession(models.Model):
         ("cancel", "Cancelled"),
     ]
 
-    name = fields.Char(string="Session Name", required=True, readonly=True, states={'new': [('readonly', False)]})
+    name = fields.Char(string="Session Name", required=True, track_visibility="onchange", readonly=True, states={'new': [('readonly', False)]})
     active = fields.Boolean(string="Active", default=True)
-    start_date = fields.Datetime(string="Start Date", default=fields.Datetime.now, required=True, readonly=True, states={'new': [('readonly', False)]})
+    start_date = fields.Datetime(string="Start Date", track_visibility="always", default=fields.Datetime.now, required=True, readonly=True, states={'new': [('readonly', False)]})
     end_date = fields.Datetime(string="End Date", required=True, readonly=True, states={'new': [('readonly', False)]})
-    duration = fields.Float(string="Duration", digits=(5,2), required=True, readonly=True, states={'new': [('readonly', False)]})
+    duration = fields.Float(string="Duration", digits=(5,2), required=True, track_visibility="always", readonly=True, states={'new': [('readonly', False)]})
     notes = fields.Html(string="Notes", readonly=True, states={'new': [('readonly', False)]})
-    max_seat = fields.Integer(string="Maximum Avaliable Seats", default=10, readonly=True, states={'new': [('readonly', False)]})
-    min_seat = fields.Integer(string="Minimum Required Registration", default=0, readonly=True, states={'new': [('readonly', False)]})
+    max_seat = fields.Integer(string="Maximum Avaliable Seats", track_visibility="always",  default=10, readonly=True, states={'new': [('readonly', False)]})
+    min_seat = fields.Integer(string="Minimum Required Registration", track_visibility="always", default=0, readonly=True, states={'new': [('readonly', False)]})
     banner = fields.Binary(string="Event Banner")
     state = fields.Selection(selection=_OS_STATES, string="States", default="new", required=True)
     instructor_id = fields.Many2one(comodel_name="res.partner", required=True, string="Instructor", readonly=True, states={'new': [('readonly', False)]})
@@ -130,12 +132,9 @@ class OpenAcademySession(models.Model):
     #         raise ValidationError("End Date should be greater then start date !")
     #     res = super(OpenAcademySession, self).create(vals)
     #     return res
-    # @api.one
-    # def write(self, vals):
-    #     res = super(OpenAcademySession, self).write(vals)
-    #     if self.start_date and self.end_date and self.end_date < self.start_date:
-    #         raise ValidationError("End Date should be greater then start date !")
-
+    @api.one
+    def write(self, vals):
+        res = super(OpenAcademySession, self).write(vals)
 
 class OpenAcademyAttendee(models.Model):
     """OpenAcademyAttendee"""

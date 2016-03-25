@@ -14,8 +14,12 @@ OpenAcacdemy Course managment
     "website": "https://www.odoo.com",
     "depends": ["base", "mail"],
     "data": [
+        "wizard/wizard_invite_partner_views.xml",
         "views/openaademy_views.xml",
         "views/openacademy_workflow.xml",
+        "report/report_sessions.xml",
+        "views/openaademy_reports.xml",
+
     ],
     "demo": [], 
 }

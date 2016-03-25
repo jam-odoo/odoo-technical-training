@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <template id="report_sessions">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <div class="oe_structure"/>
+                            <div class="row">
+                                <h1>
+                                    <span t-field="o.name"/>
+                                </h1>
+                                <span> Dates Inforamtion</span>
+                                <p>
+                                    <span t-field="o.start_date"/>
+                                    <t t-if="o.duration > 0"><span t-field="o.duration"/></t>
+                                    <span t-field="o.end_date"/>
+                                </p>
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <th>Attnedee Name</th>
+                                    <th>Email</th>
+                                    <th>Count</th>
+                                    <th>State</th>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.attendee_ids" t-as="att">
+                                        <td>
+                                            <span t-field="att.partner_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="att.email"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="att.count"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="att.state"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <img t-if="o.banner" t-att-src="'data:image/png;base64,%s' % o.banner" style="max-height: 100px;"/>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>
