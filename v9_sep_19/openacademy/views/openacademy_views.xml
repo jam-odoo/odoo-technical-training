@@ -9,6 +9,7 @@
             <field name="priority">16</field>
             <field name="arch" type="xml">
                 <tree string="Sessions" decoration-danger="max_seat&gt;1000" decoration-info="max_seat&lt;=50" decoration-bf="max_seat&gt;1000">
+                    <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="max_seat"/>
                     <field name="start_date"/>
@@ -24,32 +25,47 @@
             <field name="model">openacademy.session</field>
             <field name="arch" type="xml">
                 <form string="Session">
-                    <div class="oe_title">
-                        <label for="name" class="oe_edit_only"/>
-                        <h1><field name="name" placeholder=" Session Title Goes here..."/></h1>
-                    </div>
-                    <label string="Dates Information"/>
-                    <div>
-                        <h2>
-                            <field name="start_date" class="oe_inline"/> ( 
-                            <field name="duration_days"  class="oe_inline"/> ) 
-                            <field name="end_date"  class="oe_inline"/>
-                        </h2>
-                    </div>
-                    <group>
-                        <field name="is_public"/>
-                    </group>
-                    <notebook>
-                        <page string="Notes">
-                            <field name="notes"/>
-                        </page>
-                        <page string="Banner">
-                            <field name="banner" height="150" width="300" widget="image"/>
-                        </page>
-                        <page string="Contian">
-                            <field name="contain"/>
-                        </page>
-                    </notebook>
+                    <header>
+                        <field name="state" widget="statusbar" clickable="True"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name" placeholder=" Session Title Goes here..."/></h1>
+                        </div>
+                        <label string="Dates Information"/>
+                        <div>
+                            <h2>
+                                <field name="start_date" class="oe_inline" required="1"/> ( 
+                                <field name="duration_days"  class="oe_inline"/> ) 
+                                <field name="end_date" 
+                                    attrs="{'required': [('duration_days', '=', 0.0)], 'readonly': [('duration_days', '&gt;', 0.0)]}" class="oe_inline"/>
+                            </h2>
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <notebook>
+                            <page string="Notes">
+                                <group>
+                                    <group>
+                                        <field name="course_id"/>
+                                        <field name="instructor_id" options="{'no_create': True, 'no_open': True}"/>
+                                    </group>
+                                    <group>
+                                        <field name="is_public"/>
+                                        <field name="code"/>
+                                    </group>
+                                </group>
+                                <seperator string="Notes"/>
+                                <field name="notes"/>
+                            </page>
+                            <page string="Banner">
+                                <field name="banner" height="150" width="300" widget="image"/>
+                            </page>
+                            <page string="Contian">
+                                <field name="contain"/>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -81,6 +97,104 @@
                     name="Sessions"
                     action="action_views_openacademy_sessions"
                     parent="menu_openacademy_root_sessions"/>
+
+        <!-- OpenAcademy Course -->
+        <record model="ir.ui.view" id="view_openacademy_course_tree">
+            <field name="name">OpenAcademy Course Tree View</field>
+            <field name="model">openacademy.course</field>
+            <field name="arch" type="xml">
+                <tree string="Courses">
+                    <field name="name"/>
+                    <field name="active"/>
+                    <field name="responsible_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_course_form">
+            <field name="name">OpenAcademy Course Form View</field>
+            <field name="model">openacademy.course</field>
+            <field name="arch" type="xml">
+                <form string="Course">
+                    <group col="4">
+                        <field name="name" colspan="4"/>
+                        <field name="responsible_id"/>
+                        <field name="active"/>
+                        <field name="code"/>
+                    </group>
+                    <seperator string="Notes"/>
+                    <field name="notes"/>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_views_openacademy_courses">
+            <field name="name">Courses</field>
+            <field name="res_model">openacademy.course</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create Courses
+                </p>
+                <p>
+                    Here you can enter your course                     details with hosting detilas
+                </p>
+            </field>
+        </record>
+
+        <menuitem id="menu_openacademy_root_course"
+                    name="Course Managment"
+                    parent="menu_openacademy_root"/>
+
+        <menuitem id="menu_action_views_openacademy_courses"
+                    name="Courses"
+                    action="action_views_openacademy_courses"
+                    parent="menu_openacademy_root_course"/>
+
+
+        <record model="ir.ui.view" id="view_openacademy_tags_tree">
+            <field name="name">OpenAcademy Tags Tree View</field>
+            <field name="model">openacademy.tags</field>
+            <field name="arch" type="xml">
+                <tree string="Tags">
+                    <field name="name"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_tags_form">
+            <field name="name">OpenAcademy Tags Form View</field>
+            <field name="model">openacademy.tags</field>
+            <field name="arch" type="xml">
+                <form string="Tags">
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_openacademy_tags">
+            <field name="name">Tags</field>
+            <field name="res_model">openacademy.tags</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_openacademy_root_config"
+                    name="Configuration"
+                    sequence="100"
+                    parent="menu_openacademy_root"/>
+
+        <menuitem id="menu_action_view_openacademy_tags"
+                    name="Tags"
+                    action="action_view_openacademy_tags"
+                    parent="menu_openacademy_root_config"/>
+
+
 
     </data>
 </openerp>
