@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="0">
+
+        <!-- OpenAcadmeny Tree View -->
+        <record model="ir.ui.view" id="view_openacademy_sessions_tree">
+            <field name="name">OpenAcademy Tree View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Sessions" decoration-danger="max_seat&gt;1000" decoration-info="max_seat&lt;=50" decoration-bf="max_seat&gt;1000">
+                    <field name="name"/>
+                    <field name="max_seat"/>
+                    <field name="start_date"/>
+                    <field name="is_public"/>
+                    <field name="end_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- OpenAcademy Form View -->
+        <record model="ir.ui.view" id="view_openacademy_sessions_form">
+            <field name="name">OpenAcademy Form View</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <form string="Session">
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder=" Session Title Goes here..."/></h1>
+                    </div>
+                    <label string="Dates Information"/>
+                    <div>
+                        <h2>
+                            <field name="start_date" class="oe_inline"/> ( 
+                            <field name="duration_days"  class="oe_inline"/> ) 
+                            <field name="end_date"  class="oe_inline"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <field name="is_public"/>
+                    </group>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                        <page string="Banner">
+                            <field name="banner" height="150" width="300" widget="image"/>
+                        </page>
+                        <page string="Contian">
+                            <field name="contain"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_views_openacademy_sessions">
+            <field name="name">Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create Sessionns
+                </p>
+                <p>
+                    Here you can enter your course session
+                    details with hosting detilas
+                </p>
+            </field>
+        </record>
+        <menuitem id="menu_openacademy_root"
+                    name="OpenAcademy"
+                    web_icon="openacademy,static/description/icon2.png"/>
+
+        <menuitem id="menu_openacademy_root_sessions"
+                    name="OpenAcademy Sessions"
+                    parent="menu_openacademy_root"/>
+
+        <menuitem id="menu_action_views_openacademy_sessions"
+                    name="Sessions"
+                    action="action_views_openacademy_sessions"
+                    parent="menu_openacademy_root_sessions"/>
+
+    </data>
+</openerp>
