@@ -49,19 +49,41 @@
                                     <group>
                                         <field name="course_id"/>
                                         <field name="instructor_id" options="{'no_create': True, 'no_open': True}"/>
-                                    </group>
-                                    <group>
                                         <field name="is_public"/>
                                         <field name="code"/>
                                     </group>
+                                    <group>
+                                        <field name="max_seat"/>
+                                        <field name="min_seat"/>
+                                        <field name="total_invited"/>
+                                        <field name="total_attneding"/>
+                                    </group>
                                 </group>
-                                <seperator string="Notes"/>
-                                <field name="notes"/>
+                                <seperator string="Attnedees"/>
+                                <field name="attendee_ids">
+                                    <tree editable="bottom">
+                                        <field name="partner_id"/>
+                                        <field name="name"/>
+                                        <field name="email"/>
+                                        <field name="count"/>
+                                        <field name="state"/>
+                                    </tree>
+                                    <form string="Attnedee">
+                                        <group>
+                                            <field name="partner_id"/>
+                                            <field name="name"/>
+                                            <field name="email"/>
+                                            <field name="count"/>
+                                        </group>
+                                    </form>
+                                </field>
                             </page>
                             <page string="Banner">
                                 <field name="banner" height="150" width="300" widget="image"/>
                             </page>
                             <page string="Contian">
+                                <seperator string="Notes"/>
+                                <field name="notes"/>
                                 <field name="contain"/>
                             </page>
                         </notebook>
@@ -107,6 +129,7 @@
                     <field name="name"/>
                     <field name="active"/>
                     <field name="responsible_id"/>
+                    <field name="session_count"/>
                 </tree>
             </field>
         </record>
@@ -121,9 +144,25 @@
                         <field name="responsible_id"/>
                         <field name="active"/>
                         <field name="code"/>
+                        <field name="session_count"/>
                     </group>
-                    <seperator string="Notes"/>
-                    <field name="notes"/>
+                    <notebook>
+                        <page string="Notes">
+                            <field name="notes"/>
+                        </page>
+                        <page string="Sessions">
+                            <field name="session_ids" readonly="1">
+                                <tree string="Sessions">
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="instructor_id"/>
+                                    <field name="max_seat" sum="Total Seats"/>
+                                    <field name="start_date"/>
+                                    <field name="is_public"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
                 </form>
             </field>
         </record>
