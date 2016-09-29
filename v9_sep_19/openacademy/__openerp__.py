@@ -13,10 +13,11 @@ Open Academy Managment
 - **Session Managment**
 
 """,
-    "depends": ["base"],
+    "depends": ["mail"],
     "category": "Tools",
     "data": [
         "views/openacademy_views.xml",
+        "views/partner_views.xml",
     ],
     "demo": [
     ],

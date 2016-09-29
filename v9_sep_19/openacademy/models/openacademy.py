@@ -19,6 +19,13 @@ _STATES = [
     ("done", "Done")
 ]
 
+class Partner(models.Model):
+
+    _name = "res.partner"
+    _inherit = "res.partner"
+
+    instructor = fields.Boolean(string="Instructor")
+
 class OpenacademyTags(models.Model):
     """OpenAcademy Tags"""
     _name = "openacademy.tags"
@@ -58,25 +65,27 @@ class openacademy_session(models.Model):
 
     _name = "openacademy.session"
 
+    _inherit = ["mail.thread"]
+
     name = fields.Char(string="Session Title", size=200, \
                         translate=True, required=True, copy=False)
     sequence = fields.Integer(string="Sequence", default=10)
-    active = fields.Boolean(stirng="Archived", default=True)
+    active = fields.Boolean(stirng="Archived", default=True, track_visibility="always")
     code = fields.Char(string="Code", size=16)
     max_seat = fields.Integer(string="Maximum Avaiable Seats", required=True,\
                                  default=10, index=True)
     min_seat = fields.Integer(string="Minimum Required Seats", required=True, index=True)
     duration_days = fields.Float(string="Duration(days)", digits=(6,3),\
                                  required=True, default=1)
-    start_date = fields.Datetime(string="Start Date")
-    end_date = fields.Datetime(string="End Date")
+    start_date = fields.Datetime(string="Start Date", required=True, track_visibility="onchange")
+    end_date = fields.Datetime(string="End Date", track_visibility="onchange")
     is_public = fields.Boolean(string="Is Public Event ?")
     notes = fields.Text(string="Notes")
     contain = fields.Html(string="Session Course")
     banner = fields.Binary(string="Banner")
     state  = fields.Selection(string="State", selection=_STATES, default="new")
-    instructor_id = fields.Many2one(comodel_name="res.partner", string="Instructor", domain="[('supplier', '=', True)]")
-    course_id = fields.Many2one(comodel_name="openacademy.course", string="Course", required=True)
+    instructor_id = fields.Many2one(comodel_name="res.partner", string="Instructor", domain="[('supplier', '=', True)]", track_visibility="always")
+    course_id = fields.Many2one(comodel_name="openacademy.course", string="Course", required=True, track_visibility="onchange")
     tag_ids = fields.Many2many(comodel_name="openacademy.tags", relation="rel_session_tags", column1="session_id", column2="tag_id", string="Tags")
     attendee_ids = fields.One2many(comodel_name="openacademy.attendee", inverse_name="session_id", string="Attendees")
     total_invited = fields.Integer(compute="count_total_invited", string="Total Invited")
