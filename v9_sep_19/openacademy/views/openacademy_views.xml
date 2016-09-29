@@ -100,7 +100,7 @@
         </record>
 
         <record model="ir.actions.act_window" id="action_views_openacademy_sessions">
-            <field name="name">Sessions</field>
+            <field name="name">All Sessions</field>
             <field name="res_model">openacademy.session</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
@@ -114,6 +114,26 @@
                 </p>
             </field>
         </record>
+
+        <record model="ir.actions.act_window" id="action_views_openacademy_sessions_new">
+            <field name="name">New Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state', '=', 'new')]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create New Sessionns
+                </p>
+                <p>
+                    Here you can enter your course session
+                    details with hosting detilas
+                </p>
+            </field>
+        </record>
+        
+
+
         <menuitem id="menu_openacademy_root"
                     name="OpenAcademy"
                     web_icon="openacademy,static/description/icon2.png"/>
@@ -122,8 +142,11 @@
                     name="OpenAcademy Sessions"
                     parent="menu_openacademy_root"/>
 
+        <menuitem id="menu_action_views_openacademy_sessions_new"
+                    action="action_views_openacademy_sessions_new"
+                    parent="menu_openacademy_root_sessions"/>
+
         <menuitem id="menu_action_views_openacademy_sessions"
-                    name="Sessions"
                     action="action_views_openacademy_sessions"
                     parent="menu_openacademy_root_sessions"/>
 
@@ -146,30 +169,40 @@
             <field name="model">openacademy.course</field>
             <field name="arch" type="xml">
                 <form string="Course">
-                    <group col="4">
-                        <field name="name" colspan="4"/>
-                        <field name="responsible_id"/>
-                        <field name="active"/>
-                        <field name="code"/>
-                        <field name="session_count"/>
-                    </group>
-                    <notebook>
-                        <page string="Notes">
-                            <field name="notes"/>
-                        </page>
-                        <page string="Sessions">
-                            <field name="session_ids" readonly="1">
-                                <tree string="Sessions">
-                                    <field name="name"/>
-                                    <field name="code"/>
-                                    <field name="instructor_id"/>
-                                    <field name="max_seat" sum="Total Seats"/>
-                                    <field name="start_date"/>
-                                    <field name="is_public"/>
-                                </tree>
-                            </field>
-                        </page>
-                    </notebook>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" type="object" name="open_sessions" icon="fa-calendar-o">
+                                <field name="session_count" widget="statinfo" string="Sessions"/>
+                            </button>
+                        </div>
+                        <group col="4">
+                            <field name="name" colspan="4"/>
+                            <field name="responsible_id"/>
+                            <field name="active"/>
+                            <field name="code"/>
+                            <button type="action"
+                                name="%(action_views_openacademy_sessions_new)d"
+                                string="Open Sessions"
+                                class="oe_link"/>
+                        </group>
+                        <notebook>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                            <page string="Sessions">
+                                <field name="session_ids" readonly="1">
+                                    <tree string="Sessions">
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                        <field name="instructor_id"/>
+                                        <field name="max_seat" sum="Total Seats"/>
+                                        <field name="start_date"/>
+                                        <field name="is_public"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
                 </form>
             </field>
         </record>

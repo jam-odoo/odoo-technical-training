@@ -60,6 +60,26 @@ class OpenacademyCourse(models.Model):
             vals.append((record.id, "[{}] {}".format(record.code, record.name)))
         return vals
 
+    @api.multi
+    def open_sessions(self):
+        session_action = self.env.ref("openacademy.action_views_openacademy_sessions")
+        session_tree_id = self.env.ref("openacademy.view_openacademy_sessions_tree")
+        session_form_id = self.env.ref("openacademy.view_openacademy_sessions_form")
+        SessionModel = self.env["openacademy.session"]
+        session_ids = SessionModel.search([("course_id", "=", self[0].id)])
+        result = {
+            "name": "%s Sessions"%(self.name),
+            "help": session_action.help,
+            "type": session_action.type,
+            "views": [[session_tree_id.id, "tree"], [session_form_id.id, "form"]],
+            "target": session_action.target,
+            "res_model": session_action.res_model,
+            #"res_id": [s.id for s in session_ids],
+            "domain": [("course_id", "=", self[0].id)]
+        }
+        return result
+
+
 class openacademy_session(models.Model):
     """Open Academy Session"""
 
