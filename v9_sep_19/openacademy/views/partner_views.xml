@@ -13,6 +13,11 @@
                     <xpath expr="//*[@name='opt_out']" position="after">
                         <field name="instructor"/>
                     </xpath>
+                    <xpath expr="//notebook/page[@name='sales_purchases']//*[@name='customer']" position="attributes">
+                        <attribute name="string">Bussines Cutomer</attribute>
+                        <attribute name="help">Check If Bussines Cutomer</attribute>
+                    </xpath>
+
                 </data>
             </field>
         </record>

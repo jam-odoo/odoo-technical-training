@@ -77,7 +77,7 @@ class openacademy_session(models.Model):
     min_seat = fields.Integer(string="Minimum Required Seats", required=True, index=True)
     duration_days = fields.Float(string="Duration(days)", digits=(6,3),\
                                  required=True, default=1)
-    start_date = fields.Datetime(string="Start Date", required=True, track_visibility="onchange")
+    start_date = fields.Datetime(string="Start Date", required=True, track_visibility="onchange", default=fields.Datetime.now())
     end_date = fields.Datetime(string="End Date", track_visibility="onchange")
     is_public = fields.Boolean(string="Is Public Event ?")
     notes = fields.Text(string="Notes")
