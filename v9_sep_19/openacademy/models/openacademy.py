@@ -76,7 +76,7 @@ class openacademy_session(models.Model):
                                  default=10, index=True)
     min_seat = fields.Integer(string="Minimum Required Seats", required=True, index=True)
     duration_days = fields.Float(string="Duration(days)", digits=(6,3),\
-                                 required=True, default=1)
+                                 required=True)
     start_date = fields.Datetime(string="Start Date", required=True, track_visibility="onchange", default=fields.Datetime.now())
     end_date = fields.Datetime(string="End Date", track_visibility="onchange")
     is_public = fields.Boolean(string="Is Public Event ?")
@@ -100,14 +100,14 @@ class openacademy_session(models.Model):
     @api.depends("max_seat", "total_attneding")
     def compute_avail_seats(self):
         for record in self:
-            record.seat_avail_per = ((float(record.total_attneding) - float(record.max_seat))/float(record.max_seat))*100 * -1.0
+            record.seat_avail_per = ((float(record.total_attneding) - float(record.max_seat))/float(record.max_seat))*-100.00
 
     @api.multi
     @api.depends("attendee_ids")
     def count_total_invited(self):
         for record in self:
-            self.total_invited = sum([att.count for att in record.attendee_ids ])
-            self.total_attneding = sum([att.count for att in record.attendee_ids if att.state == "going"])
+            record.total_invited = sum([att.count for att in record.attendee_ids ])
+            record.total_attneding = sum([att.count for att in record.attendee_ids if att.state == "going"])
 
     @api.constrains("start_date", "end_date")
     def date_validation(self):
