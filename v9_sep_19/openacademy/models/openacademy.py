@@ -17,6 +17,8 @@ _STATES = [
     ("approve", "Approved"),
     ("reject", "Rejected"),
     ("open", "Open"),
+    ("cancel", "Cancelled"),
+    ("confirm", "Confirmed"),
     ("done", "Done")
 ]
 
@@ -161,6 +163,16 @@ class openacademy_session(models.Model):
     def action_approve_session(self):
         for record in self:
             record.state = "approve"
+
+    @api.multi
+    def action_open_session(self):
+        for record in self:
+            record.state = "open"
+
+    @api.multi
+    def action_confirm_session(self):
+        for record in self:
+            record.state = "confirm"
 
     @api.multi
     def reset_session(self):

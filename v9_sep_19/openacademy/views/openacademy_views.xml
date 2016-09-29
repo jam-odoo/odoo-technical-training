@@ -31,6 +31,11 @@
                         <button type="workflow" name="sig_approve_session" string="Approve Session" class="oe_highlight" states="new"/>
                         <button type="workflow" name="sig_reject_session" string="Reject Session" states="new"/>
                         <button type="object" name="reset_session" string="Rest to New" states="reject"/>
+                        <button type="workflow" name="sig_open_session" string="Open Session" class="oe_highlight" states="approve"/>
+                        <button type="workflow" name="sig_confirm_session" string="Confirm Session Session" class="oe_highlight" states="open"/>
+                        <button type="workflow" name="sig_cancel_session" string="Cancel Session" states="open"/>
+                         <button type="workflow" name="sig_done_session" string="Session Done" states="confirm"/>
+
                         <field name="state" widget="statusbar" statusbar_visible="new,approve,open,done"/>
                     </header>
                     <sheet>

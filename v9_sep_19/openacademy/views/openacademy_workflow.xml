@@ -29,6 +29,37 @@
             <field name="flow_stop">True</field>
         </record>
 
+        <record id="act_open" model="workflow.activity">
+            <field name="wkf_id" ref="wkfsession"/>
+            <field name="name">open</field>
+            <field name="kind">function</field>
+            <field name="action">action_open_session()</field>
+        </record>
+
+        <record id="act_cancel" model="workflow.activity">
+            <field name="wkf_id" ref="wkfsession"/>
+            <field name="name">Cancelled</field>
+            <field name="kind">function</field>
+            <field name="action">write({"state": "cancel"})</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+        <record id="act_confirm" model="workflow.activity">
+            <field name="wkf_id" ref="wkfsession"/>
+            <field name="name">Confirmed</field>
+            <field name="kind">function</field>
+            <field name="action">action_confirm_session()</field>
+        </record>
+
+        <record id="act_done" model="workflow.activity">
+            <field name="wkf_id" ref="wkfsession"/>
+            <field name="name">Done</field>
+            <field name="kind">function</field>
+            <field name="action">write({"state": "done"})</field>
+            <field name="flow_stop">True</field>
+        </record>
+
+
         <record id="trans_new_approve" model="workflow.transition">
             <field name="act_from" ref="act_new"/>
             <field name="act_to" ref="act_approve"/>
@@ -36,11 +67,38 @@
             <field name="condition">True</field>
         </record>
 
-
         <record id="trans_new_reject" model="workflow.transition">
             <field name="act_from" ref="act_new"/>
             <field name="act_to" ref="act_reject"/>
             <field name="signal">sig_reject_session</field>
+            <field name="condition">True</field>
+        </record>
+
+        <record id="trans_approve_open" model="workflow.transition">
+            <field name="act_from" ref="act_approve"/>
+            <field name="act_to" ref="act_open"/>
+            <field name="signal">sig_open_session</field>
+            <field name="condition">True</field>
+        </record>
+
+        <record id="trans_open_cancel" model="workflow.transition">
+            <field name="act_from" ref="act_open"/>
+            <field name="act_to" ref="act_cancel"/>
+            <field name="signal">sig_cancel_session</field>
+            <field name="condition">True</field>
+        </record>
+
+        <record id="trans_open_confirm" model="workflow.transition">
+            <field name="act_from" ref="act_open"/>
+            <field name="act_to" ref="act_confirm"/>
+            <field name="signal">sig_confirm_session</field>
+            <field name="condition">True</field>
+        </record>
+
+        <record id="trans_confirm_done" model="workflow.transition">
+            <field name="act_from" ref="act_confirm"/>
+            <field name="act_to" ref="act_done"/>
+            <field name="signal">sig_done_session</field>
             <field name="condition">True</field>
         </record>
 
