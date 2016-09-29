@@ -100,7 +100,7 @@ class openacademy_session(models.Model):
     @api.depends("max_seat", "total_attneding")
     def compute_avail_seats(self):
         for record in self:
-            record.seat_avail_per = ((float(record.total_attneding - float(record.max_seat))/float(record.max_seat))*100 * -1.0
+            record.seat_avail_per = ((float(record.total_attneding) - float(record.max_seat))/float(record.max_seat))*100 * -1.0
 
     @api.multi
     @api.depends("attendee_ids")
