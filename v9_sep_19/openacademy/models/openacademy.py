@@ -111,9 +111,9 @@ class openacademy_session(models.Model):
     course_id = fields.Many2one(comodel_name="openacademy.course", string="Course", required=True, track_visibility="onchange", readonly=True, states={'new':[('readonly', False)]})
     tag_ids = fields.Many2many(comodel_name="openacademy.tags", relation="rel_session_tags", column1="session_id", column2="tag_id", string="Tags")
     attendee_ids = fields.One2many(comodel_name="openacademy.attendee", inverse_name="session_id", string="Attendees")
-    total_invited = fields.Integer(compute="count_total_invited", string="Total Invited")
-    total_attneding = fields.Integer(compute="count_total_invited", string="Total Attending")
-    seat_avail_per = fields.Float(compute="compute_avail_seats", string="Avaible Seats (per)")
+    total_invited = fields.Integer(compute="count_total_invited", store=True, string="Total Invited")
+    total_attneding = fields.Integer(compute="count_total_invited", store=True, string="Total Attending")
+    seat_avail_per = fields.Float(compute="compute_avail_seats", store=True, string="Avaible Seats (per)")
 
     _sql_constraints = [
         ("session_code_unique", "unique (code)", _("The code must ne unique !")),

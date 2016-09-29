@@ -107,11 +107,62 @@
             </field>
         </record>
 
+
+
+        <record model="ir.ui.view" id="view_openacademy_sessions_graph">
+            <field name="name">OpenAcademy Grpah View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <graph string="Sessions" type="bar">
+                    <field name="course_id" type="row"/>
+                    <field name="max_seat" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_sessions_pivot">
+            <field name="name">OpenAcademy pivot View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <pivot string="Sessions">
+                    <field name="course_id" type="row"/>
+                    <field name="max_seat" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_sessions_calendar">
+            <field name="name">OpenAcademy Calendar View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <calendar string="Sessions" date_start="start_date"  date_stop="end_date" color="course_id">
+                    <field name="name"/>
+                    <field name="instructor_id"/>
+                </calendar>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_openacademy_sessions_gantt">
+            <field name="name">OpenAcademy Gantt View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <gantt string="Sessions" date_start="start_date"  date_stop="end_date" default_group_by="course_id" type="gantt" duration_unit="week">
+                    <field name="name"/>
+                    <field name="instructor_id"/>
+                </gantt>
+            </field>
+        </record>
+
         <record model="ir.actions.act_window" id="action_views_openacademy_sessions">
             <field name="name">All Sessions</field>
             <field name="res_model">openacademy.session</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,calendar,gantt,graph,pivot</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Click to create Sessionns
