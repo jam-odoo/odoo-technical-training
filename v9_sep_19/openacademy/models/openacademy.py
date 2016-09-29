@@ -90,11 +90,17 @@ class openacademy_session(models.Model):
     attendee_ids = fields.One2many(comodel_name="openacademy.attendee", inverse_name="session_id", string="Attendees")
     total_invited = fields.Integer(compute="count_total_invited", string="Total Invited")
     total_attneding = fields.Integer(compute="count_total_invited", string="Total Attending")
-
+    seat_avail_per = fields.Float(compute="compute_avail_seats", string="Avaible Seats (per)")
 
     _sql_constraints = [
         ("session_code_unique", "unique (code)", _("The code must ne unique !")),
     ]
+
+    @api.multi
+    @api.depends("max_seat", "total_attneding")
+    def compute_avail_seats(self):
+        for record in self:
+            record.seat_avail_per = ((float(record.total_attneding - float(record.max_seat))/float(record.max_seat))*100 * -1.0
 
     @api.multi
     @api.depends("attendee_ids")
