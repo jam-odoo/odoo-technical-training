@@ -15,6 +15,7 @@ from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
 _STATES = [
     ("new", "New"),
     ("approve", "Approved"),
+    ("reject", "Rejected"),
     ("open", "Open"),
     ("done", "Done")
 ]
@@ -155,6 +156,18 @@ class openacademy_session(models.Model):
         start_date = datetime.strptime(self.start_date, DEFAULT_SERVER_DATETIME_FORMAT)
         end_date = start_date + relativedelta.relativedelta(days=self.duration_days)
         self.end_date = end_date
+
+    @api.multi
+    def action_approve_session(self):
+        for record in self:
+            record.state = "approve"
+
+    @api.multi
+    def reset_session(self):
+        for record in self:
+            record.state = "new"
+            record.delete_workflow()
+            record.create_workflow()
 
 
 class OpenacademyAttendee(models.Model):

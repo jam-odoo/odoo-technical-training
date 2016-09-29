@@ -18,6 +18,7 @@ Open Academy Managment
     "data": [
         "views/openacademy_views.xml",
         "views/partner_views.xml",
+        "views/openacademy_workflow.xml",
     ],
     "demo": [
     ],
