@@ -70,6 +70,7 @@
                                         <field name="seat_avail_per" widget="progressbar"/>
                                     </group>
                                 </group>
+<button type="action" name="%(action_view_wizard_add_partner_form)d" string="Add Partenrs" class="oe_link"/>
                                 <seperator string="Attnedees"/>
                                 <field name="attendee_ids">
                                     <tree editable="bottom">

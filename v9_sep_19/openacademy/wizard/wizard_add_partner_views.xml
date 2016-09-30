@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="0">
+
+        <!-- OpenAcademy Form View -->
+        <record model="ir.ui.view" id="view_wizard_add_partner_form">
+            <field name="name">Wizard Add Partner Form View</field>
+            <field name="model">wizard.add.partner</field>
+            <field name="arch" type="xml">
+                <form string="Session">
+                    <group>
+                        <field name="partner_ids" widget="many2many_tags" required="1"/>
+                        <field name="count"/>
+                    </group>
+                    <footer>
+                        <button type="object" name="add_partner" string="Invite" class="oe_highlight"/> or 
+                        <button special="cancel" string="Cancel" class="oe_link"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_view_wizard_add_partner_form">
+            <field name="name">Invite Partners</field>
+            <field name="res_model">wizard.add.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+
+    </data>
+</openerp>

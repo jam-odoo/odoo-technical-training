@@ -16,6 +16,7 @@ Open Academy Managment
     "depends": ["mail"],
     "category": "Tools",
     "data": [
+        "wizard/wizard_add_partner_views.xml",
         "views/openacademy_views.xml",
         "views/partner_views.xml",
         "views/openacademy_workflow.xml",
