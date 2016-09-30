@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="0">
+
+        <template id="report_sessions">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <h2><span t-field="o.name"/></h2>
+                            <div class="row">
+                                <div>
+                                    <span><strong>Instructor</strong></span>
+                                </div>
+                                <div t-if="o.instructor_id">
+                                    <div t-field="o.instructor_id" t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <span><strong>Instructor</strong></span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.code, 400, 400)"/>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</openerp>

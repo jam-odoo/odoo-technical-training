@@ -249,16 +249,7 @@
                                 <field name="notes"/>
                             </page>
                             <page string="Sessions">
-                                <field name="session_ids" readonly="1">
-                                    <tree string="Sessions">
-                                        <field name="name"/>
-                                        <field name="code"/>
-                                        <field name="instructor_id"/>
-                                        <field name="max_seat" sum="Total Seats"/>
-                                        <field name="start_date"/>
-                                        <field name="is_public"/>
-                                    </tree>
-                                </field>
+                                <field name="session_ids" readonly="1"></field>
                             </page>
                         </notebook>
                     </sheet>
@@ -276,7 +267,7 @@
                     Click to create Courses
                 </p>
                 <p>
-                    Here you can enter your course                     details with hosting detilas
+                    Here you can enter your course details with hosting detilas
                 </p>
             </field>
         </record>
