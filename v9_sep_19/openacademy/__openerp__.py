@@ -16,6 +16,8 @@ Open Academy Managment
     "depends": ["mail"],
     "category": "Tools",
     "data": [
+        "security/openacademy_security.xml",
+        "security/ir.model.access.csv",
         "wizard/wizard_add_partner_views.xml",
         "views/openacademy_views.xml",
         "views/partner_views.xml",
