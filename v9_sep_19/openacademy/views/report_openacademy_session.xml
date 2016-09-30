@@ -18,12 +18,31 @@
                             </div>
                             <div class="row">
                                 <div>
-                                    <span><strong>Instructor</strong></span>
+                                    <span><strong t-esc="', '.join(map(lambda tag: tag.name,  o.tag_ids))"></strong></span>
                                 </div>
                             </div>
                             <div class="row">
                                 <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.code, 400, 400)"/>
                             </div>
+
+                            <table class="table table-hover">
+                                <thead>
+                                    <th><strong>Partner</strong></th>
+                                    <th><strong>Name</strong></th>
+                                    <th><strong>Email</strong></th>
+                                    <th><strong>Count</strong></th>
+                                    <th><strong>Status</strong></th>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.attendee_ids" t-as="att">
+                                        <td><t t-if="att.partner_id"><span t-esc="att.partner_id.name_get()[0][1]"/></t></td>
+                                        <td><span t-field="att.name"/></td>
+                                        <td><span t-field="att.email"/></td>
+                                        <td><span t-field="att.count"/></td>
+                                        <td><span t-field="att.state"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </t>
                 </t>
