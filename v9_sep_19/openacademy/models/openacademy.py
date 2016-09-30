@@ -56,6 +56,7 @@ class OpenacademyCourse(models.Model):
         for record in self:
             record.session_count = len(record.session_ids)
 
+
     @api.multi
     def name_get(self):
         vals = []
@@ -180,7 +181,14 @@ class openacademy_session(models.Model):
             record.state = "new"
             record.delete_workflow()
             record.create_workflow()
+        return True
 
+    @api.multi
+    def read_session(self):
+        vals = []
+        for record in self:
+            vals.append(record.name)
+        return vals
 
 class OpenacademyAttendee(models.Model):
     """OpenAcademy Attendee"""
