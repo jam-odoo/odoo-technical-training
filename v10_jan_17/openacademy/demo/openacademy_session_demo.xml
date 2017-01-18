@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    <data noupdate="1|0">
+        <record id="openacandemy_session1" model="openacademy.session">
+            <field name="name">Odoo Technical Training Jan 2017</field>
+            <field name="start_date">2017-01-16 09:00:00</field>
+            <field name="end_date">2017-01-21 17:00:00</field>
+        </record>
+
+        <record id="openacandemy_session2" model="openacademy.session">
+            <field name="name">Odoo Functional Training Jan 2017</field>
+            <field name="start_date">2017-01-16 09:00:00</field>
+            <field name="end_date">2017-01-21 17:00:00</field>
+            <field name="active">1</field>
+            <field name="seat_price">2000.00</field>
+        </record>
+    </data>
+</odoo>

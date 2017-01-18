@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_openacademy_session_tree" model="ir.ui.view">
+            <field name="name">OpenAcademy Session List View</field>      <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Sessions" decoration-muted="state=='done'"  decoration-success="state=='new'" decoration-bf="state=='new'">
+                    <field name="name"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="active"/>
+                    <field name="seat_price" avg="Total Sear Price"/>
+                    <field name="remain_seats" widget="progressbar"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- OPenAcademy Session Form View -->
+        <record id="view_openacademy_session_form" model="ir.ui.view">
+            <field name="name">OpenAcademy Session Form View</field>      <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <form string="Sessions">
+                    <header>
+                        <field name="state" widget="statusbar" clickable="True"  statusbar_visible="new,confirm,open,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1><field name="name" placeholder="Session Subjet Goes here..."/></h1>
+                        </div>
+                        <div>
+                            <label string="Dates"/>
+                            <h2>
+                                <field name="start_date" class="oe_inline"/> ( <field name="duration" class="oe_inline"/> )
+                                <field name="end_date" class="oe_inline"/>
+                            </h2>
+                        </div>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <group string="Seating Information">
+                                        <field name="total_seats"/>
+                                        <field name="min_seats"/>
+                                        <field name="remain_seats" widget="progressbar"/>
+                                    </group>
+                                    <group string="Extra Information">
+                                        <field name="active"/>
+                                        <separator string="Your Key Here " colspan="2"/>
+                                        <field name="secert_key" required="True" password="True" help="Your Session Secret Key TO be added here."/>
+                                    </group>
+                                </group>
+                                <field name="description"/>
+                            </page>
+                            <page string="banner">
+                                <field name="banner" widget="image" width="800"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- OpenAcademy Session Actions  -->
+        <record id="action_views_openacademy_sessions" model="ir.actions.act_window">
+            <field name="name">Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="root_openacademy" name="OpenAcademy"/>
+
+        <menuitem id="root_openacademy_Session"
+                  name="OpenAcademy Sesssios"
+                  parent="root_openacademy"/>
+
+        <menuitem id="menu_openacademy_Session"
+                  name="Sesssios"
+                  action="action_views_openacademy_sessions"
+                  parent="root_openacademy_Session"/>
+
+
+    </data>
+</odoo>
