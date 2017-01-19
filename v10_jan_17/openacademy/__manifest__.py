@@ -19,7 +19,7 @@ OpenAcademy Managment
         "views/openacademy_views.xml",
     ],
     "demo": [
-        "demo/openacademy_session_demo.xml",
+        # "demo/openacademy_session_demo.xml",
     ],
     "application": True,
     "sequence": 0,

@@ -2,7 +2,8 @@
 <odoo>
     <data>
         <record id="view_openacademy_session_tree" model="ir.ui.view">
-            <field name="name">OpenAcademy Session List View</field>      <field name="model">openacademy.session</field>
+            <field name="name">OpenAcademy Session List View</field>
+            <field name="model">openacademy.session</field>
             <field name="priority">16</field>
             <field name="arch" type="xml">
                 <tree string="Sessions" decoration-muted="state=='done'"  decoration-success="state=='new'" decoration-bf="state=='new'">
@@ -37,20 +38,44 @@
                                 <field name="end_date" class="oe_inline"/>
                             </h2>
                         </div>
+                        <div>
+                            <label for="course_id"/>
+                            <h2>
+                                <field name="course_id" options="{'no_create': True, 'no_open': True}"/>
+                            </h2>
+                        </div>
+                        <div>
+                            <label for="instructor_id"/>
+                            <field name="instructor_id" options="{'no_create': True, 'no_open': True}"/>
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags"/>
                         <notebook>
                             <page string="Description">
                                 <group>
                                     <group string="Seating Information">
                                         <field name="total_seats"/>
+                                        <field name="total_reg_seats"/>
                                         <field name="min_seats"/>
                                         <field name="remain_seats" widget="progressbar"/>
                                     </group>
                                     <group string="Extra Information">
                                         <field name="active"/>
+                                        <field name="code"/>
                                         <separator string="Your Key Here " colspan="2"/>
                                         <field name="secert_key" required="True" password="True" help="Your Session Secret Key TO be added here."/>
                                     </group>
                                 </group>
+                                <field name="attendee_ids">
+                                        <tree string="Attendees" editable="top">
+                                            <field name="partner_id"/>
+                                            <field name="full_name"/>
+                                            <field name="email"/>
+                                            <field name="count"/>
+                                            <field name="state"/>
+                                        </tree>
+                                </field>
+                            </page>
+                            <page string="Description">
                                 <field name="description"/>
                             </page>
                             <page string="banner">
@@ -62,12 +87,64 @@
             </field>
         </record>
 
+
+        <record id="view_openacademy_session_graph" model="ir.ui.view">
+            <field name="name">OpenAcademy Session Graph View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <graph type="bar" stacked="True" string="Sessions">
+                    <field name="course_id" type="row"/>
+                    <field name="total_seats" type="measure"/>
+                    <field name="min_seats" type="measure"/>
+                    <field name="total_reg_seats" type="measure"/>
+                </graph>
+            </field>
+        </record>
+        <record id="view_openacademy_session_pivot" model="ir.ui.view">
+            <field name="name">OpenAcademy Session Pivot View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <pivot string="Sessions">
+                    <field name="course_id" type="row"/>
+                    <field name="total_seats" type="measure"/>
+                    <field name="min_seats" type="measure"/>
+                    <field name="total_reg_seats" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+
+        <record id="view_openacademy_session_calendar" model="ir.ui.view">
+            <field name="name">OpenAcademy Session Calendar View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <calendar string="Sessions" date_start="start_date" date_stop="end_date" color="course_id" mode="month">
+                    <field name="name"/>
+                    <field name="instructor_id"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="view_openacademy_session_gantt" model="ir.ui.view">
+            <field name="name">OpenAcademy Session Gantt View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <gantt string="Sessions" date_start="start_date" date_stop="end_date" default_group_by="course_id" type="planning" duration_unit="month" consolidation="name">
+
+                </gantt>
+            </field>
+        </record>
+
         <!-- OpenAcademy Session Actions  -->
         <record id="action_views_openacademy_sessions" model="ir.actions.act_window">
             <field name="name">Sessions</field>
             <field name="res_model">openacademy.session</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,gantt</field>
         </record>
 
         <menuitem id="root_openacademy" name="OpenAcademy"/>
@@ -80,6 +157,50 @@
                   name="Sesssios"
                   action="action_views_openacademy_sessions"
                   parent="root_openacademy_Session"/>
+
+
+        <record id="view_openacademy_course_tree" model="ir.ui.view">
+            <field name="name">OpenAcademy Courses List View</field>
+            <field name="model">openacademy.course</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Courses">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_openacademy_course_form" model="ir.ui.view">
+            <field name="name">OpenAcademy Courses Form View</field>
+            <field name="model">openacademy.course</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <form string="Courses">
+                    <group>
+                        <field name="name"/>
+                        <field name="session_ids" readonly="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_views_openacademy_course" model="ir.actions.act_window">
+            <field name="name">Courses</field>
+            <field name="res_model">openacademy.course</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="root_openacademy_course"
+                  name="OpenAcademy Courses"
+                  parent="root_openacademy"/>
+
+        <menuitem id="menu_openacademy_course"
+                  name="Courses"
+                  action="action_views_openacademy_course"
+                  parent="root_openacademy_course"/>
 
 
     </data>
