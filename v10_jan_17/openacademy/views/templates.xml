@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id="sessions" name="Sessions">
+            <t t-call="website.layout">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                <div class="oe_structure"/>
+                <div class="container">
+                    <ul class="">
+                        <li t-foreach="session_ids" t-as="session" class="media">
+                                <a itemprop="url" t-att-href="'/session/session_id/%d'%session.id">
+                                    <span t-field="session.name"/>
+                                </a>
+                        </li> 
+                    </ul>
+                </div>
+
+            </t>
+        </template>
+        <template id="session_page" name="Sessions">
+            <t t-call="website.layout">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                <div class="oe_structure"/>
+                <div class="container">
+                    <h1>
+                    <span t-field="session_ids.name"/>
+                </h1>
+                </div>
+
+            </t>
+        </template>
+    </data>
+</odoo>

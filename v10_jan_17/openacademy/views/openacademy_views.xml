@@ -7,7 +7,9 @@
             <field name="priority">16</field>
             <field name="arch" type="xml">
                 <tree string="Sessions" decoration-muted="state=='done'"  decoration-success="state=='new'" decoration-bf="state=='new'">
+                    <field name="sequence" widget="handle"/>
                     <field name="name"/>
+                    <field name="owner_id"/>
                     <field name="start_date"/>
                     <field name="end_date"/>
                     <field name="active"/>
@@ -20,11 +22,19 @@
 
         <!-- OPenAcademy Session Form View -->
         <record id="view_openacademy_session_form" model="ir.ui.view">
-            <field name="name">OpenAcademy Session Form View</field>      <field name="model">openacademy.session</field>
+            <field name="name">OpenAcademy Session Form View</field>
+            <field name="model">openacademy.session</field>
             <field name="arch" type="xml">
                 <form string="Sessions">
                     <header>
-                        <field name="state" widget="statusbar" clickable="True"  statusbar_visible="new,confirm,open,done"/>
+                        <button type="workflow" name="action_approve" string="Approve Session" confirm="Are you sure you want to approve the session ?" class="oe_highlight" states="new"/>
+                        <button type="workflow" name="action_reject" string="Reject" states="new"/>
+                        <button type="workflow" name="action_open" string="Open for Registration" states="approve" class="oe_highlight" />
+                        <button type="workflow" name="action_confirm" string="Confirm" states="open" class="oe_highlight"/>
+                        <button type="workflow" name="action_cancel" string="Cancel" states="open"/>
+                        <button type="workflow" name="action_done" string="Session Finished" states="confirm" class="oe_highlight"/>
+                        <button type="object" name="action_reset" string="Reset ot New" states="reject"/>
+                        <field name="state" widget="statusbar" statusbar_visible="new,approve,confirm,open,done"/>
                     </header>
                     <sheet>
                         <div class="oe_title">
@@ -35,7 +45,7 @@
                             <label string="Dates"/>
                             <h2>
                                 <field name="start_date" class="oe_inline"/> ( <field name="duration" class="oe_inline"/> )
-                                <field name="end_date" class="oe_inline"/>
+                                <field name="end_date" class="oe_inline" attrs="{'required': [('duration', '=', 0)], 'readonly': [('duration', '&gt;', 0)]}"/>
                             </h2>
                         </div>
                         <div>
@@ -46,25 +56,27 @@
                         </div>
                         <div>
                             <label for="instructor_id"/>
-                            <field name="instructor_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="instructor_id"  domain="['|', ('instructor', '=', True), ('supplier', '=', True)]" options="{'no_create': True, 'no_open': True}"/>
                         </div>
                         <field name="tag_ids" widget="many2many_tags"/>
                         <notebook>
                             <page string="Description">
                                 <group>
                                     <group string="Seating Information">
-                                        <field name="total_seats"/>
+                                        <field name="total_seats" groups="openacademy.group_openacademy_manager"/>
                                         <field name="total_reg_seats"/>
                                         <field name="min_seats"/>
                                         <field name="remain_seats" widget="progressbar"/>
                                     </group>
                                     <group string="Extra Information">
+                                        <field name="owner_id"/>
                                         <field name="active"/>
                                         <field name="code"/>
                                         <separator string="Your Key Here " colspan="2"/>
                                         <field name="secert_key" required="True" password="True" help="Your Session Secret Key TO be added here."/>
                                     </group>
                                 </group>
+                                <button type="action" name="%(openacademy.action_view_wizard_add_atttendee)d" string="Invite Partners"/>
                                 <field name="attendee_ids">
                                         <tree string="Attendees" editable="top">
                                             <field name="partner_id"/>
@@ -83,6 +95,10 @@
                             </page>
                         </notebook>
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
@@ -139,19 +155,59 @@
             </field>
         </record>
 
+        <record id="view_openacademy_session_search" model="ir.ui.view">
+            <field name="name">OpenAcademy Session Search View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <search string="Sessions">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="code" domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]" string="Session Indentity"/>
+                    <field name="course_id"/>
+                    <field name="instructor_id"/>
+                    <separator/>
+                    <filter name="open_session" string="open Session" domain="[('state', '=', 'open')]"/>
+                    <separator/>
+                    <filter name="week" string="Upcoming This Week" domain="[('start_date', '&lt;=', (context_today() + datetime.timedelta(days=7)).strftime('%%Y-%%m-%%d')), ('start_date', '&gt;=',context_today().strftime('%%Y-%%m-%%d'))]"/>
+                    <group string="Group By...">
+                        <filter string="Status" name="state" domain="[]" context="{'group_by': 'state'}"/>
+                        <filter string="Courses" name="course" domain="[]" context="{'group_by': 'course_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
         <!-- OpenAcademy Session Actions  -->
         <record id="action_views_openacademy_sessions" model="ir.actions.act_window">
             <field name="name">Sessions</field>
             <field name="res_model">openacademy.session</field>
             <field name="view_type">form</field>
+            <field name="search_view_id" ref="view_openacademy_session_search"/>
             <field name="view_mode">tree,form,calendar,graph,pivot,gantt</field>
         </record>
+
+        <!-- OpenAcademy Open Session Actions  -->
+        <record id="action_views_open_openacademy_sessions" model="ir.actions.act_window">
+            <field name="name">Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,gantt</field>
+            <field name="domain">[('state', '=', 'open')]</field>
+        </record>
+
 
         <menuitem id="root_openacademy" name="OpenAcademy"/>
 
         <menuitem id="root_openacademy_Session"
                   name="OpenAcademy Sesssios"
                   parent="root_openacademy"/>
+
+        <menuitem id="menu_open_openacademy_Session"
+                  name="Open Sesssios"
+                  action="action_views_open_openacademy_sessions"
+                  parent="root_openacademy_Session"/>
 
         <menuitem id="menu_openacademy_Session"
                   name="Sesssios"
