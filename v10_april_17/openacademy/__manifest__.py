@@ -15,9 +15,11 @@ OpenAcademy Managment
     "website": "https://www.odoo.com",
     "author": "Odoo, Inc",
     "depends": ["base"],
-    "data":[
+    "data": [
+        "views/openacademy_views.xml",
     ],
     "demo": [
+        "demo/openacademy_session_demo.xml",
     ],
     "installable": True,
     "auto_install": False,

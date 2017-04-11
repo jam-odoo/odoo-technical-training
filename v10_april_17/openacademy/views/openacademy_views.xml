@@ -1,0 +1,199 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_openacademy_session_tree">
+            <field name="name">OpenAcademy Sesssions Tree View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Sessions" default_order="start_date desc" decoration-danger="state=='reject'" decoration-it="state=='reject'" decoration-info="state=='approve'" decoration-bf="state=='approve'">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="course_id"/>
+                    <field name="start_date" />
+                    <field name="end_date"/>
+                    <field name="max_seats" sum="Total Maximum Seats"/>
+                    <field name="left_seat_per" widget="progressbar"/>
+                    <field name="active"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_session_form">
+            <field name="name">OpenAcademy Sesssions Form View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <form string="Session">
+                    <header>
+                        <field name="state" widget="statusbar" clickable="True" statusbar_visible="new,approve,open,confirm,done"/>
+                    </header>
+                    <sheet>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <div>
+                            <label string="Course"/>
+                            <br/>
+                            <h2>
+                                <field name="course_id" options="{'no_quick_create': True, 'no_open': True,'no_create_edit': True}"/>
+                            </h2>
+                        </div>
+                        <div>
+                            <label string="Sesssion Schdule"/>
+                            <br/>
+                            <h2>
+                                <field name="start_date" class="oe_inline"/> (
+                                <field name="duration" class="oe_inline"/> )
+                                <field name="end_date" class="oe_inline"/>
+                            </h2>
+                        </div>
+                        <group>
+                            <field name="active"/>
+                        </group>
+                        <label for="tag_ids" class="oe_edit_only"/>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <notebook>
+                            <page string="General Information">
+                                <group>
+                                    <group string="Seat Information">
+                                        <field name="max_seats"/>
+                                        <field name="min_saets"/>
+                                        <field name="left_seat_per" widget="progressbar"/>
+                                    </group>
+                                    <group string="Extra Information">
+                                        <field name="sequence"/>
+                                        <field name="instructor_id" required="True"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Partner Attendee">
+                                <field name="attendee_ids">
+                                    <tree string="Attendee">
+                                        <field name="name"/>
+                                        <field name="email"/>
+                                        <field name="phone"/>
+                                        <field name="street"/>
+                                        <field name="city"/>
+                                        <field name="state_id"/>
+                                        <field name="country_id"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                            <page string="Webstei Description">
+                                <field name="website_description"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_views_openacademy_sessions">
+            <field name="name">Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_views_openacademy_sessions_tree">
+            <field name="sequence">0</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_openacademy_session_tree"/>
+            <field name="act_window_id" ref="action_views_openacademy_sessions"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_views_openacademy_sessions_form">
+            <field name="sequence">1</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_openacademy_session_form"/>
+            <field name="act_window_id" ref="action_views_openacademy_sessions"/>
+        </record>
+
+        <menuitem id="root_openacademy"
+                    name="Training"
+                    sequence="1"
+                    web_icon="openacademy,static/description/icon.png"/>
+
+        <menuitem id="root_openacademy_sessions"
+                    parent= "root_openacademy"
+                    name="Training Sesssions"
+                    sequence="1"/>
+
+        <menuitem id="root_openacademy_sessions_session"
+                    parent= "root_openacademy_sessions"
+                    name="Sesssions"
+                    sequence="1"
+                    action="action_views_openacademy_sessions"/>
+
+        <record model="ir.ui.view" id="view_opencademy_course_tree">
+            <field name="name">OpenAcdemy Course Tree View</field>
+            <field name="model">openacademy.course</field>
+            <field name="arch" type="xml">
+                <tree string="Courses">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_opencademy_course_form">
+            <field name="name">OpenAcademy Form View</field>
+            <field name="model">openacademy.course</field>
+            <field name="arch" type="xml">
+                <form string="Course">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. Odoo trainings"/>
+                            </h1>
+                        </div>
+                        <group col="4">
+                            <field name="user_id"/>
+                            <field name="active"/>
+                            <field name="code"/>
+                        </group>
+                        <notebook>
+                            <page string="Notes">
+                                <separator string="Course Cotains" colspan="2"/>
+                                <field name="course_contain"/>
+                            </page>
+                            <page string="Sessions">
+                                <field name="session_ids" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_views_opencademy_course">
+            <field name="name">Courses</field>
+            <field name="res_model">openacademy.course</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_opencademy_course_root"
+                    name="Training Course"
+                    parent="root_openacademy"
+                    sequence="2"/>
+
+        <menuitem id="menu_action_views_opencademy_course"
+                    parent="menu_opencademy_course_root"
+                    action="action_views_opencademy_course"/>
+
+
+    </data>
+</odoo>

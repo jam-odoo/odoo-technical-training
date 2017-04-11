@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<odoo>
+    <data noupdate="False">
+
+        <record model="openacademy.course" id="course_demo_01">
+            <field name="name">Odoo Trianings</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">ODOT</field>
+        </record>
+
+        <record model="openacademy.course" id="course_demo_02">
+            <field name="name">Internet of Things</field>
+            <field name="user_id" ref="base.user_demo"/>
+            <field name="code">IoT</field>
+        </record>
+
+        <record model="openacademy.course" id="course_demo_03">
+            <field name="name">Python</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="code">PYTHON</field>
+        </record>
+
+        <record model="openacademy.session" id="session_demo_01">
+            <field name="name">Odoo April Functional Trianing</field>
+            <field name="max_seats">50</field>
+            <field name="min_saets">25</field>
+            <field name="start_date">2017-04-10 09:00:00</field>
+            <field name="end_date">2017-04-14 17:00:00</field>
+            <field name="duration">5</field>
+            <field name="course_id" ref="course_demo_01"/>
+            <field name="instructor_id" ref="base.res_partner_12"/>
+        </record>
+
+        <record model="openacademy.session" id="session_demo_02">
+            <field name="name">Odoo April: Technical Trianing</field>
+            <field name="max_seats">50</field>
+            <field name="min_saets">25</field>
+            <field name="start_date">2017-04-10 09:00:00</field>
+            <field name="end_date">2017-04-14 17:00:00</field>
+            <field name="duration">5</field>
+            <field name="course_id" ref="course_demo_01"/>
+            <field name="instructor_id" ref="base.res_partner_3"/>
+        </record>
+
+        <record model="openacademy.session" id="session_demo_03">
+            <field name="name">IOT April Trianing</field>
+            <field name="max_seats">50</field>
+            <field name="min_saets">25</field>
+            <field name="start_date">2017-04-10 09:00:00</field>
+            <field name="end_date">2017-04-14 17:00:00</field>
+            <field name="duration">5</field>
+            <field name="course_id" ref="course_demo_02"/>
+            <field name="instructor_id" ref="base.res_partner_3"/>
+        </record>
+
+
+    </data>
+</odoo>
