@@ -1,4 +1,4 @@
-Technical Training v8, v9
+Technical Training v8, v9+e V10+e
 ==========
 Here the URL to the documentation for reference :
 - Full Odoov8 Beckend Training URL:
