@@ -13,6 +13,7 @@
                     <field name="start_date" />
                     <field name="end_date"/>
                     <field name="max_seats" sum="Total Maximum Seats"/>
+                    <field name="invited_partner"/>
                     <field name="left_seat_per" widget="progressbar"/>
                     <field name="active"/>
                     <field name="state"/>
@@ -49,7 +50,7 @@
                             <br/>
                             <h2>
                                 <field name="start_date" class="oe_inline"/> (
-                                <field name="duration" class="oe_inline"/> )
+                                <field name="duration" class="oe_inline" widget="float_time"/> )
                                 <field name="end_date" class="oe_inline"/>
                             </h2>
                         </div>
@@ -63,12 +64,16 @@
                                 <group>
                                     <group string="Seat Information">
                                         <field name="max_seats"/>
-                                        <field name="min_saets"/>
+                                        <field name="min_saets" attrs="{'readonly': [('max_seats', '&gt;', 100)]}"/>
+                                        <field name="invited_partner"/>
                                         <field name="left_seat_per" widget="progressbar"/>
                                     </group>
                                     <group string="Extra Information">
+                                        <field name="instructor_id" required="True" domain="[('supplier', '=', True)]"/>
                                         <field name="sequence"/>
-                                        <field name="instructor_id" required="True"/>
+                                        <field name="country_id"/>
+                                        <field name="company_id"/>
+                                        <field name="code"/>
                                     </group>
                                 </group>
                             </page>
@@ -97,11 +102,86 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="view_openacademy_session_search">
+            <field name="name">OpenAcademy Serch View</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <search string="Sesssion">
+                    <field name="name" string="Sesssion" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                    <field name="tag_ids" string="Tags" filter_domain="[('name', 'ilike', self)]"/>
+                    <field name="course_id"/>
+                    <field name="instructor_id"/>
+                    <separator/>
+                    <filter string="Upcoming" name="upcoming" domain="[('start_date', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0)))]"/>
+                    <separator/>
+                    <filter string="New" name="new_session" domain="[('state', '=', 'new')]"/>
+                    <filter string="Approved" name="approved_session" domain="[('state', '=', 'approve')]"/>
+                    <filter string="Open" name="open_session" domain="[('state', '=', 'open')]"/>
+                    <filter string="Rejected" name="rejected_session" domain="[('state', '=', 'reject')]"/>
+                    <filter string="Done" name="done_session" domain="[('state', '=', 'done')]"/>
+                    <separator/>
+                    <filter string="Over Booked" name="overbooked" domain="[('left_seat_per', '&lt;', 0)]"/>
+                    <filter string="Reservation not started" name="notstarted" domain="[('invited_partner', '&lt;=', 0)]"/>
+                    <group string="Group By">
+                        <filter string="Status" name="group_by_state" context="{'group_by': 'state'}"/>
+                        <filter string="Course" name="group_by_course_id" context="{'group_by': 'course_id'}"/>
+                        <filter string="Instructor" name="group_by_instructor_id" context="{'group_by': 'instructor_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_session_graph">
+            <field name="name">OpenAcademy Sesssion Graph View</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <graph string="Sesssions" type="bar" stacked="True">
+                    <field name="state"/>
+                    <field name="invited_partner" type="measurex"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_session_pivot">
+            <field name="name">OpenAcademy Sesssion Pivot View</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <pivot string="Sesssions">
+                    <field name="state" type="row"/>
+                    <field name="course_id" type="row"/>
+                    <field name="max_seats" type="measure"/>
+                    <field name="invited_partner" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_session_calendar">
+            <field name="name">OpenAcademy Calendar view</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <calendar  string="Sesssion" date_start="start_date" date_stop="end_date" color="course_id" mode="month">
+                    <field name="name"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_session_gantt">
+            <field name="name">OpenAcademy Gantt view</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <gantt string="Sesssion" date_start="start_date" date_stop="end_date" default_group_by="course_id" duration_unit="week" type="gantt">
+                    <field name="name"/>
+                </gantt>
+            </field>
+        </record>
+
         <record model="ir.actions.act_window" id="action_views_openacademy_sessions">
-            <field name="name">Sessions</field>
+            <field name="name">All Sessions</field>
             <field name="res_model">openacademy.session</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,gantt</field>
+            <field name="search_view_id" ref="view_openacademy_session_search"/>
+            <field name="context">{'search_default_upcoming': 1, 'search_default_group_by_course_id': 1}</field>
         </record>
 
         <record model="ir.actions.act_window.view" id="action_views_openacademy_sessions_tree">
@@ -130,9 +210,23 @@
 
         <menuitem id="root_openacademy_sessions_session"
                     parent= "root_openacademy_sessions"
-                    name="Sesssions"
-                    sequence="1"
+                    sequence="10"
                     action="action_views_openacademy_sessions"/>
+
+
+        <record model="ir.actions.act_window" id="action_views_openacademy_new_sessions">
+            <field name="name">New Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[("state", "=", "new")]</field>
+        </record>
+
+
+        <menuitem id="root_openacademy_sessions_snew_ession"
+                    parent= "root_openacademy_sessions"
+                    sequence="1"
+                    action="action_views_openacademy_new_sessions"/>
 
         <record model="ir.ui.view" id="view_opencademy_course_tree">
             <field name="name">OpenAcdemy Course Tree View</field>
