@@ -46,3 +46,32 @@ class OpenAcademyCourse(models.Model):
         for record in self:
             res.append((record.id, "%s ( %s )"%(record.name, record.code)))
         return res
+
+class Parnter(models.Model):
+
+    _inherit = "res.partner"
+
+    instructor = fields.Boolean(string="Insructor")
+    website = fields.Char(string="Homepage")
+    country_id =  fields.Many2one(index=True)
+    course_ids = fields.Many2many(comodel_name="openacademy.course", string="Course")
+
+class SaleOrder(models.Model):
+    _inherit = "sale.order"
+
+    state = fields.Selection(selection=[
+        ('draft', 'Quotation'),
+        ('sent', 'Quotation Sent'),
+        ('verify', "Verify"),
+        ('sale', 'Sales Order'),
+        ('done', 'Locked'),
+        ('cancel', 'Cancelled'),
+        ])
+
+    @api.multi
+    def action_confirm(self):
+        for order in self:
+            if order.state != "verify":
+                raise exceptions.ValidationError("Snap ! Something went wrong.")
+        res = super(SaleOrder, self).action_confirm()
+        return res

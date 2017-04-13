@@ -14,9 +14,10 @@ OpenAcademy Managment
     "sequence": 0,
     "website": "https://www.odoo.com",
     "author": "Odoo, Inc",
-    "depends": ["base"],
+    "depends": ["sale", "mail"],
     "data": [
         "views/openacademy_views.xml",
+        "views/partner_view.xml",
     ],
     "demo": [
         "demo/openacademy_session_demo.xml",

@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_openacademy_partner_from_inheirt">
+            <field name="name">OpenAcademy Partner Form Inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//notebook/page[@name='sales_purchases']//*[@name='supplier']" position="after">
+                        <field name="instructor"/>
+                        <field name="course_ids" attrs="{'required':[('instructor', '=', True)]}" widget="many2many_tags"/>
+                    </xpath>
+                    <field name="lang" position="attributes">
+                        <attribute name="string">l10n</attribute>
+                    </field>
+                  <!--   <field name="lang" position="after">
+                        <field name="instructor"/>
+                    </field> -->
+                </data>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="view_openacademy_sale_order_from_inheirt">
+            <field name="name">OpenAcademy sale ORder Form Inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//*[@name='state']" position="attributes">
+                        <attribute name="statusbar_visible">draft,sent,sale,verify</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_views_openacademy_parnter_views">
+            <field name="name">Instructors</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'default_instructor': True, 'default_supplier': False, 'default_customer': False}</field>
+            <field name="domain">[('instructor', '=', True)]</field>
+        </record>
+
+        <menuitem id="root_openacademy_config"
+                    parent="openacademy.root_openacademy"
+                    sequence="100"
+                    name="Configurations"/>
+
+        <menuitem id="root_openacademy_config_instructors"
+                    parent="root_openacademy_config"
+                    sequence="1"
+                    action="action_views_openacademy_parnter_views"/>
+
+
+    </data>
+</odoo>

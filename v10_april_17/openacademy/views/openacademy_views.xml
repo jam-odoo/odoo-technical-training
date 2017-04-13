@@ -28,9 +28,15 @@
             <field name="arch" type="xml">
                 <form string="Session">
                     <header>
+                        <button type="object" name="action_approve" string="Approive Sesssion" icon="fa-university" states="new" class="oe_highlight"/>
                         <field name="state" widget="statusbar" clickable="True" statusbar_visible="new,approve,open,confirm,done"/>
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="stat_botton_box">
+                            <button class="oe_stat_button" type="object" name="open_partners" icon="fa-users">
+                                <field name="invited_partner" string="Invited Partners" widget="statinfo"></field>
+                            </button>
+                        </div>
                         <field name="image" widget="image" class="oe_avatar"/>
                         <div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
@@ -65,11 +71,10 @@
                                     <group string="Seat Information">
                                         <field name="max_seats"/>
                                         <field name="min_saets" attrs="{'readonly': [('max_seats', '&gt;', 100)]}"/>
-                                        <field name="invited_partner"/>
                                         <field name="left_seat_per" widget="progressbar"/>
                                     </group>
                                     <group string="Extra Information">
-                                        <field name="instructor_id" required="True" domain="[('supplier', '=', True)]"/>
+                                        <field name="instructor_id" required="True" domain="[('instructor', '=', True)]"/>
                                         <field name="sequence"/>
                                         <field name="country_id"/>
                                         <field name="company_id"/>
@@ -98,6 +103,10 @@
                             </page>
                         </notebook>
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
@@ -175,11 +184,49 @@
             </field>
         </record>
 
+
+        <record model="ir.ui.view" id="view_openacademy_session_kanban">
+            <field name="name">OpenAcademy Kanban view</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <kanban string="Sesssion" >
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="course_id"/>
+                    <field name="image"/>
+                    <field name="image_small"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_image">
+                                    <img t-att-src="'data:image/png;base64,'+record.image_small.raw_value"/>
+                                </div>
+                                <div class="oe_kanban_details">
+                                    <div class="pull-left">
+                                        <h3>
+                                            <field name="name"/>
+                                        </h3>
+                                    </div>
+                                    <div class="pull-right">
+                                        <h3>
+                                            <field name="start_date"/> - <field name="end_date"/>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+
         <record model="ir.actions.act_window" id="action_views_openacademy_sessions">
             <field name="name">All Sessions</field>
             <field name="res_model">openacademy.session</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,calendar,graph,pivot,gantt</field>
+            <field name="view_mode">kanban,tree,form,calendar,graph,pivot,gantt</field>
             <field name="search_view_id" ref="view_openacademy_session_search"/>
             <field name="context">{'search_default_upcoming': 1, 'search_default_group_by_course_id': 1}</field>
         </record>
