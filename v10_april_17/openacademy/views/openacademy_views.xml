@@ -10,12 +10,11 @@
                     <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="course_id"/>
+                    <field name="user_id"/>
                     <field name="start_date" />
-                    <field name="end_date"/>
                     <field name="max_seats" sum="Total Maximum Seats"/>
                     <field name="invited_partner"/>
                     <field name="left_seat_per" widget="progressbar"/>
-                    <field name="active"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -28,7 +27,14 @@
             <field name="arch" type="xml">
                 <form string="Session">
                     <header>
-                        <button type="object" name="action_approve" string="Approive Sesssion" icon="fa-university" states="new" class="oe_highlight"/>
+                        <button type="workflow" name="transition_approve" string="Approve" states="new" class="oe_highlight"/>
+                        <button type="workflow" name="transition_reject" string="Reject" states="new"/>
+                        <button type="workflow" name="transition_open" string="Open" states="approve" class="oe_highlight"/>
+                        <button type="workflow" name="transition_confirm" string="Confirm" states="open" class="oe_highlight"/>
+                        <button type="workflow" name="transition_cancel" string="Cancel" states="open"/>
+                        <button type="workflow" name="transition_done" string="Done" states="confirm" class="oe_highlight"/>
+                        <button type="object" name="reset_workflow" string="Resst to new" states="reject,cancel"/>
+                        <button type="action" name="%(openacademy.openacademy_session_report)d" string="Print"/>
                         <field name="state" widget="statusbar" clickable="True" statusbar_visible="new,approve,open,confirm,done"/>
                     </header>
                     <sheet>
@@ -77,12 +83,24 @@
                                         <field name="instructor_id" required="True" domain="[('instructor', '=', True)]"/>
                                         <field name="sequence"/>
                                         <field name="country_id"/>
-                                        <field name="company_id"/>
+                                        <field name="user_id"/>
+                                        <field name="company_id" groups="openacademy.group_training_manager"/>
                                         <field name="code"/>
                                     </group>
                                 </group>
                             </page>
                             <page string="Partner Attendee">
+                                <field name="invitation_ids" readonly="1">
+                                    <tree string="Invitations" editable="top">
+                                        <field name="name"/>
+                                        <field name="partner_id"/>
+                                        <field name="email"/>
+                                        <field name="phone"/>
+                                        <field name="count"/>
+                                        <field name="state"/>
+                                    </tree>
+
+                                </field>
                                 <field name="attendee_ids">
                                     <tree string="Attendee">
                                         <field name="name"/>
@@ -248,6 +266,7 @@
         <menuitem id="root_openacademy"
                     name="Training"
                     sequence="1"
+                    groups="group_training_user"
                     web_icon="openacademy,static/description/icon.png"/>
 
         <menuitem id="root_openacademy_sessions"
@@ -267,6 +286,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="domain">[("state", "=", "new")]</field>
+            <field name="groups_id" eval="[(4, ref('openacademy.group_training_manager'))]"/>
         </record>
 
 

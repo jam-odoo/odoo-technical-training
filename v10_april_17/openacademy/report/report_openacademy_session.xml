@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id="report_session">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.name, 600, 100)" style="width:400px;height:100px"/>
+                            <div>
+                                <h1 t-if="o.invited_partner &gt; o.max_seats">
+                                    <span><strong>OVER BOOKED</strong></span>
+                                </h1>
+                            </div>
+                            <div>
+                                <strong><span t-esc="o.get_fullname()"></span></strong>
+                            </div>
+                            <table>
+                                <thead>
+                                    <th><strong>Name</strong></th>
+                                    <th><strong>Email</strong></th>
+                                    <th><strong>Phone</strong></th>
+                                    <th><strong>Street</strong></th>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.attendee_ids" t-as="att">
+                                        <td> <span t-esc="att.name_get()[0][1]"></span></td>
+                                        <td> <span t-field="att.email"></span></td>
+                                        <td> <span t-field="att.phone"></span></td>
+                                        <td> <span t-field="att.street"></span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

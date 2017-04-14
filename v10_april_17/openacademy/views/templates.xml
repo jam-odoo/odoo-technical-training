@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id="openacademy_asset_frontend" inherit_id="website.assets_frontend" name="Sesssion Asset Website">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/openacademy/static/src/js/openacademy.js"/>
+                <link rel="stylesheet" href="/openacademy/static/src/css/openacademy.css"/>
+            </xpath>
+        </template>
+        <template id="openacademy_sessions" name="Sesssions">
+            <t t-call="website.layout">
+                <div class="oe_structure"/>
+                <div class="row">
+                    <table>
+                        <thead>
+                            <th>Session Name</th>
+                            <th>Session Start Date</th>
+                            <th>Instructor Name</th>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="sessions" t-as="session">
+                                <td><a t-attf-href="/sessions/#{session.id}" t-esc="session.name"></a></td>
+                                <td><span t-field="session.start_date"></span></td>
+                                <td><span t-field="session.instructor_id.name"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="oe_structure"/>
+            </t>
+        </template>
+
+        <template id="openacademy_session_page" name="Sesssion Page">
+            <t t-call="website.layout">
+                <div class="oe_structure"/>
+                <div class="row">
+                    <h1>
+                        <strong><span t-field="session.name"/></strong>
+                    </h1>
+                </div>
+                <div class="oe_structure"/>
+            </t>
+        </template>
+    </data>
+</odoo>

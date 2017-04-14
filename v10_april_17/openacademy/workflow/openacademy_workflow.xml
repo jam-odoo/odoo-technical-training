@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record model="workflow" id="workflow_session">
+            <field name="name">Sesssion Workflow</field>
+            <field name="osv">openacademy.session</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <record model="workflow.activity" id="act_new">
+            <field name="wkf_id" ref="workflow_session"/>
+            <field name="flow_start">True</field>
+            <field name="name">New</field>
+        </record>
+
+        <record model="workflow.activity" id="act_approve">
+            <field name="wkf_id" ref="workflow_session"/>
+            <field name="name">Approved</field>
+            <field name="kind">function</field>
+            <field name="action">action_approved()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_reject">
+            <field name="wkf_id" ref="workflow_session"/>
+            <field name="name">rejected</field>
+            <field name="flow_stop">True</field>
+            <field name="kind">stopall</field>
+            <field name="action">action_rejected()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_open">
+            <field name="wkf_id" ref="workflow_session"/>
+            <field name="name">open</field>
+            <field name="kind">function</field>
+            <field name="action">action_open()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_confirm">
+            <field name="wkf_id" ref="workflow_session"/>
+            <field name="name">Confirmed</field>
+            <field name="kind">function</field>
+            <field name="action">action_confirm()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_cancel">
+            <field name="wkf_id" ref="workflow_session"/>
+            <field name="name">cancel</field>
+            <field name="flow_stop">True</field>
+            <field name="kind">stopall</field>
+            <field name="action">action_cancel()</field>
+        </record>
+
+        <record model="workflow.activity" id="act_done">
+            <field name="wkf_id" ref="workflow_session"/>
+            <field name="name">done</field>
+            <field name="flow_stop">True</field>
+            <field name="kind">stopall</field>
+            <field name="action">action_done()</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_new_approve">
+            <field name="act_from" ref="act_new"/>
+            <field name="act_to" ref="act_approve"/>
+            <field name="condition">True</field>
+            <field name="signal">transition_approve</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_new_reject">
+            <field name="act_from" ref="act_new"/>
+            <field name="act_to" ref="act_reject"/>
+            <field name="condition">True</field>
+            <field name="signal">transition_reject</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_approve_open">
+            <field name="act_from" ref="act_approve"/>
+            <field name="act_to" ref="act_open"/>
+            <field name="condition">True</field>
+            <field name="signal">transition_open</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_open_confirm">
+            <field name="act_from" ref="act_open"/>
+            <field name="act_to" ref="act_confirm"/>
+            <field name="condition">True</field>
+            <field name="signal">transition_confirm</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_open_cancel">
+            <field name="act_from" ref="act_open"/>
+            <field name="act_to" ref="act_cancel"/>
+            <field name="condition">True</field>
+            <field name="signal">transition_cancel</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_confirm_done">
+            <field name="act_from" ref="act_confirm"/>
+            <field name="act_to" ref="act_done"/>
+            <field name="condition">True</field>
+            <field name="signal">transition_done</field>
+        </record>
+
+
+    </data>
+</odoo>

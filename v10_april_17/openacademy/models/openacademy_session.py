@@ -17,8 +17,10 @@ STATES = [
     ('reject', "Rejected"),
     ("open", "Open for registration"),
     ('confirm', 'Confirmed'),
+    ('cancel', 'Cancelled'),
     ('done', 'Done')
 ]
+
 
 class OpenAcademyTags(models.Model):
     """OpenAcademy Tags"""
@@ -37,13 +39,17 @@ class OpenAcademySession(models.Model):
     def _get_user_company(self):
         return self.env.user.company_id.id
 
+    def _get_user(self):
+        return self.env.user.id
+
+
     def _set_end_date(self):
         start_date = datetime.now()
         end_date = start_date + relativedelta(days=1)
         end_date = end_date.strftime("%Y-%m-%d %H:%M:%S")
         return end_date
 
-    name = fields.Char(string="Session Name", required=True, help="Session name goes here... e.g. Odoo Technical Training", track_visibility="onchange")
+    name = fields.Char(string="Session Name", required=True, help="Session name goes here... e.g. Odoo Technical Training", track_visibility="onchange", readonly=True, states={'new': [('readonly', False)]})
     active = fields.Boolean(string="Archived ?", default=True)
     sequence  = fields.Integer(string="Sequence", default=10)
     website_description = fields.Html(string="Website Description")
@@ -51,16 +57,16 @@ class OpenAcademySession(models.Model):
     max_seats = fields.Integer(string="Maximum Seats", required=True, help="Maximum number of seats avilable for session")
     min_saets = fields.Integer(string="Minimum Seats", required=True)
     invited_partner = fields.Integer(compute="_compute_invited_partner", store=True, string="Invited Partners")
-    start_date = fields.Datetime(string="Session Start Date", required=True, default=fields.Datetime.now(), track_visibility="onchange")
-    end_date = fields.Datetime(string="Sesssion End Date", required=True, default=_set_end_date, track_visibility="onchange")
+    start_date = fields.Datetime(string="Session Start Date", required=True, default=fields.Datetime.now(), track_visibility="onchange", readonly=True, states={'new': [('readonly', False)]})
+    end_date = fields.Datetime(string="Sesssion End Date", required=True, default=_set_end_date, track_visibility="onchange", readonly=True, states={'new': [('readonly', False)]})
     duration = fields.Float(string="Duration in Days", required=True, default=1)
     state = fields.Selection(selection=STATES, string="States", default="new", track_visibility="onchange")
     left_seat_per = fields.Float(compute="_compute_invited_partner", string="Remaining Seats", digits=(8,5))
     image = fields.Binary(string="Image")
     image_small = fields.Binary(compute="_get_small_image",string="Image Small")
-    course_id = fields.Many2one(comodel_name="openacademy.course", ondelete="restrict", required=True, copy=False, index=True, track_visibility="always")
+    course_id = fields.Many2one(comodel_name="openacademy.course", ondelete="restrict", required=True, copy=False, index=True, track_visibility="always", readonly=True, states={'new': [('readonly', False)]})
 
-    instructor_id = fields.Many2one(comodel_name="res.partner", string="Instructor", track_visibility="onchange")
+    instructor_id = fields.Many2one(comodel_name="res.partner", string="Instructor", track_visibility="onchange", readonly=True, states={'new': [('readonly', False)]})
     attendee_ids = fields.Many2many(comodel_name="res.partner", relation="rel_session_parnter_attendee", \
                                     column1="session_id", column2="partner_id", string="Partner Attendee")
     tag_ids = fields.Many2many(comodel_name="openacademy.tags", string="Tags")
@@ -68,10 +74,47 @@ class OpenAcademySession(models.Model):
     company_id = fields.Many2one(comodel_name="res.company", required=True, string="Compnay", default=_get_user_company)
     website = fields.Char(related="instructor_id.website", string="Website")
     country_id = fields.Many2one(compute="res.country", related="instructor_id.country_id", string="Country")
+    invitation_ids = fields.One2many(comodel_name="openacademy.invitation", inverse_name="session_id", string="Invitations")
+    user_id  = fields.Many2one(comodel_name="res.users", string="Responisble", required=True, default=_get_user)
 
     _sql_constraints = [
         ("uqni_code_per_session", "UNIQUE(code, company_id)", "Code must be unique per company !"),
     ]
+
+    @api.multi
+    def action_approved(self):
+        self.write({"state": 'approve'})
+
+    @api.multi
+    def action_rejected(self):
+        self.write({"state": 'reject'})
+
+    @api.multi
+    def action_open(self):
+        self.write({"state": 'open'})
+
+    @api.multi
+    def action_confirm(self):
+        self.write({"state": 'confirm'})
+
+    @api.multi
+    def action_cancel(self):
+        self.write({"state": 'cancel'})
+
+    @api.multi
+    def action_done(self):
+        self.write({"state": 'done'})
+
+    @api.multi
+    def reset_workflow(self):
+        for record in self:
+            record.delete_workflow()
+            record.create_workflow()
+            record.state = "new"
+
+    @api.multi
+    def get_fullname(self):
+        return "%s (%s)"%(self.name, self.code)
 
     @api.depends("image")
     def _get_small_image(self):
@@ -157,3 +200,28 @@ class OpenAcademySession(models.Model):
             "views": [(partner_tree_id, "tree")],
         }
         return action
+
+
+class OpenAcademyInvitation(models.Model):
+    """OpenAcademy Attendees"""
+
+    _name = "openacademy.invitation"
+
+
+    name = fields.Char(string="Name", required=True)
+    partner_id = fields.Many2one(comodel_name="res.partner", string="Partner")
+    email = fields.Char(string="Email")
+    phone = fields.Char(string="Phone")
+    count = fields.Integer(string="Invitation Count", default=1)
+    state = fields.Selection(selection=[('invited', "invited"),
+                                        ('accept', 'Accpeted'),
+                                        ('declined', 'Declined'),
+                                        ('pending', 'Pending')], string="State", default="invited")
+    session_id = fields.Many2one(comodel_name="openacademy.session", string="Session")
+
+    @api.onchange("partner_id")
+    def onchange_partner_id(self):
+        if self.partner_id:
+            self.name =  self.partner_id.name_get()[0][1]
+            self.phone = self.partner_id.phone or self.partner_id.mobile
+            self.email = self.partner_id.email

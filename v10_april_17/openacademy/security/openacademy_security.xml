@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record model="ir.module.category" id ="category_training">
+            <field name="name">Training</field>
+        </record>
+        <record model="res.groups" id="group_training_user">
+            <field name="name">User</field>
+            <field name="category_id" ref="category_training"/>
+        </record>
+
+        <record model="res.groups" id="group_training_manager">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="category_training"/>
+            <field name="implied_ids" eval="[(4, ref('group_training_user'))]"/>
+        </record>
+    </data>
+    <data noupdate="False">
+        <record model="ir.rule" id="rule_user_session">
+            <field name="name">Training User sesssion Only</field>
+            <field name="model_id" ref="openacademy.model_openacademy_session"/>
+            <field name="active">False</field>
+        </record>
+
+        <record model="ir.rule" id="rule_user_session_readonly">
+            <field name="name">Training User sesssion read</field>
+            <field name="model_id" ref="openacademy.model_openacademy_session"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_training_user'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record model="ir.rule" id="rule_user_session_update">
+            <field name="name">Training User sesssion Update</field>
+            <field name="model_id" ref="openacademy.model_openacademy_session"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_training_user'))]"/>
+            <field name="perm_read" eval="0"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+
+
+        <record model="ir.rule" id="rule_manager_session">
+            <field name="name">Training Manager sesssion Only</field>
+            <field name="model_id" ref="openacademy.model_openacademy_session"/>
+            <field name="domain_force">[(1 '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_training_manager'))]"/>
+        </record>
+
+
+    </data>
+</odoo>

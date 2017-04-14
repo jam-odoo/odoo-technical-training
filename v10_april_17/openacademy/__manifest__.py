@@ -16,8 +16,15 @@ OpenAcademy Managment
     "author": "Odoo, Inc",
     "depends": ["sale", "mail"],
     "data": [
+        "security/openacademy_security.xml",
+        "security/ir.model.access.csv",
+        "workflow/openacademy_workflow.xml",
+        "report/report_openacademy_session.xml",
+        "report/openacademy_reports.xml",
         "views/openacademy_views.xml",
         "views/partner_view.xml",
+        "views/templates.xml",
+        "wizard/wizard_invitations_view.xml",
     ],
     "demo": [
         "demo/openacademy_session_demo.xml",

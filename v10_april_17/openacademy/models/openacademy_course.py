@@ -70,8 +70,8 @@ class SaleOrder(models.Model):
 
     @api.multi
     def action_confirm(self):
-        for order in self:
-            if order.state != "verify":
-                raise exceptions.ValidationError("Snap ! Something went wrong.")
+        # for order in self:
+        #     if order.state != "verify":
+        #         raise exceptions.ValidationError("Snap ! Something went wrong.")
         res = super(SaleOrder, self).action_confirm()
         return res

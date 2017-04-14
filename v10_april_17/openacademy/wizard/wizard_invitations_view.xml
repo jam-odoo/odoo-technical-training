@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_openacademy_wizard_invitations_form">
+            <field name="name">OpenAcademy Wizard Invitations Form </field>
+            <field name="model">wizard.invitations</field>
+            <field name="arch" type="xml">
+                <form string="Invitations">
+                    <group>
+                        <field name="session_id"/>
+                        <separator string="Invitations" colspan="2"/>
+                        <field name="invitation_lines_ids" nolabel="1" colspan="2">
+                            <tree string="Invitations" editable="top">
+                                <field name="name"/>
+                                <field name="partner_id"/>
+                                <field name="email"/>
+                                <field name="phone"/>
+                                <field name="count"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="create_invitation" type="object" string="Invite" class="oe_highlight"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_openacademy_wizard_invitations">
+            <field name="name">Instructors</field>
+            <field name="res_model">wizard.invitations</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="root_openacademy_invitations"
+                    parent="openacademy.root_openacademy"
+                    sequence="99"
+                    name="Invitations"
+                    action="action_view_openacademy_wizard_invitations"/>
+
+
+    </data>
+</odoo>

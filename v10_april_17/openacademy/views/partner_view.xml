@@ -46,7 +46,8 @@
         <menuitem id="root_openacademy_config"
                     parent="openacademy.root_openacademy"
                     sequence="100"
-                    name="Configurations"/>
+                    groups="group_training_manager"
+                    name="Configuration"/>
 
         <menuitem id="root_openacademy_config_instructors"
                     parent="root_openacademy_config"
