@@ -2,6 +2,70 @@
 <odoo>
     <data>
 
+        <menuitem id="menu_openacademy_root"
+                  name="OpenAcademy"
+                  sequence="2"
+                  web_icon="openacademy,static/description/icon.png"/>
+
+        <record model="ir.ui.view" id="view_openacademy_course_tree">
+            <field name="name">OpenAcademy Courses Tree View</field>
+            <field name="model">openacademy.course</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Courses">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="user_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_course_form">
+            <field name="name">OpenAcademy Courses Form View</field>
+            <field name="model">openacademy.course</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <form string="Courses">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code" colspan="1"/>
+                            <field name="user_id" colspan="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Course Contain">
+                                <field name="course_contain"/>
+                            </page>
+                            <page string="Sessions">
+                                <field name="session_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_views_openacademy_course" model="ir.actions.act_window">
+            <field name="name">Courses</field>
+            <field name="res_model">openacademy.course</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+
+
+        <menuitem id="menu_openacademy_root_course"
+                  name="OpenAcademy Course"
+                  parent="menu_openacademy_root"
+                  sequence="1"/>
+
+        <menuitem id="menu_openacademy_courses"
+                  name="Sessions"
+                  parent="menu_openacademy_root_course"
+                  action="action_views_openacademy_course"/>
+
+
         <record model="ir.ui.view" id="view_openacademy_session_tree">
             <field name="name">OpenAcademy Sesssions Tree View</field>
             <field name="model">openacademy.session</field>
@@ -91,10 +155,7 @@
             <field name="context">{}</field>
         </record>
 
-        <menuitem id="menu_openacademy_root"
-                  name="OpenAcademy"
-                  sequence="2"
-                  web_icon="openacademy,static/description/icon.png"/>
+
 
         <menuitem id="menu_openacademy_root_session"
                   name="OpenAcademy Sessions"
