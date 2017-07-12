@@ -7,7 +7,7 @@
             <field name="model">openacademy.session</field>
             <field name="priority">16</field>
             <field name="arch" type="xml">
-                <tree string="Sesssions" editable="bottom" decoration-bf="state=='new'" decoration-info="state=='new'" decoration-danger="state=='reject'" decoration-muted="state=='cancel'" decoration-success="state=='approve'" default_order="start_date desc, code, name, id" create="false" delete="false">
+                <tree string="Sesssions" editable="bottom" decoration-bf="state=='new'" decoration-info="state=='new'" decoration-danger="state=='reject'" decoration-muted="state=='cancel'" decoration-success="state=='approve'" default_order="start_date desc, code, name, id" create="false" edit="false" delete="false">
                     <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="code"/>
@@ -44,6 +44,14 @@
                                 <field name="end_date" class="oe_inline"/>
                             </h4>
                         </div>
+                        <br/>
+                        <div>
+                            <label for="instructor_id"/>
+                            <field name="instructor_id" options="{'no_open': True, 'no_create': True}"/>
+                            <label for="course_id"/>
+                            <field name="course_id" options="{'no_open': True, 'no_create': True}"/>
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags"/>
                         <notebook>
                             <page string="Genreal INfo">
                                 <group>
@@ -53,14 +61,18 @@
                                         <field name="rem_seat_per"/>
                                     </group>
                                     <group string="Genreal Info">
-                                        <field name="active"/>
+                                        <field name="user_id"/>
                                         <field name="code"/>
+                                        <field name="active"/>
                                         <field name="admin_email" widget="email"/>
                                         <field name="session_url" widget="url"/>
                                     </group>
                                 </group>
                                 <separator string="Notes"/>
                                 <field name="session_notes"/>
+                            </page>
+                            <page string="Partner Attendees">
+                                <field name="attendee_ids"/>
                             </page>
                             <page string="Image">
                                 <field name="banner_image" widget="image" />
