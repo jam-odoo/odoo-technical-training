@@ -81,7 +81,8 @@
 
         <menuitem id="menu_openacademy_root"
                   name="OpenAcademy"
-                  sequence="2"/>
+                  sequence="2"
+                  web_icon="openacademy,static/description/icon.png"/>
 
         <menuitem id="menu_openacademy_root_session"
                   name="OpenAcademy Sessions"
