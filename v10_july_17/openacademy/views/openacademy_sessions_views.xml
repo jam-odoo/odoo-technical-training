@@ -71,5 +71,27 @@
             </field>
         </record>
 
+        <record id="action_views_openacademy_session" model="ir.actions.act_window">
+            <field name="name">Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_openacademy_root"
+                  name="OpenAcademy"
+                  sequence="2"/>
+
+        <menuitem id="menu_openacademy_root_session"
+                  name="OpenAcademy Sessions"
+                  parent="menu_openacademy_root"
+                  sequence="1"/>
+
+        <menuitem id="menu_openacademy_sessiona"
+                  name="Sessions"
+                  parent="menu_openacademy_root_session"
+                  action="action_views_openacademy_session"/>
+
     </data>
 </odoo>
