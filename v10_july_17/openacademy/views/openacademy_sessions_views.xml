@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_openacademy_session_tree">
+            <field name="name">OpenAcademy Sesssions Tree View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Sesssions" editable="bottom" decoration-bf="state=='new'" decoration-info="state=='new'" decoration-danger="state=='reject'" decoration-muted="state=='cancel'" decoration-success="state=='approve'" default_order="start_date desc, code, name, id" create="false" delete="false">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="active"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="max_seats" avg="Average Maximum Seats"/>
+                    <field name="rem_seat_per" widget="progressbar"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_openacademy_session_form">
+            <field name="name">OpenAcademy Sesssions Form View</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <form string="Sesssion">
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="new,approve,open,done" clickable="1"/>
+                    </header>
+                    <sheet>
+                        <label for="name" class="oe_edit_only"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
+                        <div>
+                            <label string="Dates Information"/>
+                            <h4>
+                                <field name="start_date" class="oe_inline"/> (
+                                <field name="day_duration" class="oe_inline"/> ) 
+                                <field name="end_date" class="oe_inline"/>
+                            </h4>
+                        </div>
+                        <notebook>
+                            <page string="Genreal INfo">
+                                <group>
+                                    <group string="Seatting Details">
+                                        <field name="max_seats"/>
+                                        <field name="min_registration"/>
+                                        <field name="rem_seat_per"/>
+                                    </group>
+                                    <group string="Genreal Info">
+                                        <field name="active"/>
+                                        <field name="code"/>
+                                        <field name="admin_email" widget="email"/>
+                                        <field name="session_url" widget="url"/>
+                                    </group>
+                                </group>
+                                <separator string="Notes"/>
+                                <field name="session_notes"/>
+                            </page>
+                            <page string="Image">
+                                <field name="banner_image" widget="image" />
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>
