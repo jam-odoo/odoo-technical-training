@@ -58,10 +58,10 @@
         <menuitem id="menu_openacademy_root_course"
                   name="OpenAcademy Course"
                   parent="menu_openacademy_root"
-                  sequence="1"/>
+                  sequence="2"/>
 
         <menuitem id="menu_openacademy_courses"
-                  name="Sessions"
+                  name="Course"
                   parent="menu_openacademy_root_course"
                   action="action_views_openacademy_course"/>
 
@@ -122,7 +122,9 @@
                                     <group string="Seatting Details">
                                         <field name="max_seats"/>
                                         <field name="min_registration"/>
+                                        <field name="total_partner_count"/>
                                         <field name="rem_seat_per"/>
+                                        <field name="country_id"/>
                                     </group>
                                     <group string="Genreal Info">
                                         <field name="user_id"/>

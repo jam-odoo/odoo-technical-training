@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
+
 from odoo import models
 from odoo import fields
+from odoo import api
+from odoo import exceptions
+
 
 
 class OpenAcademyTags(models.Model):
@@ -26,10 +31,14 @@ class OpenacademySession(models.Model):
 
     _order = "sequence, id"
 
+    def get_start_date(self):
+        return fields.Datetime.now()
+
+
     name = fields.Char(string="Session Name", required=True, index=True)
     active = fields.Boolean(string="Active", default=True)
     sequence = fields.Integer(string="Sequence", default=100)
-    start_date = fields.Datetime(string="Start Date", required=True)
+    start_date = fields.Datetime(string="Start Date", default=get_start_date,required=True)
     end_date = fields.Datetime(string="End Date")
     day_duration = fields.Float(string="Duration in Days", digits=(5,2))
     code = fields.Char(string="Code", size=64)
@@ -39,7 +48,7 @@ class OpenacademySession(models.Model):
     banner_image = fields.Binary(string="Banner")
     max_seats = fields.Integer(string="Maximum Seats")
     min_registration = fields.Integer(string="Minimum required registrations")
-    rem_seat_per = fields.Float(string="Remaining Seats(%)")
+    rem_seat_per = fields.Float(string="Remaining Seats(%)", compute="_compute_partner_count", store=True)
     admin_email = fields.Char(string="Admin Email")
     session_url = fields.Char(string="Published URL")
     instructor_id = fields.Many2one(comodel_name="res.partner", string="Instructor", ondelete="restrict", required=True)
@@ -47,6 +56,37 @@ class OpenacademySession(models.Model):
     attendee_ids = fields.Many2many(comodel_name="res.partner", relation="rel_session_partner_m2m", column1="session_id", column2="parnter_id", string="Partner Attendees")
     course_id = fields.Many2one(comodel_name="openacademy.course", string="Course", required=True)
     tag_ids = fields.Many2many(comodel_name="openacademy.tags", string="Tags")
+    country_id = fields.Many2one(comodel_name="res.country", related="instructor_id.country_id", store=True)
+    total_partner_count = fields.Integer(compute="_compute_partner_count", string="Total Invited Partners")
+
+    _sql_constraints = [
+        ("uniq_session_code", "UNIQUE (code)", "Code must be unique for every session !")
+    ]
+
+    @api.multi
+    @api.constrains("end_date", "start_date")
+    def _check_session_dates(self):
+        if self.filtered(lambda record :  record.end_date < record.start_date):
+            raise exceptions.ValidationError("End date can not be before start date !")
+        # for record in self:
+        #     if record.end_date < record.start_date:
+        #         raise exceptions.ValidationError("End date can not be before start date !")
+
+    @api.depends("attendee_ids", "max_seats")
+    def _compute_partner_count(self):
+        for record in self:
+            record.total_partner_count = len(record.attendee_ids.ids)
+        if record.max_seats > 0:
+            record.rem_seat_per = - ((record.total_partner_count - record.max_seats) / float(record.max_seats)) * 100.00
+
+    @api.onchange("end_date", "start_date")
+    def onchange_dates(self):
+        for record in self:
+            if record.start_date and record.end_date:
+                record.day_duration = (datetime.strptime(record.end_date, "%Y-%m-%d %H:%M:%S") - datetime.strptime(record.start_date, "%Y-%m-%d %H:%M:%S")).days
+            else:
+                record.day_duration = 0.0
+
 
 class OpenacademyCourse(models.Model):
     """Openacademy Sesssion Model"""
