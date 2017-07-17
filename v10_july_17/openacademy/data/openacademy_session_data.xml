@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record model="ir.sequence" id="openacademy_session_sequence">
+            <field name="name">OpenAcademy Sessions</field>
+            <field name="code">openacademy.session.seuqnece</field>
+            <field name="prefix">SES-%(year)s/%(day)s-</field>
+            <field name="padding">8</field>
+            <field name="number_next_actual">1</field>
+        </record>
+
+
+    </data>
+</odoo>

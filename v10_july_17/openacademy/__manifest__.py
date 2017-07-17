@@ -17,9 +17,17 @@ OpenAcademy Managment
     'website': 'https://www.odoo.com',
     'images' : [
     ],
-    'depends' : ['base'],
+    'depends' : ['website', 'mail'],
     'data': [
+        "security/openacademy_security.xml",
+        "security/ir.model.access.csv",
+        "data/openacademy_session_data.xml",
         "views/openacademy_sessions_views.xml",
+        "views/res_partner_views.xml",
+        "views/templates.xml",
+        "reports/oa_session_report.xml",
+        "reports/openacademy_reports.xml",
+
     ],
     'demo': [
         "demo/openacademy_session_demo.xml",

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.module.category" id="openacademy_app">
+            <field name="name">OpenAcademy</field>
+        </record>
+
+        <record model="res.groups" id="group_oa_user">
+            <field name="name">User</field>
+            <field name="category_id" ref="openacademy_app"/>
+        </record>
+
+        <record model="res.groups" id="group_oa_manager">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="openacademy_app"/>
+            <field name="implied_ids" eval="[(4, ref('group_oa_user'))]"/>
+        </record>
+
+        <record model="ir.rule" id="rule_user_own_sessions">
+            <field name="name">User can see own sessions only</field>
+            <field name="model_id" ref="openacademy.model_openacademy_session"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_oa_user'))]"/>
+        </record>
+
+        <record model="ir.rule" id="rule_all_sessions">
+            <field name="name">User can see all sessions</field>
+            <field name="model_id" ref="openacademy.model_openacademy_session"/>
+            <field name="global" eval="False"/>
+            <field name="domain_force">[(1 '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_oa_manager'))]"/>
+        </record>
+
+    </data>
+</odoo>

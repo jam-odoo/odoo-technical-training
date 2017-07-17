@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- template id="oa_sessions_list" inherit_id="website.layout" name="List All Sessions">
+
+        </template> -->
+        <template id="openacademy_assets_frontend" inherit_id="website.assets_frontend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/openacademy/static/src/css/openacademy.css"/>
+                <script type="text/javscript" src="/openacademy/static/src/js/openacademy.js"/>
+            </xpath>
+        </template>
+
+
+        <template id="oa_sessions_list" name="List All Sessions">
+            <t t-call="website.layout">
+                <div class="oe_structure"/>
+                <div class="container">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Instructor</th>
+                                <th>CODE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="sessions" t-as="session">
+                                <td><span t-field="session.name"/></td>
+                                <td><span t-field="session.instructor_id.name"/></td>
+                                <td><span t-field="session.code"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="oe_structure"/>
+            </t>
+        </template>
+
+        <template id="oa_sessions_page" name="Session Pagew View">
+            <t t-call="website.layout">
+                <div class="oe_structure"/>
+                <div class="container">
+                    <h1><span t-field="session.name"/></h1>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

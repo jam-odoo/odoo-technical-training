@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <template id="report_oa_sessions">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                            <h1><span t-field="o.name"/></h1>
+                            <t t-if="o.country_id">
+                                <span t-field="o.country_id.name"/>
+                            </t>
+
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Country</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.attendee_ids" t-as="att">
+                                        <td>
+                                            <strong><span t-esc="att.name_get()[0][1]"/></strong>
+                                        </td>
+                                        <td>
+                                            <span t-field="att.email"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="att.phone"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="att.country_id.name"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>
