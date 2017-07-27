@@ -1,7 +1,11 @@
 Technical Training v8, v9+e V10+e
 ==========
 Here the URL to the documentation for reference :
-- Full Odoov8 Beckend Training URL:
-   * https://www.odoo.com/documentation/8.0/reference.html
-- Report Tutorials : 
-   * https://github.com/odoo/odoodays-2014/blob/master/v8_reporting_engine/index.rst
+
+- **Deploying/Installing Odoo 10**
+   * https://github.com/jam-odoo/odoo-technical-training/wiki/Deploying-Installing-Odoo-(10c)-on-Ubuntu-16.04-LTS-Server-:-Linux-Reference
+   
+- Full Odoo Beckend Module Tutorial:
+   * https://www.odoo.com/documentation/10.0/howtos/backend.html
+- QEebReport Tutorials : 
+   * https://www.odoo.com/documentation/10.0/reference/reports.html
