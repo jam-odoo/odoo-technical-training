@@ -7,5 +7,5 @@ Here the URL to the documentation for reference :
    
 - Full Odoo Beckend Module Tutorial:
    * https://www.odoo.com/documentation/10.0/howtos/backend.html
-- QEebReport Tutorials : 
+- QWebReport Tutorials : 
    * https://www.odoo.com/documentation/10.0/reference/reports.html
