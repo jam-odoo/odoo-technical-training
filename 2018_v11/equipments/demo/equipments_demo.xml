@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record model="equipment.equipment" id="equipment_demo_01">
+			<field name="name">Machine A</field>
+			<field name="purchase_date">2018-03-01</field>
+			<field name="value">849923.123</field>
+			<field name="equipment_life">48</field>
+		</record>
+		<record model="equipment.equipment" id="equipment_demo_02">
+			<field name="name">Air Blower B</field>
+			<field name="purchase_date">2018-02-15</field>
+			<field name="value">90000.00</field>
+			<field name="equipment_life">32</field>
+		</record>
+
+	</data>
+</odoo>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record model="ir.ui.view" id="view_equipment_equipment_tree">
+            <field name="name">Equipment Tree View</field>
+            <field name="model">equipment.equipment</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Equipments"  default_order="purchase_date desc"  decoration-info="state=='New'" decoration-bf="equipment_life>10" create="false" edit="false" delete="false">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="purchase_date"/>
+                    <field name="equipment_life" avg="Avg. Months"/>
+                    <field name="value"  widget="progressbar"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_equipment_equipment_form">
+            <field name="name">Equipment Form View</field>
+            <field name="model">equipment.equipment</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <form string="Equipments">
+                    <header>
+                        <field name="state" widget="statusbar" clickable="True" statusbar_visible="New,InService,InUse,Recycled"/>
+                    </header>
+                    <sheet>
+                        <field name="image" widget="image" class="oe_avatar"/>
+                        <div class="oe_title" >
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="equipment name goes ..."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="purchase_date"/>
+                            <field name="equipment_life"/>
+                            <field name="value" widget="progressbar"/>
+                            <field name="mytime" widget="float_time"/>
+                            
+
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
