@@ -11,6 +11,7 @@
                     <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="purchase_date"/>
+                    <field name="user_id"/>
                     <field name="equipment_life" avg="Avg. Months"/>
                     <field name="value"  widget="progressbar"/>
                     <field name="state"/>
@@ -36,13 +37,43 @@
                             </h1>
                         </div>
                         <group>
+                            <field name="user_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="sale_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="purchase_date"/>
                             <field name="equipment_life"/>
                             <field name="value" widget="progressbar"/>
                             <field name="mytime" widget="float_time"/>
-                            
-
+                            <field name="tag_ids"  widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
+                        <notebook>
+                            <page string="Logs">
+                                <field name="log_ids">
+                                    <tree string="Logs" >
+                                        <field name="name"/>
+                                        <field name="log_date"/>
+                                        <field name="notes"/>
+                                    </tree>
+                                    <form string="Equipment Log">
+                                        <sheet>
+                                            <div class="oe_title" >
+                                                <label for="name" class="oe_edit_only"/>
+                                                <h1>
+                                                    <field name="name" placeholder="equipment log goes ..."/>
+                                                </h1>
+                                            </div>
+                                            <group>
+                                                <field name="log_date"/>
+                                                <field name="notes"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+
                     </sheet>
                 </form>
             </field>

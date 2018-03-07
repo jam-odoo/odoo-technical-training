@@ -11,7 +11,7 @@ Equipments Management
     'category': 'Equipments',
     'version': '1.0',
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['sale_management', 'base'],
     # always loaded
     'data': [
         'views/equipments_views.xml',
