@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields
+from datetime import datetime
+
+from odoo import models, fields, api, exceptions
 
 
 
@@ -19,13 +21,18 @@ class Equipments(models.Model):
     _description = "Equipments"
     _order = "sequence, id"
 
+    def _get_default_curr(self):
+        return self.env.user.company_id.currency_id
+
+
     name =  fields.Char(string="Equipment Name", required=True,
                         copy=False)
     sequence = fields.Integer(string="Sequence", default=10)
-    purchase_date = fields.Date(string="Purchase Date", required=True)
+    purchase_date = fields.Date(string="Purchase Date", required=True, default=fields.Date.today())
     active = fields.Boolean(string="Archived", default=True)
     equipment_life = fields.Integer(string="Life in Months",
                     help="Equipments Life in  months")
+    code = fields.Char(string="Code")
     state = fields.Selection(selection=[
                                 ("New", "New"),
                                 ("InUse", "In Use"),
@@ -45,9 +52,58 @@ class Equipments(models.Model):
                                         column2="tag_id", string="Tags")
     log_ids = fields.One2many(comodel_name="equipment.logs", 
                                 inverse_name="equipment_id", string="Logs")
+    currency_id = fields.Many2one(comodel_name="res.currency", string="Currency", default=_get_default_curr)
+    dep = fields.Monetary(compute="_calc_dep", string="Monthly Depreciation")
+    sumvalue = fields.Monetary(compute="_calc_sumvalue", store=True, string="Sim value")
 
+    _sql_constraints = [
+        ("unique_equip_code", "UNIQUE (code)", "Code must be unique !")
+    ]
 
+    @api.multi
+    @api.depends("value", "equipment_life")
+    def _calc_sumvalue(self):
+        for record in self:
+            record.sumvalue = record.value * record.equipment_life
 
+    @api.multi
+    @api.depends("value", "equipment_life")
+    def _calc_dep(self):
+        for record in self:
+            record.dep = record.value / record.equipment_life if record.equipment_life != 0.0 else 0.0
+
+    @api.multi
+    @api.constrains("equipment_life", "value")
+    def _validate_equipment_life(self):
+        if self.filtered(lambda l: l.equipment_life < 0.0 or l.value < 0.0):
+            raise exceptions.ValidationError("Equipments life or value can not be negative value.")
+        # for record in self:
+        #     if  record.equipment_life < 0.0:
+        #        raise exceptions.ValidationError("Equipments life can not be negative value ({}).".format(record.equipment_life))
+    # @api.model
+    # def create(self, vals):
+    #     if vals["equipment_life"] < 0.0:
+    #         raise exceptions.ValidationError("Equipments life can not be negative value ({}).".format(vals.get("equipment_life")))
+    #     res = super(Equipments, self).create(vals)
+    #     return res
+
+    # @api.model
+    # def write(self, vals):
+    #     if vals.get("equipment_life") < 0.0:
+    #         raise exceptions.ValidationError("Equipments life can not be negative value ({}).".format(vals.get("equipment_life")))
+    #     res = super(Equipments, self).write(vals)
+    #     return res
+
+    @api.multi
+    def unlink(self):
+        if self.filtered(lambda l: l.state != "New"):
+            raise exceptions.ValidationError("Record not in New state can not be deleted please archive it.")
+        return super(Equipments, self).unlink()
+
+    @api.onchange("equipment_life", "value")
+    def onchange_field(self):
+        if self.equipment_life > 120:
+            raise exceptions.ValidationError("Equipments life can not be more then 120 months")
 
 class EquipmentsLogs(models.Model):
 

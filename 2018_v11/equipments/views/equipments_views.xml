@@ -39,9 +39,13 @@
                         <group>
                             <field name="user_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="sale_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="code"/>
                             <field name="purchase_date"/>
+                            <field name="value" />
                             <field name="equipment_life"/>
-                            <field name="value" widget="progressbar"/>
+                            <field name="dep" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="sumvalue" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="currency_id"/>
                             <field name="mytime" widget="float_time"/>
                             <field name="tag_ids"  widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
