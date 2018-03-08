@@ -3,8 +3,7 @@
 from datetime import datetime
 
 from odoo import models, fields, api, exceptions
-
-
+from odoo import _
 
 class EquipmentsTags(models.Model):
 
@@ -26,7 +25,7 @@ class Equipments(models.Model):
 
 
     name =  fields.Char(string="Equipment Name", required=True,
-                        copy=False)
+                        copy=False, translate=True)
     sequence = fields.Integer(string="Sequence", default=10)
     purchase_date = fields.Date(string="Purchase Date", required=True, default=fields.Date.today())
     active = fields.Boolean(string="Archived", default=True)
@@ -55,10 +54,19 @@ class Equipments(models.Model):
     currency_id = fields.Many2one(comodel_name="res.currency", string="Currency", default=_get_default_curr)
     dep = fields.Monetary(compute="_calc_dep", string="Monthly Depreciation")
     sumvalue = fields.Monetary(compute="_calc_sumvalue", store=True, string="Sim value")
+    log_count = fields.Integer(compute="_log_count", string="#Nbr Logs")
+
 
     _sql_constraints = [
         ("unique_equip_code", "UNIQUE (code)", "Code must be unique !")
     ]
+
+    @api.multi
+    @api.depends("log_ids")
+    def _log_count(self):
+        for record in self:
+            record.log_count = len(record.log_ids.ids)
+
 
     @api.multi
     @api.depends("value", "equipment_life")
@@ -76,7 +84,7 @@ class Equipments(models.Model):
     @api.constrains("equipment_life", "value")
     def _validate_equipment_life(self):
         if self.filtered(lambda l: l.equipment_life < 0.0 or l.value < 0.0):
-            raise exceptions.ValidationError("Equipments life or value can not be negative value.")
+            raise exceptions.ValidationError(_("Equipments life or value can not be negative value."))
         # for record in self:
         #     if  record.equipment_life < 0.0:
         #        raise exceptions.ValidationError("Equipments life can not be negative value ({}).".format(record.equipment_life))
@@ -97,13 +105,19 @@ class Equipments(models.Model):
     @api.multi
     def unlink(self):
         if self.filtered(lambda l: l.state != "New"):
-            raise exceptions.ValidationError("Record not in New state can not be deleted please archive it.")
+            raise exceptions.ValidationError(_("Record not in New state can not be deleted please archive it."))
         return super(Equipments, self).unlink()
 
     @api.onchange("equipment_life", "value")
     def onchange_field(self):
         if self.equipment_life > 120:
             raise exceptions.ValidationError("Equipments life can not be more then 120 months")
+
+    @api.multi
+    def action_out(self):
+        for record in self.filtered(lambda l : l.state != "Out"):
+            record.state = 'Out'
+
 
 class EquipmentsLogs(models.Model):
 

@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        
+
+
+        <record model="ir.ui.view" id="view_equipment_logs_tree">
+            <field name="name">Equipment Logs Tree View</field>
+            <field name="model">equipment.logs</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Equipment Logs" create="false" edit="false" delete="false">
+                    <field name="name"/>
+                    <field name="log_date"/>
+                    <field name="equipment_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_equipment_logs">
+            <field name="name">Equipment Logs</field>
+            <field name="res_model">equipment.logs</field>
+            <field name="context">{}</field>
+            <field name="domain">[('equipment_id', '=', context.get('filter_id'))]</field>
+        </record>
+
         <record model="ir.ui.view" id="view_equipment_equipment_tree">
             <field name="name">Equipment Tree View</field>
             <field name="model">equipment.equipment</field>
@@ -26,9 +47,18 @@
             <field name="arch" type="xml">
                 <form string="Equipments">
                     <header>
+                        <button type="object" name="action_out" string="Out of Service"  states="Recycled,InService"/>
                         <field name="state" widget="statusbar" clickable="True" statusbar_visible="New,InService,InUse,Recycled"/>
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="%(equipments.action_view_equipment_logs)d" type="action" class="oe_stat_button" icon="fa-pencil-square-o" context="{'filter_id': active_id}">
+                                <field name="log_count" widget="statinfo" string="Logs"/>
+                            </button>
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options="{'terminology': 'archive'}" />
+                            </button>
+                        </div>
                         <field name="image" widget="image" class="oe_avatar"/>
                         <div class="oe_title" >
                             <label for="name" class="oe_edit_only"/>
@@ -41,8 +71,8 @@
                             <field name="sale_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="code"/>
                             <field name="purchase_date"/>
-                            <field name="value" />
-                            <field name="equipment_life"/>
+                            <field name="value"/>
+                            <field name="equipment_life" attrs="{'readonly': [('value', '=', 0.0)], 'required': [('value', '!=', 0.0)]}"/>
                             <field name="dep" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                             <field name="sumvalue" widget='monetary' options="{'currency_field': 'currency_id'}"/>
                             <field name="currency_id"/>
@@ -73,7 +103,7 @@
                                     </form>
                                 </field>
                             </page>
-                            <page string="Notes">
+                            <page string="Notes" attrs="{'invisible': [('value', '=', 0.0)]}">
                                 <field name="notes"/>
                             </page>
                         </notebook>
@@ -83,11 +113,34 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="view_equipment_equipment_search">
+            <field name="name">Equipment Search View</field>
+            <field name="model">equipment.equipment</field>
+            <field name="arch" type="xml">
+                <search string="Equipments">
+                    <field name="name" domain="['|', ('name', 'ilike', self), ('notes', 'ilike', self)]"/>
+                    <field name="user_id"/>
+                    <field name="sale_id"/>
+                    <filter name="new" string="New" domain="[('state', '=', 'New')]"/>
+                    <filter string="Working" domain="[('state', 'in', ('InUse', 'InService'))]"/>
+                    <separator/>
+                    <filter string="Recycled" domain="[('state', '=', 'Recycled')]"/>
+                    <filter string="Out of Service" domain="[('state', '=', 'Out')]"/>
+                    <group string="Group By...">
+                        <filter string="Maintainer" name="grouby_user" domain="[]" context="{'group_by': 'user_id'}"/>
+                        <filter string="Sales" name="grouby_sale_id" domain="[]" context="{'group_by': 'sale_id'}"/>
+                        <filter string="Purchase Date" name="grouby_purchase_date" domain="[]" context="{'group_by': 'purchase_date:day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <record model="ir.actions.act_window" id="action_view_equipments">
             <field name="name">Equipments</field>
             <field name="res_model">equipment.equipment</field>
             <field name="limit">80</field>
-            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_equipment_equipment_search"/>
+            <field name="context">{'search_default_new': 1, 'default_equipment_life': 12, 'flag': True}</field>
             <field name="domain">{}</field>
         </record>
 
@@ -103,6 +156,9 @@
                   parent="main_equip"
                   name="Equipments"
                   action="action_view_equipments"/>
+
+
+
 
     </data>
 </odoo>
