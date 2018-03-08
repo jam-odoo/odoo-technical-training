@@ -19,16 +19,17 @@ class Equipments(models.Model):
     _name = "equipment.equipment"
     _description = "Equipments"
     _order = "sequence, id"
+    _inherit = ["mail.thread",'mail.activity.mixin']
 
     def _get_default_curr(self):
         return self.env.user.company_id.currency_id
 
 
     name =  fields.Char(string="Equipment Name", required=True,
-                        copy=False, translate=True)
+                        copy=False, translate=True, track_visibility="always")
     sequence = fields.Integer(string="Sequence", default=10)
     purchase_date = fields.Date(string="Purchase Date", required=True, default=fields.Date.today())
-    active = fields.Boolean(string="Archived", default=True)
+    active = fields.Boolean(string="Archived", default=True,  track_visibility="onchange")
     equipment_life = fields.Integer(string="Life in Months",
                     help="Equipments Life in  months")
     code = fields.Char(string="Code")

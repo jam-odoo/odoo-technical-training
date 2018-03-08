@@ -15,6 +15,7 @@ Equipments Management
     # always loaded
     'data': [
         'views/equipments_views.xml',
+        'views/sale_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

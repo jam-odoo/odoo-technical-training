@@ -109,6 +109,11 @@
                         </notebook>
 
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                         <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </form>
             </field>
         </record>
@@ -134,6 +139,26 @@
                 </search>
             </field>
         </record>
+
+        <record model="ir.actions.act_window" id="action_view_equipments">
+            <field name="name">Equipments</field>
+            <field name="res_model">equipment.equipment</field>
+            <field name="limit">80</field>
+            <field name="search_view_id" ref="view_equipment_equipment_search"/>
+            <field name="context">{'search_default_new': 1, 'default_equipment_life': 12, 'flag': True}</field>
+            <field name="domain">{}</field>
+        </record>
+
+
+        <record model="ir.actions.act_window" id="action_view_equipments">
+            <field name="name">Equipments</field>
+            <field name="res_model">equipment.equipment</field>
+            <field name="limit">80</field>
+            <field name="search_view_id" ref="view_equipment_equipment_search"/>
+            <field name="context">{'search_default_new': 1, 'default_equipment_life': 12, 'flag': True}</field>
+            <field name="domain">{}</field>
+        </record>
+
 
         <record model="ir.actions.act_window" id="action_view_equipments">
             <field name="name">Equipments</field>
