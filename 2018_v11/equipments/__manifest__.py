@@ -11,7 +11,7 @@ Equipments Management
     'category': 'Equipments',
     'version': '1.0',
     # any module necessary for this one to work correctly
-    'depends': ['sale_management', 'base'],
+    'depends': ['sale_management', 'mail', 'website'],
     # always loaded
     'data': [
         'security/security.xml',
@@ -21,6 +21,7 @@ Equipments Management
         'data/sequence_data.xml',
         'reports/report_equipments.xml',
         'reports/equipments_reports.xml',
+        'views/templates.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

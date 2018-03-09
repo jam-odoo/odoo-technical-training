@@ -126,7 +126,7 @@ class Equipments(models.Model):
     def action_out(self):
         for record in self.filtered(lambda l : l.state != "Out"):
             record.state = 'Out'
-
+        return True
 
 class EquipmentsLogs(models.Model):
 

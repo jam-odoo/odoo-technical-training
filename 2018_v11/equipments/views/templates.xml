@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="equipments.equipments_view">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure oe_empty">
+                        <div class="container">
+                            <h1 class="mt32">All Equipments</h1>
+                        </div>
+                        <div class="container">
+                            <table  class="table table-condensed">
+                                <thead>
+                                    <th>Name</th>
+                                    <th>Purchase Date</th>
+                                    <th>State</th>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="equipments" t-as="eq">
+                                        <td>
+                                            <a t-att-href="'/equipment/{}'.format(eq.id)">
+                                                <span t-field="eq.name"/>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <span t-field="eq.purchase_date"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="eq.state"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <template id="equipments.equipment_page_view">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="container">
+                        <h1 class="mt32"> Equipment : <strong t-field="equipment.name"></strong></h1>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
+        <record id="menu_action_view_equipments_new" model="website.menu">
+            <field name="name">Equipments</field>
+            <field name="url">/equipments</field>
+            <field name="sequence" type="int">40</field>
+            <field name="website_id" ref="website.default_website"/>
+        </record>
 
         <record model="ir.ui.view" id="view_equipment_logs_tree">
             <field name="name">Equipment Logs Tree View</field>
