@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_equipment_equipment,access_equipment_equipment,model_equipment_equipment,,1,0,0,0
+access_equipment_logs,access_equipment_logs,model_equipment_logs,,1,0,0,0
+access_equipment_tags,access_equipment_tags,model_equipment_tags,,1,0,0,0
+access_equipment_equipment_user,access_equipment_equipment_user,model_equipment_equipment,group_equip_user,1,1,1,0
+access_equipment_logs_user,access_equipment_logs_user,model_equipment_logs,group_equip_user,1,1,1,0
+access_equipment_tags_user,access_equipment_tags_user,model_equipment_tags,group_equip_user,1,1,1,0
+access_equipment_equipment_manager,access_equipment_equipment_manager,model_equipment_equipment,group_equip_manager,1,1,1,1
+access_equipment_logs_manager,access_equipment_logs_manager,model_equipment_logs,group_equip_manager,1,1,1,1
+access_equipment_tags_manager,access_equipment_tags_managerr,model_equipment_tags,group_equip_manager,1,1,1,1

@@ -52,10 +52,10 @@
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
-                            <button name="%(equipments.action_view_equipment_logs)d" type="action" class="oe_stat_button" icon="fa-pencil-square-o" context="{'filter_id': active_id}">
+                            <button name="%(equipments.action_view_equipment_logs)d" type="action" class="oe_stat_button" icon="fa-pencil-square-o" context="{'filter_id': active_id}" >
                                 <field name="log_count" widget="statinfo" string="Logs"/>
                             </button>
-                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="equipments.group_equip_manager">
                                 <field name="active" widget="boolean_button" options="{'terminology': 'archive'}" />
                             </button>
                         </div>
@@ -167,7 +167,6 @@
             </field>
         </record>
 
-
         <record model="ir.ui.view" id="view_equipment_equipment_calendar">
             <field name="name">Equipment calendar View</field>
             <field name="model">equipment.equipment</field>
@@ -180,7 +179,6 @@
             </field>
         </record>
 
-
         <record model="ir.actions.act_window" id="action_view_equipments">
             <field name="name">Equipments</field>
             <field name="res_model">equipment.equipment</field>
@@ -190,7 +188,25 @@
             <field name="context">{'search_default_new': 1, 'default_equipment_life': 12, 'flag': True}</field>
             <field name="domain">{}</field>
         </record>
+        <record model="ir.actions.act_window.view" id="action_view_equipments_views_tree">
+            <field name="sequence">1</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_equipment_equipment_tree"/>
+            <field name="act_window_id" ref="action_view_equipments"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_view_equipments_views_form">
+            <field name="sequence">2</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_equipment_equipment_form"/>
+            <field name="act_window_id" ref="action_view_equipments"/>
+        </record>
 
+        <record model="ir.actions.act_window.view" id="action_view_equipments_views_graph">
+            <field name="sequence">2</field>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="view_equipment_equipment_graph"/>
+            <field name="act_window_id" ref="action_view_equipments"/>
+        </record>
 
         <menuitem id="root_equip"
                   name="Equipments"

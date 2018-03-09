@@ -14,9 +14,13 @@ Equipments Management
     'depends': ['sale_management', 'base'],
     # always loaded
     'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'views/equipments_views.xml',
         'views/sale_view.xml',
-        'data/sequence_data.xml'
+        'data/sequence_data.xml',
+        'reports/report_equipments.xml',
+        'reports/equipments_reports.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

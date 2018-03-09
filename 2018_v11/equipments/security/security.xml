@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record model="ir.module.category" id="categ_module">
+            <field name="name">Equipment Management</field>
+        </record>
+
+
+        <record model="res.groups" id="group_equip_user">
+            <field name="name">User</field>
+            <field name="category_id" ref="categ_module"/>
+        </record>
+
+        <record model="res.groups" id="group_equip_manager">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="categ_module"/>
+            <field name="implied_ids" eval="[(4, ref('group_equip_user'))]"/>
+        </record>
+
+
+        <record model="ir.rule" id="rule_user_equipment">
+            <field name="name">User</field>
+            <field name="model_id" ref="model_equipment_equipment"/>
+            <field name="groups" eval="[(4, ref('group_equip_user'))]"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+        </record>
+
+        <record model="ir.rule" id="rule_manager_equipment">
+            <field name="name">User</field>
+            <field name="model_id" ref="model_equipment_equipment"/>
+            <field name="groups" eval="[(4, ref('group_equip_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+
+    </data>
+</odoo>

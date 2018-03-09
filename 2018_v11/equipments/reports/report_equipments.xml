@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <template id="report_equipments">
+            <t t-call="web.html_container">
+                <t t-set="docs" t-value="docs.sorted('purchase_date')"/>
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2>Report title</h2>
+                            <p>This object's name is <span t-field="o.name"/></p>
+                            <strong t-field="o.purchase_date"></strong>
+                            <strong t-esc="o.get_me()"></strong>
+                            <strong t-esc="5*5"></strong>
+                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.code, 600, 100)"
+                                style="width:300px;height:50px" class="pull-right mb16"
+                                />
+                            <table>
+                                <thead>
+                                    <th> Log Title</th>
+                                    <th> Log Date</th>
+                                    <th> Notes</th>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="o.log_ids" t-as="log">
+                                        <td><span t-field="log.name"/></td>
+                                        <td><span t-field="log.log_date"/></td>
+                                        <td><span t-field="log.notes"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t> 
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

@@ -83,6 +83,9 @@ class Equipments(models.Model):
         for record in self:
             record.dep = record.value / record.equipment_life if record.equipment_life != 0.0 else 0.0
 
+    def get_me(self):
+        return "This is Me"
+
     @api.multi
     @api.constrains("equipment_life", "value")
     def _validate_equipment_life(self):
