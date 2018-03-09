@@ -183,11 +183,42 @@
                 </calendar>
             </field>
         </record>
+        <record model="ir.ui.view" id="view_equipment_equipment_kanban">
+            <field name="name">Equipment Kanban View</field>
+            <field name="model">equipment.equipment</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <kanban  class="o_kanban_mobile" string="Equipments" default_group_by="state">
+                    <field name="user_id"/>
+                    <field name="purchase_date"/>
+                    <field name="name"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_content">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <field name="name"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-8">
+                                        <field name="user_id" string="Contact"/>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <field name="purchase_date" string="Purchase Date"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
 
         <record model="ir.actions.act_window" id="action_view_equipments">
             <field name="name">Equipments</field>
             <field name="res_model">equipment.equipment</field>
-            <field name="view_mode">pivot,tree,form,graph,calendar</field>
+            <field name="view_mode">kanban,pivot,tree,form,graph,calendar</field>
             <field name="limit">80</field>
             <field name="search_view_id" ref="view_equipment_equipment_search"/>
             <field name="context">{'search_default_new': 1, 'default_equipment_life': 12, 'flag': True}</field>
