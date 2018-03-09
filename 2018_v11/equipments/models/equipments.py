@@ -29,6 +29,8 @@ class Equipments(models.Model):
                         copy=False, translate=True, track_visibility="always")
     sequence = fields.Integer(string="Sequence", default=10)
     purchase_date = fields.Date(string="Purchase Date", required=True, default=fields.Date.today())
+    day_work_start = fields.Datetime(string="Daily Work Start", required=True, default=fields.Datetime.now())
+    day_work_end = fields.Datetime(string="Daily Work End", required=True, default=fields.Datetime.now())
     active = fields.Boolean(string="Archived", default=True,  track_visibility="onchange")
     equipment_life = fields.Integer(string="Life in Months",
                     help="Equipments Life in  months")
@@ -89,12 +91,15 @@ class Equipments(models.Model):
         # for record in self:
         #     if  record.equipment_life < 0.0:
         #        raise exceptions.ValidationError("Equipments life can not be negative value ({}).".format(record.equipment_life))
-    # @api.model
-    # def create(self, vals):
-    #     if vals["equipment_life"] < 0.0:
-    #         raise exceptions.ValidationError("Equipments life can not be negative value ({}).".format(vals.get("equipment_life")))
-    #     res = super(Equipments, self).create(vals)
-    #     return res
+    @api.model
+    def create(self, vals):
+        vals.update({
+            "code": self.env["ir.sequence"].next_by_code("equipment.equipment")
+        })
+        # if vals["equipment_life"] < 0.0:
+        #     raise exceptions.ValidationError("Equipments life can not be negative value ({}).".format(vals.get("equipment_life")))
+        res = super(Equipments, self).create(vals)
+        return res
 
     # @api.model
     # def write(self, vals):

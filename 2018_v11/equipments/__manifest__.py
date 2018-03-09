@@ -16,6 +16,7 @@ Equipments Management
     'data': [
         'views/equipments_views.xml',
         'views/sale_view.xml',
+        'data/sequence_data.xml'
     ],
     # only loaded in demonstration mode
     'demo': [

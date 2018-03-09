@@ -67,6 +67,8 @@
                             </h1>
                         </div>
                         <group>
+                            <field name="day_work_start"/>
+                            <field name="day_work_end"/>
                             <field name="user_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="sale_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="code"/>
@@ -140,34 +142,55 @@
             </field>
         </record>
 
-        <record model="ir.actions.act_window" id="action_view_equipments">
-            <field name="name">Equipments</field>
-            <field name="res_model">equipment.equipment</field>
-            <field name="limit">80</field>
-            <field name="search_view_id" ref="view_equipment_equipment_search"/>
-            <field name="context">{'search_default_new': 1, 'default_equipment_life': 12, 'flag': True}</field>
-            <field name="domain">{}</field>
+        <record model="ir.ui.view" id="view_equipment_equipment_graph">
+            <field name="name">Equipment Graph View</field>
+            <field name="model">equipment.equipment</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <graph string="Equipments" type="pie">
+                    <field name="user_id" type="row"/>
+                    <field name="value" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_equipment_equipment_pivot">
+            <field name="name">Equipment pivot View</field>
+            <field name="model">equipment.equipment</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <pivot string="Equipments">
+                    <field name="user_id" type="row"/>
+                    <field name="user_id" type="col"/>
+                    <field name="value" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="view_equipment_equipment_calendar">
+            <field name="name">Equipment calendar View</field>
+            <field name="model">equipment.equipment</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <calendar string="Equipments" date_start="day_work_start" date_stop="day_work_end" color="state">
+                    <field name="user_id"/>
+                    <field name="name"/>
+                </calendar>
+            </field>
         </record>
 
 
         <record model="ir.actions.act_window" id="action_view_equipments">
             <field name="name">Equipments</field>
             <field name="res_model">equipment.equipment</field>
+            <field name="view_mode">pivot,tree,form,graph,calendar</field>
             <field name="limit">80</field>
             <field name="search_view_id" ref="view_equipment_equipment_search"/>
             <field name="context">{'search_default_new': 1, 'default_equipment_life': 12, 'flag': True}</field>
             <field name="domain">{}</field>
         </record>
 
-
-        <record model="ir.actions.act_window" id="action_view_equipments">
-            <field name="name">Equipments</field>
-            <field name="res_model">equipment.equipment</field>
-            <field name="limit">80</field>
-            <field name="search_view_id" ref="view_equipment_equipment_search"/>
-            <field name="context">{'search_default_new': 1, 'default_equipment_life': 12, 'flag': True}</field>
-            <field name="domain">{}</field>
-        </record>
 
         <menuitem id="root_equip"
                   name="Equipments"
