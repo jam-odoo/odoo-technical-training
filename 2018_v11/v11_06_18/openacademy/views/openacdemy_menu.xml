@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <menuitem id="openacademy_root"
+                  name="OpenAcademy"
+                  sequence="1"
+                  web_icon="openacademy,static/description/module.png"/>
+
+        <menuitem id="openacademy_sessions_root"
+                  name="Sessions"
+                  parent="openacademy_root"
+                  sequence="1"/>
+
+        <menuitem id="openacademy_courses_root"
+                  name="Courses"
+                  parent="openacademy_root"
+                  sequence="2"/>
+
+    </data>
+</odoo>

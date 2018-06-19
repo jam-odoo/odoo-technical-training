@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="view_openacademy_session_tree" model="ir.ui.view">
+            <field name="name">OpenAcademy Session Tree View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Sessions" default_order="start_date" decoration-bf="state=='new'" decoration-it="state=='approve'" decoration-success="state=='new'" decoration-warning="state=='approve'" create="false" edit="false" delete='false'>
+                    <field name="name"/>
+                    <field name="active"/>                  
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_openacademy_session_form" model="ir.ui.view">
+            <field name="name">OpenAcademy Session Form View</field>
+            <field name="model">openacademy.session</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <form string="Sessions">
+                    <header>
+                        <field name="state" widget="statusbar" clickable="1" statusbar_visible="new,approve,open,done"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="e.g. Odoo Technical Training June 2018"/>
+                            </h1>
+                        </div>
+                        <notebook>
+                            <page string="General Info">
+                                <group>
+                                    <group>      
+                                        <field name="start_date"/>
+                                        <field name="duration" required="1" string="Duration (Hours)" widget="float_time"/>
+                                        <field name="end_date" widget="date"/>
+                                        <field name="all_day" widget="radio"/>
+                                    </group>
+                                    <group>
+                                        <field name="total_seat"/>
+                                        <field name="min_seat"/>
+                                        <field name="can_overbook" widget="boolean_toggle"/>
+                                        <field name="active" widget="boolean_toggle"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Notes">
+                                <field name="notes"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_openacademy_sessions" model="ir.actions.act_window">
+            <field name="name">OpenAcademy Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_mode">tree,form</field>
+            <field name="limit">80</field>
+            <field name="auto_search" eval="True"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+        <record id="action_view_openacademy_sessions_tree" model="ir.actions.act_window.view">
+            <field name="sequence">1</field>
+            <field name="act_window_id" ref="action_view_openacademy_sessions"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_openacademy_session_tree"/>
+        </record>
+        <record id="action_view_openacademy_sessions_form" model="ir.actions.act_window.view">
+            <field name="sequence">2</field>
+            <field name="act_window_id" ref="action_view_openacademy_sessions"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_openacademy_session_form"/>
+        </record>
+        <menuitem id="openacademy_all_sessions_root"
+                  string="All Sessions"
+                  action="action_view_openacademy_sessions"
+                  parent="openacademy_sessions_root"
+                  sequence="1"/>
+
+    </data>
+
+</odoo>
