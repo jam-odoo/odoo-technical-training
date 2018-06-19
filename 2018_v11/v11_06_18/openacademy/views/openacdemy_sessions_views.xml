@@ -11,6 +11,8 @@
                     <field name="active"/>                  
                     <field name="start_date"/>
                     <field name="end_date"/>
+                    <field name="remmain_seat_per" widget="progressbar"/>
+                    <field name="booked_seats"/>
                     <field name="state"/>
                 </tree>
             </field>
@@ -25,24 +27,32 @@
                         <field name="state" widget="statusbar" clickable="1" statusbar_visible="new,approve,open,done"/>
                     </header>
                     <sheet>
+                        <field name="image" widget="image" class="oe_avatar"/>
                         <div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
                             <h1>
                                 <field name="name" placeholder="e.g. Odoo Technical Training June 2018"/>
                             </h1>
                         </div>
+                        <div>
+                            <label string="Dates Agenda"/>
+                            <h2>
+                                <field name="start_date" class="oe_inline"/>
+                                ( <field name="duration" required="1" string="Duration (Hours)" widget="float_time" class="oe_inline"/> )
+                                <field name="end_date" widget="date" class="oe_inline"/>
+                            </h2>
+                        </div>
                         <notebook>
                             <page string="General Info">
                                 <group>
                                     <group>      
-                                        <field name="start_date"/>
-                                        <field name="duration" required="1" string="Duration (Hours)" widget="float_time"/>
-                                        <field name="end_date" widget="date"/>
-                                        <field name="all_day" widget="radio"/>
+                                    <field name="total_seat"/>
+                                        <field name="min_seat"/>
+                                        <field name="booked_seats"/>
+                                        <field name="remmain_seat_per" widget="progressbar"/>
                                     </group>
                                     <group>
-                                        <field name="total_seat"/>
-                                        <field name="min_seat"/>
+                                        <field name="all_day" widget="radio"/>
                                         <field name="can_overbook" widget="boolean_toggle"/>
                                         <field name="active" widget="boolean_toggle"/>
                                     </group>

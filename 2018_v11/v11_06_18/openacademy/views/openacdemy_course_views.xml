@@ -22,9 +22,14 @@
                         <field name="name"/>
                         <field name="active"/> 
                     </group>
-                    <group>
-                        <field name="banner" widget="image" width="100" filename="banner_fname"/>
-                    </group>
+                    <notebook>
+                        <page string="Outline">
+                            <field name="notes"/>
+                        </page>
+                        <page string="Banner">
+                            <field name="banner" widget="image" filename="banner_fname"/>
+                        </page>
+                    </notebook>
                 </form>
             </field>
         </record>
