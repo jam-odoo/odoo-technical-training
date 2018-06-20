@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="view_openacademy_attendee_tree" model="ir.ui.view">
+            <field name="name">OpenAcademy attendee Tree View</field>
+            <field name="model">openacademy.attendee</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Attendees" editable="bottom">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                    <field name="count" sum="Total Attendees"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_openacademy_attendee_form" model="ir.ui.view">
+            <field name="name">OpenAcademy attendee Form View</field>
+            <field name="model">openacademy.attendee</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <form string="Course">
+                    <header>
+                        <field name="state" widget="statusbar" clickable="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                        </div>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="e.g.John Doe"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="count"/>
+                        </group>
+                   </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_openacademy_attendee" model="ir.actions.act_window">
+            <field name="name">OpenAcademy Attemdees</field>
+            <field name="res_model">openacademy.attendee</field>
+            <field name="view_mode">tree,form</field>
+            <field name="limit">80</field>
+            <field name="auto_search" eval="True"/>
+            <field name="context">{}</field>
+            <field name="domain">[]</field>
+        </record>
+
+
+    </data>
+</odoo>

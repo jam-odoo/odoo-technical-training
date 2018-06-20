@@ -28,6 +28,11 @@
                         <field name="state" widget="statusbar" clickable="1" statusbar_visible="new,approve,open,done"/>
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="open_attendees" type="object" class="oe_stat_button" icon="fa-star">
+                                <field name="booked_seats" string="Confirmed Attendees" widget="statinfo"></field>
+                            </button>
+                        </div>
                         <field name="image" widget="image" class="oe_avatar"/>
                         <div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
@@ -58,7 +63,6 @@
                                     <group>      
                                         <field name="total_seat"/>
                                         <field name="min_seat"/>
-                                        <field name="booked_seats"/>
                                         <field name="remmain_seat_per" widget="progressbar"/>
                                     </group>
                                     <group>
@@ -68,6 +72,17 @@
                                         <field name="active" widget="boolean_toggle"/>
                                     </group>
                                 </group>
+                                <separator string="Attendees"/>
+                                <field name="attendee_ids">
+                                    <tree string="Attendee" editable="bottom">
+                                        <field name="name"/>
+                                        <field name="partner_id"/>
+                                        <field name="email"/>
+                                        <field name="phone"/>
+                                        <field name="count" sum="Total Seat Invitations"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
                             </page>
                             <page string="Notes">
                                 <field name="notes"/>
@@ -106,6 +121,6 @@
                   parent="openacademy_sessions_root"
                   sequence="1"/>
 
-    </data>
 
+    </data>
 </odoo>

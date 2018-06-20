@@ -17,6 +17,7 @@ etc..
     'data': [
         'views/openacdemy_menu.xml',
         'views/openacdemy_sessions_views.xml',
+        'views/openacdemy_attendee_views.xml',
         'views/openacdemy_course_views.xml',
     ],
     'demo': [

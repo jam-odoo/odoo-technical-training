@@ -19,11 +19,11 @@ class OpenAcademyCouse(models.Model):
     @api.multi
     @api.depends('session_ids')
     def _get_session_count(self):
-    	for course in self:
-    		course.session_count =  len(course.session_ids)
+        for course in self:
+            course.session_count =  len(course.session_ids)
 
     def open_sessions(self):
-    	action_id = self.env.ref("openacademy.action_view_openacademy_sessions")
-    	action_data = action_id.read()[0]
-    	action_data.update({'domain': [('course_id', '=', self.id)]})
-    	return action_data
+        action_id = self.env.ref("openacademy.action_view_openacademy_sessions")
+        action_data = action_id.read()[0]
+        action_data.update({'domain': [('course_id', '=', self.id)]})
+        return action_data
