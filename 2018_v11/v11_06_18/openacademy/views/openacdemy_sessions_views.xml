@@ -8,7 +8,8 @@
             <field name="arch" type="xml">
                 <tree string="Sessions" default_order="start_date" decoration-bf="state=='new'" decoration-it="state=='approve'" decoration-success="state=='new'" decoration-warning="state=='approve'" create="false" edit="false" delete='false'>
                     <field name="name"/>
-                    <field name="active"/>                  
+                    <field name="active"/>
+                    <field name="course_id"/>             
                     <field name="start_date"/>
                     <field name="end_date"/>
                     <field name="remmain_seat_per" widget="progressbar"/>
@@ -42,16 +43,26 @@
                                 <field name="end_date" widget="date" class="oe_inline"/>
                             </h2>
                         </div>
+                        <div>
+                            <label for="course_id"/>
+                            <field name="course_id"/>
+                        </div>
+                        <div>
+                            <label for="user_id"/>
+                            <field name="user_id"/> (<field name="user_email" readonly="1"/>)
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                         <notebook>
                             <page string="General Info">
                                 <group>
                                     <group>      
-                                    <field name="total_seat"/>
+                                        <field name="total_seat"/>
                                         <field name="min_seat"/>
                                         <field name="booked_seats"/>
                                         <field name="remmain_seat_per" widget="progressbar"/>
                                     </group>
                                     <group>
+                                        <field name="code"/>
                                         <field name="all_day" widget="radio"/>
                                         <field name="can_overbook" widget="boolean_toggle"/>
                                         <field name="active" widget="boolean_toggle"/>
