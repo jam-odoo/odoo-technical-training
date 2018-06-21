@@ -2,3 +2,4 @@
 
 from . import openacademy_course
 from . import openacademy_sessions
+from . import sale

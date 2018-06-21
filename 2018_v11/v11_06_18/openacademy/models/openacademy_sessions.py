@@ -20,6 +20,7 @@ class OpenAcademyTags(models.Model):
 class OpenAcademySession(models.Model):
 
     _name = 'openacademy.session'
+    _inherit = [ 'mail.thread', 'mail.activity.mixin']
 
     def _get_default_user(self):
         return self.env.user.id

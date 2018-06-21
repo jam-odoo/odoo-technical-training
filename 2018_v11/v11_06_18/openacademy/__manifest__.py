@@ -9,7 +9,7 @@ OpenAcademy Planning
 - Session Mnagamnet
 etc..
     ''',
-    'depends': ['base'],
+    'depends': ['mail', 'sale_management'],
     'category': 'OpenAcademy',
     'website': 'https://www.odoo.com',
     'author': ' Odoo Inc',
@@ -19,6 +19,7 @@ etc..
         'views/openacdemy_sessions_views.xml',
         'views/openacdemy_attendee_views.xml',
         'views/openacdemy_course_views.xml',
+        'views/sale_view.xml',
     ],
     'demo': [
         'demo/openacdemy_demo.xml',

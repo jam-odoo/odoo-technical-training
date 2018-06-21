@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="view_sale_order_from_inherited" model="ir.ui.view">
+            <field name="name">Sale Order from View Inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <!-- <xpath expr="/form/header/field[@name='state']" position="attributes">
+                        <attribute name="statusbar_visible">draft,sent,validate,sale</attribute>
+                    </xpath> -->
+                    <field name="state" position="attributes">
+                        <attribute name="statusbar_visible">draft,validate,sent,sale</attribute>
+                    </field>
+                    <xpath expr="//button[@name='action_confirm'][2]" position="replace">
+                        <button name="action_confirm" string="Confirm Sale" type="object" attrs="{'invisible': [('state', 'not in', ['validate'])]}"/>
+                        <button name="action_approve" string="Validate" type="object" attrs="{'invisible': [('state', 'not in', ['draft'])]}"  class="btn-primary"/>
+                    </xpath>
+                    <xpath expr="//button[@name='action_quotation_send'][1]" position="replace">
+                        <button name="action_quotation_send" string="Send by Email" type="object" states="validate" class="btn-primary"/>
+                    </xpath>
+
+                    <xpath expr="//button[@name='print_quotation']" position="replace">
+                        <button name="print_quotation" string="Print" type="object" states="validate" class="btn-primary o_sale_print"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+ 
+    </data>
+</odoo>
