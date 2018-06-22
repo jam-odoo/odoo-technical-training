@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="app_openacademy" model="ir.module.category">
+            <field name="name">OpenAcademy</field>
+        </record>
+
+        <record id="group_openacademy_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="category_id" ref="app_openacademy"/>
+        </record>
+
+        <record id="group_openacademy_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="app_openacademy"/>
+            <field name="implied_ids" eval="[(4, ref('group_openacademy_user'))]"/>
+        </record> 
+    </data>
+    <data noupdate="1">
+        <record model="ir.rule" id="rr_oa_user_session">
+            <field name="name">OpenAcademy User Own Sessions</field>
+            <field name="model_id" ref="model_openacademy_session"/>
+            <field name="groups" eval="[(4, ref('openacademy.group_openacademy_user'))]"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+        </record>
+
+        <record model="ir.rule" id="rr_oa_manager_session">
+            <field name="name">OpenAcademy User Own Sessions</field>
+            <field name="model_id" ref="model_openacademy_session"/>
+            <field name="groups" eval="[(4, ref('openacademy.group_openacademy_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+        <record model="ir.rule" id="rr_oa_user_course">
+            <field name="name">OpenAcademy User Own Course</field>
+            <field name="model_id" ref="model_openacademy_course"/>
+            <field name="groups" eval="[(4, ref('openacademy.group_openacademy_user'))]"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+        </record>
+
+        <record model="ir.rule" id="rr_oa_manager_course">
+            <field name="name">OpenAcademy User Own course</field>
+            <field name="model_id" ref="model_openacademy_course"/>
+            <field name="groups" eval="[(4, ref('openacademy.group_openacademy_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+    </data>
+</odoo>

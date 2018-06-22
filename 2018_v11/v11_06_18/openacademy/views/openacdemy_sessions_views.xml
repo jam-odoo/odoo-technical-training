@@ -125,10 +125,54 @@
         </record>
 
 
+        <record id="view_openacademy_session_graph" model="ir.ui.view">
+            <field name="name">OpenAcademy Session graph View</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <graph string="Sessions" type="pie">
+                    <field name="course_id"/>
+                    <field name="booked_seats" type="col"/>
+                </graph>
+            </field>
+        </record>
+
+
+        <record id="view_openacademy_session_pivot" model="ir.ui.view">
+            <field name="name">OpenAcademy Session pivot View</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <pivot string="Sessions">
+                    <field name="course_id" type="row"/>
+                    <field name="booked_seats" type="col"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="view_openacademy_session_calendar" model="ir.ui.view">
+            <field name="name">OpenAcademy Session calendar View</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <calendar string="Sessions" date_start="start_date" date_stop="end_date" color="course_id">
+                    <field name="course_id" />
+                    <field name="name"/>
+                </calendar>
+            </field>
+        </record>
+
+
+        <record id="view_openacademy_session_gantt" model="ir.ui.view">
+            <field name="name">OpenAcademy Session gantt View</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <gantt string="Sessions" date_start="start_date" date_stop="end_date" default_group_by="course_id">
+                </gantt>
+            </field>
+        </record>
+
         <record id="action_view_openacademy_sessions" model="ir.actions.act_window">
             <field name="name">OpenAcademy Sessions</field>
             <field name="res_model">openacademy.session</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,gantt</field>
             <field name="limit">80</field>
             <field name="search_view_id" ref="view_openacademy_session_search"/>
             <field name="auto_search" eval="True"/>
@@ -139,7 +183,7 @@
         <record id="action_view_openacademy_sessions_approved" model="ir.actions.act_window">
             <field name="name">Approved Sessions</field>
             <field name="res_model">openacademy.session</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,calendar,graph,pivot,gantt</field>
             <field name="limit">80</field>
             <field name="auto_search" eval="True"/>
             <field name="context">{}</field>
@@ -158,6 +202,31 @@
             <field name="view_mode">form</field>
             <field name="view_id" ref="view_openacademy_session_form"/>
         </record>
+        <record id="action_view_openacademy_sessions_calendar" model="ir.actions.act_window.view">
+            <field name="sequence">3</field>
+            <field name="act_window_id" ref="action_view_openacademy_sessions"/>
+            <field name="view_mode">calendar</field>
+            <field name="view_id" ref="view_openacademy_session_calendar"/>
+        </record>
+        <record id="action_view_openacademy_sessions_graph" model="ir.actions.act_window.view">
+            <field name="sequence">4</field>
+            <field name="act_window_id" ref="action_view_openacademy_sessions"/>
+            <field name="view_mode">graph</field>
+            <field name="view_id" ref="view_openacademy_session_graph"/>
+        </record>
+        <record id="action_view_openacademy_sessions_pivot" model="ir.actions.act_window.view">
+            <field name="sequence">5</field>
+            <field name="act_window_id" ref="action_view_openacademy_sessions"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="view_openacademy_session_pivot"/>
+        </record>
+        <record id="action_view_openacademy_sessions_gantt" model="ir.actions.act_window.view">
+            <field name="sequence">6</field>
+            <field name="act_window_id" ref="action_view_openacademy_sessions"/>
+            <field name="view_mode">gantt</field>
+            <field name="view_id" ref="view_openacademy_session_gantt"/>
+        </record>
+
 
         <menuitem id="openacademy_all_sessions_root"
                   string="All Sessions"

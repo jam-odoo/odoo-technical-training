@@ -42,7 +42,7 @@ class OpenAcademySession(models.Model):
     min_seat = fields.Integer(string="Minimum Required Registrations")
     can_overbook = fields.Boolean(string="Can be Overbooked")
     remmain_seat_per = fields.Float(string="Remaing Seats(%)", digits=(5,2), default=0.0)
-    booked_seats = fields.Integer(string="Booked Seats", compute="compute_seats")
+    booked_seats = fields.Integer(string="Booked Seats", compute="compute_seats", store=True)
     all_day = fields.Selection(selection=[('yes', 'Yes'),('no', 'No')], string="Allday Event")
     state = fields.Selection(selection=[('new', 'New'),
                                       ('approve', 'Approved'),

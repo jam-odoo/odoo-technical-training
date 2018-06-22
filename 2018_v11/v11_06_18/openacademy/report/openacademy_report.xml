@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<odoo>
+    <report id="oa_session"
+            model="openacademy.session"
+            string="Session"
+            report_type="qweb-pdf"
+            name="openacademy.report_openacademy_session"
+            file="openacademy.openacademy_session_report"
+            attachment_use="False"
+            attachment="(object.state)+'.pdf'"/>
+</odoo>

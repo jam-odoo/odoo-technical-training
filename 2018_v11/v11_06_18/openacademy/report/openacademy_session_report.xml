@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="report_openacademy_session" name="report_openacademy_session">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="o.name"/>
+                        </h2>
+                        <p>This object's name is <span t-field="o.name"/></p>
+                        <table class="table">
+                            <thead>
+                                <th>Name</th>
+                                <th>Partner</th>
+                                <th>Email</th>
+                                <th>Count</th>
+                                <th>State</th>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.attendee_ids" t-as="att">
+                                    <td>
+                                        <string t-field="att.name"/>
+                                    </td>
+                                    <td>
+                                        <string t-esc="att.partner_id.with_context(show=True).name_get()[0][1]if att.partner_id else ''"/>
+                                    </td>
+                                    <td>
+                                        <string t-field="att.email"/>
+                                    </td>
+                                    <td>
+                                        <string t-field="att.phone"/>
+                                    </td>
+                                    <td>
+                                        <string t-field="att.state"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
