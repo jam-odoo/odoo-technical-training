@@ -11,8 +11,12 @@
 	'author': 'Odoo Inc',
 	'description': '''reText''',
 	'depends': ['base'],
-	'data': [],
-	'demo': [],
+	'data': [
+		'views/library_book_views.xml',
+	],
+	'demo': [
+		'demo/library_demo.xml',
+	],
 	'application': True,
 	'auto_install': False,
 	'installable': True,

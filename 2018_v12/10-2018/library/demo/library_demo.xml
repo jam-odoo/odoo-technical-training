@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    <data noupdate="1">
+        <record model="library.book" id="demo_book01">
+            <field name="name">Odoo e v12 Development</field>
+            <field name="cover">HC</field>
+            <field name="purchase_date">2018-10-30</field>
+            <field name="purchase_price">35.69</field>
+        </record>
+        <record model="library.book" id="demo_book02">
+            <field name="name">Mastering Python3</field>
+            <field name="cover">SC</field>
+            <field name="purchase_date">2018-10-30</field>
+            <field name="purchase_price">98.69</field>
+        </record>
+    </data>
+
+</odoo>
