@@ -30,13 +30,19 @@
                                 <field name="name" placeholder="e.g. Alice in wonder land"/>
                             </h1>
                         </div>
-                        <label for="isbn" />
-                        <field name="isbn" help="Book ISBn Number, Max 64 Char"/>
+                        <div>
+                            <label for="author_ids" />
+                            <field name='author_ids' widget="many2many_tags" options="{'no_create': true}"/>
+                        </div>
+                        <div>
+                            <field name='tag_ids' widget="many2many_tags" options="{'color_field': 'color_index'}"/>
+                        </div>
                         <notebook>
                             <page string="General Info">
                                 <group>
                                     <group>
                                         <field name="cover"/>
+                                        <field name="isbn" help="Book ISBn Number, Max 64 Char"/>
                                         <field name="active" widget="boolean_toggle"/>
                                     </group>
                                     <group string="Purchase Details">
@@ -48,6 +54,9 @@
                             </page>
                             <page string="Book Index">
                                 <field name="book_index"/>
+                            </page>
+                            <page string="Rentals">
+                                <field name="rental_ids" readonly="1"/>
                             </page>
                         </notebook>
                     </sheet>

@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_library_rent_list">
+            <field name="name">Library Book Rental List View </field>
+            <field name="model">library.rent</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Rental">
+                    <field name="sequence" widget="handle"/>
+                    <field name="book_id"/>
+                    <field name="partner_id"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                    <field name="active"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_library_rent_form">
+            <field name="name">Library Book Rental Form View </field>
+            <field name="model">library.rent</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="book_id"  options="{'no_create': true, 'no_open': true}"/>
+                        <field name="partner_id" />
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="active"/>
+                        <field name="state"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_library_rent">
+            <field name="name">Rentals</field>
+            <field name="res_model">library.rent</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="root_library_rental"
+                name="Rentals"
+                parent="root_library"
+                sequence="15"/>
+        <menuitem id="root_library_books_all_retnals"
+                name="All Rentals"
+                parent="root_library_rental"
+                action="action_view_library_rent"/>
+    </data>
+</odoo>

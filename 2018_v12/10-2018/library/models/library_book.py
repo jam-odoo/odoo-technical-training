@@ -1,8 +1,18 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo import models, fields, api, _
 
-from odoo import models, fields
+class BookTags(models.Model):
+    '''
+    Library Books Model
+    '''
+
+    _name = 'library.book.tags'
+
+    name = fields.Char(string='Tag Name', required=True, translate=True, index=True)
+    color_index = fields.Integer(string='Color Index')
+
 
 class Book(models.Model):
     '''
@@ -28,3 +38,10 @@ class Book(models.Model):
     active = fields.Boolean(string='Archived ?', default=True)
     book_cover = fields.Binary(string='Book Cover')
     book_cover_name = fields.Char(string='Book Cover Name')
+    tag_ids = fields.Many2many(comodel_name='library.book.tags')
+    author_ids = fields.Many2many(comodel_name='res.partner',
+                                    relation='rel_book_auhtor_parnter',
+                                    column1='book_id',
+                                    column2='partner_id',
+                                    string='Auhtors')
+    rental_ids = fields.One2many(comodel_name='library.rent', inverse_name='book_id', string='Rentals')
