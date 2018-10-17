@@ -2,6 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import models, fields, api, _
+from odoo.tools.profiler import profile
+
 
 class BookTags(models.Model):
     '''
@@ -9,6 +11,7 @@ class BookTags(models.Model):
     '''
 
     _name = 'library.book.tags'
+    _description= 'Library Book Tags'
 
     name = fields.Char(string='Tag Name', required=True, translate=True, index=True)
     color_index = fields.Integer(string='Color Index')
@@ -45,3 +48,43 @@ class Book(models.Model):
                                     column2='partner_id',
                                     string='Auhtors')
     rental_ids = fields.One2many(comodel_name='library.rent', inverse_name='book_id', string='Rentals')
+    rental_count = fields.Integer(string="# Rentals", compute='compute_rental_count')
+    
+    @profile
+    @api.multi
+    @api.depends('rental_ids', 'rental_ids.state')
+    def compute_rental_count(self):
+        for book in self:
+            book.rental_count = len(book.rental_ids.filtered(lambda bk: bk.state not in ('cancel', 'draft')))
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        print (vals_list)
+        result = super(Book, self).create(vals_list)
+        print (result)
+        return result
+
+    @api.multi
+    def write(self, vals):
+        print (vals)
+        print (dir(self.env))
+        result = super(Book, self).write(vals)
+        print (result)
+        return result
+
+    @api.multi
+    def unlink(self):
+        result = super(Book, self).unlink()
+        print (result)
+        return result
+
+    @api.multi
+    def action_open_rentals(self):
+        action_data = self.env.ref('library.action_view_library_rent').read()[0]
+        print (action_data)
+        action_data.update({
+            'domain': [('book_id', '=', self.id)],
+            'target': 'new',
+            'name': 'Rentals for %s'%(self.name),
+        })
+        return action_data

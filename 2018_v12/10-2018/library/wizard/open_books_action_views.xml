@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_library_wiz_open_books_form">
+            <field name="name">Wizard Open Books Form View </field>
+            <field name="model">wizard.open.books</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <h1>
+                            <field name="name" />.
+                        </h1>
+                    </sheet>
+                    <footer>
+                        <button type="object" name="open_books" string="Open Books" class="btn-primary"/>
+                        <button special="cancel" string="Cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

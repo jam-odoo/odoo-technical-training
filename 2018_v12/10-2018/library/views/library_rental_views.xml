@@ -24,14 +24,27 @@
             <field name="priority">16</field>
             <field name="arch" type="xml">
                 <form>
-                    <group>
-                        <field name="book_id"  options="{'no_create': true, 'no_open': true}"/>
-                        <field name="partner_id" />
-                        <field name="start_date"/>
-                        <field name="end_date"/>
-                        <field name="active"/>
-                        <field name="state"/>
-                    </group>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,rent,return"/>
+                    </header>
+                    <sheet>
+                        <div>
+                            <label for="book_id" class="oe_edit_only"/>
+                            <h1>
+                                <span class="oe_grey">Book </span><field name="book_id"/> <span class="oe_grey"> rented by </span> <field name="partner_id" />.
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="rental_days"/>
+                              </group>  
+                            <group>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>
@@ -43,6 +56,22 @@
             <field name="domain">[]</field>
             <field name="context">{}</field>
         </record>
+
+        <record model="ir.actions.act_window" id="action_view_library_rent_book">
+            <field name="name">A Book Rentals</field>
+            <field name="res_model">library.rent</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('book_id', '=', active_id)]</field>
+        </record>
+
+        <act_window id="open_mulitaction_rentals"
+                    name="Open Books"
+                    res_model="wizard.open.books"
+                    src_model="library.rent"
+                    view_mode="form"
+                    view_type="form"
+                    key2="client_action_multi"
+                    target="new"/>
 
         <menuitem id="root_library_rental"
                 name="Rentals"

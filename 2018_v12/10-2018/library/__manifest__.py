@@ -14,6 +14,7 @@
     'data': [
         'views/library_book_views.xml',
         'views/library_rental_views.xml',
+        'wizard/open_books_action_views.xml',
     ],
     'demo': [
         'demo/library_demo.xml',

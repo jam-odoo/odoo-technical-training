@@ -1,6 +1,43 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
+
+        <menuitem id="root_library"
+                name="Library"
+                web_icon="library,static/description/icon.png"
+                sequence="1"/>
+        <menuitem id="root_library_assets"
+                name="Assets"
+                parent="root_library"
+                sequence="15"/>
+        <menuitem id="root_library_config"
+                name="Configurations"
+                parent="root_library"
+                sequence="100"/>
+
+        <record model="ir.ui.view" id="view_library_book_tag_list">
+            <field name="name">Library Book Tags List View </field>
+            <field name="model">library.book.tags</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <tree string="Tags" editable="bottom">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.actions.act_window" id="action_view_library_book_tags">
+            <field name="name">Tags</field>
+            <field name="res_model">library.book.tags</field>
+            <field name="view_mode">tree</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_library_books_tags"
+                name="Tags"
+                parent="root_library_config"
+                action="action_view_library_book_tags"/>
+
         <record model="ir.ui.view" id="view_library_book_list">
             <field name="name">Library Book List View </field>
             <field name="model">library.book</field>
@@ -23,6 +60,14 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <div class="oe_button_box">
+                            <button class="oe_stat_button" type="object" name="action_open_rentals" icon="fa-asterisk">
+                                <span class="o_form_field _stat_info">
+                                    <field name="rental_count"/>
+                                </span>
+                                <span class="o_stat_text">Rentals</span>
+                            </button>
+                        </div>
                         <field name="book_cover" filename="book_cover_name" widget="image" class="oe_avatar"/>
                         <div class="oe_title">
                             <label for="name" class="oe_edit_only"/>
@@ -44,6 +89,8 @@
                                         <field name="cover"/>
                                         <field name="isbn" help="Book ISBn Number, Max 64 Char"/>
                                         <field name="active" widget="boolean_toggle"/>
+                                        <button class="oe_link" type="action" string="Open Rentals" name="%(action_view_library_rent_book)d"/>
+
                                     </group>
                                     <group string="Purchase Details">
                                         <field name="last_rent_date"/>
@@ -62,6 +109,14 @@
                     </sheet>
                 </form>
             </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_view_library_book_wizard">
+            <field name="name">Books</field>
+            <field name="res_model">library.book</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
         </record>
 
         <record model="ir.actions.act_window" id="action_view_library_book">
@@ -84,15 +139,6 @@
             <field name="act_window_id" ref="action_view_library_book"/>
         </record>
 
-
-        <menuitem id="root_library"
-                name="Library"
-                web_icon="library,static/description/icon.png"
-                sequence="1"/>
-        <menuitem id="root_library_assets"
-                name="Assets"
-                parent="root_library"
-                sequence="15"/>
         <menuitem id="root_library_assets_books"
                 name="Books"
                 parent="root_library_assets"
