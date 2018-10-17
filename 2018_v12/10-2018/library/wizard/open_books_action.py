@@ -12,13 +12,24 @@ class WizardOpenBooks(models.TransientModel):
 
     @api.multi
     def open_books(self):
-        print ("*"*100)
         rent_ids = self.env['library.rent'].browse(self.env.context.get('active_ids'))
         book_ids = rent_ids.mapped('book_id')
-        action_data = self.env.ref('library.action_view_library_book_wizard').read()[0]
-        action_data.update({
+        # action_data = self.env.ref('library.action_view_library_book_wizard').read()[0]
+        # action_data.update({
+        #     'domain': [('id', 'in', book_ids.ids)],
+        # })
+        action_data = {
+            'name': 'Books',
+            'type': 'ir.actions.act_window',
+            'res_model': 'library.book',
+            'view_mode': 'tree,form',
             'domain': [('id', 'in', book_ids.ids)],
-        })
+            'views': [
+                (self.env.ref('library.view_library_book_list').id, 'tree'),
+                (self.env.ref('library.view_library_book_form').id, 'form')
+            ],
+            'target': 'current',
+        }
         if len(book_ids) == 1:
             action_data.update({
                 'view_mode': 'form',
