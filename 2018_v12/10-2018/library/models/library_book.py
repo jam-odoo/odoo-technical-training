@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api, _
+import threading
+import base64
+
+from odoo import api, fields, models, tools, SUPERUSER_ID, _
+from odoo.modules import get_module_resource
 from odoo.tools.profiler import profile
 
 
@@ -60,34 +64,45 @@ class Book(models.Model):
         for book in self:
             book.rental_count = len(book.rental_ids.filtered(lambda bk: bk.state not in ('cancel', 'draft')))
 
+    @api.model
+    def _get_default_image(self):
+        if getattr(threading.currentThread(), 'testing', False) or self._context.get('install_mode'):
+            return False
+        colorize, img_path, image = False, False, False
+        img_path = get_module_resource('library', 'static/description/img', 'dummy.png')
+        colorize = True
+
+        if img_path:
+            with open(img_path, 'rb') as f:
+                image = f.read()
+        if image and colorize:
+            image = tools.image_colorize(image)
+        return tools.image_resize_image_big(base64.b64encode(image))
+
     @api.model_create_multi
     def create(self, vals_list):
-        print (vals_list)
+        for vals in vals_list:
+            if not vals.get('book_cover'):
+                vals['book_cover'] = self._get_default_image()
         result = super(Book, self).create(vals_list)
-        print (result)
         return result
 
     @api.multi
     def write(self, vals):
-        print (vals)
-        print (dir(self.env))
         result = super(Book, self).write(vals)
-        print (result)
         return result
 
     @api.multi
     def unlink(self):
         result = super(Book, self).unlink()
-        print (result)
         return result
 
     @api.multi
     def action_open_rentals(self):
         action_data = self.env.ref('library.action_view_library_rent').read()[0]
-        print (action_data)
         action_data.update({
             'domain': [('book_id', '=', self.id)],
-            'target': 'new',
+            # 'target': 'new',
             'name': 'Rentals for %s'%(self.name),
         })
         return action_data

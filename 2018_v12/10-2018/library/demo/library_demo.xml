@@ -64,6 +64,24 @@
             <field name="country_id" ref="base.us"/>
         </record>
 
+        <record id="res_partner_lib_5" model="res.partner">
+            <field name="name">Nick Morgan</field>
+            <field name="supplier">1</field>
+            <field name="street">1128 Lunetta Street</field>
+            <field name="city">Tampa</field>
+            <field name="state_id"  model="res.country.state" search="[('code','ilike','FL')]"/>
+            <field name="zip">33634</field>
+            <field name="country_id" ref="base.us"/>
+            <field name="email">Nick@Morgan.com</field>
+            <field name="phone">(941)-284-4875</field>
+            <field name="website">http://www.NickMorgan.com/</field>
+            <field name="image" type="base64" file="base/static/img/res_partner_3-image.png"/>
+            <field name="supplier">1</field>
+            <field name="is_author">1</field>
+            <field name="author_code">AUTH0005</field>
+        </record>
+
+
         <record model="library.book" id="demo_book00">
             <field name="name">Python Crash Course: A Hands-On, Project-Based Introduction to Programming</field>
             <field name="cover">PB</field>
@@ -133,6 +151,30 @@ These practical and easy-to-follow recipes are presented step-by-step, with doze
         </record>
 
         <record model="library.book" id="demo_book03">
+            <field name="name">JavaScript for Kids: A Playful Introduction to Programming</field>
+            <field name="cover">PB</field>
+            <field name="purchase_date"  eval="(DateTime.now() + timedelta(days=685)).strftime('%Y-%m-%d 8:00:00')"/>
+            <field name="purchase_price">25.11</field>
+            <field name="author_ids" eval="[(6, 0, [ref('res_partner_lib_5')])]"/>
+            <field name="book_cover" type="base64" file="library/static/description/img/book5.jpg"/>
+            <field name="book_index"><![CDATA[
+JavaScript is the programming language of the Internet, the secret sauce that makes the Web awesome, your favorite sites interactive, and online games fun!
+
+JavaScript for Kids is a lighthearted introduction that teaches programming essentials through patient, step-by-step examples paired with funny illustrations. You’ll begin with the basics, like working with strings, arrays, and loops, and then move on to more advanced topics, like building interactivity with jQuery and drawing graphics with Canvas.
+
+Along the way, you’ll write games such as Find the Buried Treasure, Hangman, and Snake. You’ll also learn how to:
+–Create functions to organize and reuse your code
+–Write and modify HTML to create dynamic web pages
+–Use the DOM and jQuery to make your web pages react to user input
+–Use the Canvas element to draw and animate graphics
+–Program real user-controlled games with collision detection and score keeping
+
+With visual examples like bouncing balls, animated bees, and racing cars, you can really see what you’re programming. Each chapter builds on the last, and programming challenges at the end of each chapter will stretch your brain and inspire your own amazing programs. Make something cool with JavaScript today!
+
+Ages 10+ (and their parents!)]]></field>
+        </record>
+
+        <record model="library.book" id="demo_book04">
             <field name="name">Odoo 11 Development Essentials - Third Edition: Develop and customize business applications with Odoo 11</field>
             <field name="cover">PB</field>
             <field name="purchase_date"  eval="(DateTime.now() + timedelta(days=90)).strftime('%Y-%m-%d 8:00:00')"/>

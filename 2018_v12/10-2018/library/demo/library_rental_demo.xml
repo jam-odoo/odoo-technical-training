@@ -10,6 +10,7 @@
             <field name="end_date"  eval="(DateTime.now() + timedelta(days=-90)).strftime('%Y-%m-%d 8:00:00')"/>
         </record>
 
+
         <record model="library.rent" id="demo_book_rental_02">
             <field name="book_id" ref="demo_book00"/>
             <field name="partner_id" ref="base.res_partner_address_5"/>
@@ -20,7 +21,7 @@
 
         <record model="library.rent" id="demo_book_rental_03">
             <field name="book_id" ref="demo_book02"/>
-            <field name="partner_id" ref="base.res_partner_address_10"/>
+            <field name="partner_id" ref="base.res_partner_2"/>
             <field name="state">draft</field>
             <field name="start_date"  eval="(DateTime.now() + timedelta(days=5)).strftime('%Y-%m-%d 8:00:00')"/>
             <field name="end_date"  eval="(DateTime.now() + timedelta(days=15)).strftime('%Y-%m-%d 8:00:00')"/>
@@ -35,11 +36,28 @@
         </record>
 
         <record model="library.rent" id="demo_book_rental_05">
-            <field name="book_id" ref="demo_book00"/>
-            <field name="partner_id" ref="base.res_partner_address_16"/>
+            <field name="book_id" ref="demo_book04"/>
+            <field name="partner_id" ref="base.res_partner_address_7"/>
             <field name="state">rent</field>
             <field name="start_date"  eval="(DateTime.now() + timedelta(days=5)).strftime('%Y-%m-%d 8:00:00')"/>
             <field name="end_date"  eval="(DateTime.now() + timedelta(days=15)).strftime('%Y-%m-%d 8:00:00')"/>
+        </record>
+
+        <record model="library.rent" id="demo_book_rental_06">
+            <field name="book_id" ref="demo_book04"/>
+            <field name="partner_id" ref="base.res_partner_address_5"/>
+            <field name="state">return</field>
+            <field name="start_date"  eval="(DateTime.now() + timedelta(days=-30)).strftime('%Y-%m-%d 8:00:00')"/>
+            <field name="end_date"  eval="(DateTime.now() + timedelta(days=-20)).strftime('%Y-%m-%d 8:00:00')"/>
+        </record>
+
+
+        <record model="library.rent" id="demo_book_rental_07">
+            <field name="book_id" ref="demo_book03"/>
+            <field name="partner_id" ref="base.res_partner_address_24"/>
+            <field name="state">draft</field>
+            <field name="start_date"  eval="(DateTime.now() + timedelta(days=-25)).strftime('%Y-%m-%d 8:00:00')"/>
+            <field name="end_date"  eval="(DateTime.now() + timedelta(days=-5)).strftime('%Y-%m-%d 8:00:00')"/>
         </record>
 
     </data>
