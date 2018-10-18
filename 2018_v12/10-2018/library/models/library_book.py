@@ -33,6 +33,7 @@ class Book(models.Model):
     cover = fields.Selection(selection=[
                                 ('NC', 'No Cover'),
                                 ('HC', 'Hard Cover'),
+                                ('PB', 'Papperback'),
                                 ('SC', 'Soft Cover'),
                             ], string='Type', required=True, default='NC') 
     last_rent_date = fields.Datetime(string='Last Rented Date')

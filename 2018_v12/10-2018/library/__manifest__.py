@@ -9,7 +9,7 @@
     'sequence': 2,
     'category': 'Library',
     'author': 'Odoo Inc',
-    'description': '''reText''',
+    'description': '''Library, Books, Custoemr Managment''',
     'depends': ['base'],
     'data': [
         'views/library_menu_view.xml',
