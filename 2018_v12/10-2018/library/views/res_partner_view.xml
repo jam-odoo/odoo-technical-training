@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_res_partner_library_form_inherit">
+            <field name="name">Library Parnter Form Inherit  </field>
+            <field name="model">res.partner</field>
+            <field name="priority">80</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//page[@name='sales_purchases']//field[@name='supplier']"  position="after">
+                        <field name="is_author" attrs="{'invisible': [('supplier', '!=', True)]}"/>
+                        <field name="author_code" attrs="{'invisible': [('supplier', '!=', True)], 'required': [('is_author', '=', True)]}"/>
+                    </xpath>
+                    <xpath expr="//field[@name='email']"  position="attributes">
+                        <attribute name="string">Mail</attribute>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+    </data>
+</odoo>

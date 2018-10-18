@@ -47,7 +47,8 @@ class Book(models.Model):
                                     relation='rel_book_auhtor_parnter',
                                     column1='book_id',
                                     column2='partner_id',
-                                    string='Auhtors')
+                                    string='Auhtors',
+                                    domain=[('is_author', '=', True)])
     rental_ids = fields.One2many(comodel_name='library.rent', inverse_name='book_id', string='Rentals')
     rental_count = fields.Integer(string="# Rentals", compute='compute_rental_count')
     

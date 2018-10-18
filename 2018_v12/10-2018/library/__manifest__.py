@@ -10,12 +10,13 @@
     'category': 'Library',
     'author': 'Odoo Inc',
     'description': '''Library, Books, Custoemr Managment''',
-    'depends': ['base'],
+    'depends': ['base', 'contacts'],
     'data': [
         'views/library_menu_view.xml',
         'views/library_rental_views.xml',
         'views/library_book_views.xml',
         'wizard/open_books_action_views.xml',
+        'views/res_partner_view.xml',
     ],
     'demo': [
         'demo/library_demo.xml',
