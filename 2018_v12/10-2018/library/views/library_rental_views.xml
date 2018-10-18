@@ -61,10 +61,57 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="view_library_rent_graph">
+            <field name="name">Library Book Rental Graph View </field>
+            <field name="model">library.rent</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <graph string="Rental" type="bar">
+                    <field name="book_id" type="row"/>
+                    <field name="rental_days" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_library_rent_pivot">
+            <field name="name">Library Book Rental Graph View </field>
+            <field name="model">library.rent</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <pivot string="Rental">
+                    <field name="book_id" type="row"/>
+                    <field name="partner_id" type="col"/>
+                    <field name="rental_days" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_library_rent_calendar">
+            <field name="name">Library Book Rental Calendar View </field>
+            <field name="model">library.rent</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <calendar date_start="start_date" date_stop="end_date" color="book_id">
+                    <field name="book_id"/>
+                    <field name="partner_id" />
+                </calendar>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_library_rent_gantt">
+            <field name="name">Library Book Rental gantt View </field>
+            <field name="model">library.rent</field>
+            <field name="priority">16</field>
+            <field name="arch" type="xml">
+                <gantt date_start="start_date" date_stop="end_date" default_group_by="book_id">
+                </gantt>
+            </field>
+        </record>
+
         <record model="ir.actions.act_window" id="action_view_library_rent">
             <field name="name">Rentals</field>
             <field name="res_model">library.rent</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,graph,pivot,calendar,gantt</field>
             <field name="domain">[]</field>
             <field name="context">{}</field>
         </record>
@@ -72,7 +119,7 @@
         <record model="ir.actions.act_window" id="action_view_library_rent_book">
             <field name="name">A Book Rentals</field>
             <field name="res_model">library.rent</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,graph,pivot,calendar,gantt</field>
             <field name="domain">[('book_id', '=', active_id)]</field>
         </record>
 
