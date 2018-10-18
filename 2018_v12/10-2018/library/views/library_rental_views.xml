@@ -73,10 +73,6 @@
                     key2="client_action_multi"
                     target="new"/>
 
-        <menuitem id="root_library_rental"
-                name="Rentals"
-                parent="root_library"
-                sequence="15"/>
         <menuitem id="root_library_books_all_retnals"
                 name="All Rentals"
                 parent="root_library_rental"

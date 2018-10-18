@@ -2,18 +2,6 @@
 <odoo>
     <data>
 
-        <menuitem id="root_library"
-                name="Library"
-                web_icon="library,static/description/icon.png"
-                sequence="1"/>
-        <menuitem id="root_library_assets"
-                name="Assets"
-                parent="root_library"
-                sequence="15"/>
-        <menuitem id="root_library_config"
-                name="Configurations"
-                parent="root_library"
-                sequence="100"/>
 
         <record model="ir.ui.view" id="view_library_book_tag_list">
             <field name="name">Library Book Tags List View </field>
