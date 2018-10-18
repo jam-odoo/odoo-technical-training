@@ -56,7 +56,7 @@
             <field name="country_id" ref="base.us"/>
         </record>
 
-        <record model="library.book" id="demo_book01">
+        <record model="library.book" id="demo_book00">
             <field name="name">Python Crash Course: A Hands-On, Project-Based Introduction to Programming</field>
             <field name="cover">PB</field>
             <field name="purchase_date">2018-01-01</field>
