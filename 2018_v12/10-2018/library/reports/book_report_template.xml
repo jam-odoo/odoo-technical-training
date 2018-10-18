@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+
+        <template id="book_overview_report_document" >
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h1>
+                        <strong t-field="doc.name"></strong>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>State</th>
+                                </tr>
+                                <tbody>
+                                    <tr t-foreach="doc.rental_ids" t-as="rent">
+                                        <td><span t-field="rent.partner_id"/></td>
+                                        <td><span t-field="rent.start_date"/></td>
+                                        <td><span t-field="rent.end_date"/></td>
+                                        <td><span t-field="rent.state"/></td>
+                                    </tr>
+                                </tbody>
+                            </thead>
+                        </table>
+                    </h1>
+                </div>
+            </t>
+        </template>
+
+
+        <template id="book_overview_report" >
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="library.book_overview_report_document" t-lang="user.lang"/>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

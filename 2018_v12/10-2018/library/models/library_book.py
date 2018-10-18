@@ -25,6 +25,7 @@ class Book(models.Model):
     _name = 'library.book'
     _description= 'Library Books'
     _order = 'sequence, name, purchase_date desc, id'
+    _inherit = ['mail.thread',  'mail.activity.mixin']
 
     sequence = fields.Integer(string="Sequence", default=10)
     isbn = fields.Char(string='ISBN', size=64)

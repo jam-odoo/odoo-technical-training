@@ -7,6 +7,8 @@
             <field name="name">Holger Brunn</field>
             <field eval="[(6, 0, [ref('base.res_partner_category_14'), ref('base.res_partner_category_12')])]" name="category_id"/>
             <field name="supplier">1</field>
+            <field name="is_author">1</field>
+            <field name="author_code">AUTH0003</field>
             <field eval="0" name="customer"/>
             <field name="street">1164 Cambridge Drive</field>
             <field name="city">White Tanks</field>
@@ -19,7 +21,9 @@
         <record id="res_partner_lib_2" model="res.partner">
             <field name="name">Alexandre Fayolle</field>
             <field eval="[(6, 0, [ref('base.res_partner_category_14')])]" name="category_id"/>
-            <field name="is_company">1</field>
+            <field name="supplier">1</field>
+            <field name="is_author">1</field>
+            <field name="author_code">AUTH0004</field>
             <field name="street">325 Elsie Drive</field>
             <field name="city">Franklin</field>
             <field name="state_id"  model="res.country.state" search="[('code','ilike','WV')]"/>
@@ -43,14 +47,18 @@
             <field name="email">Daniel.Reis@example.com</field>
             <field name="phone">(803)-873-6126</field>
             <field name="website">http://www.DanielReis.com/</field>
+            <field name="is_author">1</field>
+            <field name="author_code">AUTH0002</field>
         </record>
 
         <record id="res_partner_lib_4" model="res.partner">
             <field name="name">Eric Matthes</field>
             <field name="function">Book Author</field>
-            <field name="email">Eric.Matthes@example.com</field>
+            <field name="email">Eri@Matthes.com</field>
             <field name="phone">(846)-523-2111</field>
             <field name="supplier">1</field>
+            <field name="is_author">1</field>
+            <field name="author_code">AUTH0001</field>
             <field eval="0" name="customer"/>
             <field name="state_id"  model="res.country.state" search="[('code','ilike','WV')]"/>
             <field name="country_id" ref="base.us"/>
@@ -59,11 +67,12 @@
         <record model="library.book" id="demo_book00">
             <field name="name">Python Crash Course: A Hands-On, Project-Based Introduction to Programming</field>
             <field name="cover">PB</field>
-            <field name="purchase_date">2018-01-01</field>
+            <field name="purchase_date" eval="(DateTime.now() + timedelta(days=245)).strftime('%Y-%m-%d 8:00:00')"/>
             <field name="purchase_price">24.99</field>
             <field name="author_ids" eval="[(6, 0, [ref('res_partner_lib_4')])]"/>
             <field name="book_cover" type="base64" file="library/static/description/img/book4.jpg"/>
-            <field name="book_index">Python Crash Course is a fast-paced, thorough introduction to Python that will have you writing programs, solving problems, and making things that work in no time.
+            <field name="book_index"><![CDATA[
+Python Crash Course is a fast-paced, thorough introduction to Python that will have you writing programs, solving problems, and making things that work in no time.
 
 In the first half of the book, you’ll learn about basic programming concepts, such as lists, dictionaries, classes, and loops, and practice writing clean and readable code with exercises for each topic. You’ll also learn how to make your programs interactive and how to test your code safely before adding it to a project. In the second half of the book, you’ll put your new knowledge into practice with three substantial projects: a Space Invaders–inspired arcade game, data visualizations with Python’s super-handy libraries, and a simple web app you can deploy online.
 
@@ -74,37 +83,63 @@ As you work through Python Crash Course you’ll learn how to:
 –Create and customize Web apps and deploy them safely online
 –Deal with mistakes and errors so you can solve your own programming problems
 
-
-If you’ve been thinking seriously about digging into programming, Python Crash Course will get you up to speed and have you writing real programs fast. Why wait any longer? Start your engines and code!</field>
+If you’ve been thinking seriously about digging into programming, Python Crash Course will get you up to speed and have you writing real programs fast. Why wait any longer? Start your engines and code!]]></field>
         </record>
 
 
         <record model="library.book" id="demo_book01">
             <field name="name">Odoo 11 Development Cookbook: Over 120 unique recipes to build effective enterprise and business applications</field>
             <field name="cover">PB</field>
-            <field name="purchase_date">2018-02-28</field>
+            <field name="purchase_date" eval="(DateTime.now() + timedelta(days=100)).strftime('%Y-%m-%d 8:00:00')"/>
             <field name="purchase_price">49.99</field>
             <field name="author_ids" eval="[(6, 0, [ref('res_partner_lib_2'), ref('res_partner_lib_1')])]"/>
             <field name="book_cover" type="base64" file="library/static/description/img/book1.jpg"/>
+            <field name="book_index"><![CDATA[]]></field>
+
         </record>
 
         <record model="library.book" id="demo_book02">
             <field name="name">Odoo Development Cookbook </field>
             <field name="cover">PB</field>
-            <field name="purchase_date">2018-01-22</field>
+            <field name="purchase_date" eval="(DateTime.now() + timedelta(days=150)).strftime('%Y-%m-%d 8:00:00')"/>
             <field name="purchase_price">49.99</field>
             <field name="author_ids" eval="[(6, 0, [ref('res_partner_lib_1'), ref('res_partner_lib_2')])]"/>
             <field name="book_cover" type="base64" file="library/static/description/img/book3.jpg"/>
+            <field name="book_index"><![CDATA[
+About This Book
+Each recipe stands by itself as much as possible, so that you can jump straight into the topics you prefer
+The recipes included cover all the major development areas of Odoo and the most important techniques explained through real-life projects
+From seasoned authors, learn the tricks of becoming a productive developer with the Odoo framework
+Who This Book Is For
+If you are a Python developer who wants to learn or consolidate your Odoo development skills, then this book is for you! Some experience with the JavaScript programming language and web development is required to fully benefit from the front-end chapters.
 
+What You Will Learn
+Install and manage Odoo environments and instances
+Use Models to define your application's data structures
+Add business logic to your applications
+Implement automated tests and debug Odoo apps
+Use back-end views to create a user interface
+Get to know about the access security model and internationalization features
+Develop front-end website features
+Extend the web client with new widgets and features
+In Detail
+Odoo is a full-featured open source ERP with a focus on extensibility. The flexibility and sustainability of open source is also a key selling point of Odoo. It is built on a powerful framework for rapid application development, both for back-end applications and front-end websites.
+
+The book starts by covering Odoo installation and administration, and provides a gentle introduction to application development. It then dives deep into several of the areas that an experienced developer will need to use. You'll learn implement business logic, adapt the UI, and extend existing features.
+
+Style and Approach
+These practical and easy-to-follow recipes are presented step-by-step, with dozens of hands-on recipes to boost your Odoo skills. This book can also be used as a reference guide for your daily work.
+]]></field>
         </record>
 
         <record model="library.book" id="demo_book03">
             <field name="name">Odoo 11 Development Essentials - Third Edition: Develop and customize business applications with Odoo 11</field>
             <field name="cover">PB</field>
-            <field name="purchase_date">2018-03-29</field>
+            <field name="purchase_date"  eval="(DateTime.now() + timedelta(days=90)).strftime('%Y-%m-%d 8:00:00')"/>
             <field name="purchase_price">44.99</field>
             <field name="author_ids" eval="[(6, 0, [ref('res_partner_lib_3')])]"/>
             <field name="book_cover" type="base64" file="library/static/description/img/book2.jpg"/>
+            <field name="book_index"><![CDATA[]]></field>
         </record>
 
     </data>

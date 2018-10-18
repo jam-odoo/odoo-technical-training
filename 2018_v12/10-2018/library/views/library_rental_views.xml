@@ -25,6 +25,12 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
+                        <button type="object" name="action_confirm" string="Confirm" class="btn-primary" states="draft"/>
+                        <button type="object" name="action_rent" string="Rented" states="confirm" class="btn-primary" />
+                        <button type="object" name="action_return" string="Retured" states="rent,exrent" class="btn-primary" />
+                        <button type="object" name="send_notif" string="Send Msg" states="rent,exrent"/>
+                        <button type="object" name="action_cancel" string="Cancel" states="confirm"/>
+                        <button type="object" name="action_reset_draft" string="Rest to Draft" states="cancel"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,confirm,rent,return"/>
                     </header>
                     <sheet>
@@ -41,10 +47,16 @@
                                 <field name="rental_days"/>
                               </group>  
                             <group>
+                                <field name="user_id"/>
                                 <field name="active"/>
                             </group>
                         </group>
                     </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                    </div>
                 </form>
             </field>
         </record>

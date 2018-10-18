@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<odoo>
+    <data noupdate="1">
+
+        <record model="library.rent" id="demo_book_rental_01">
+            <field name="book_id" ref="demo_book02"/>
+            <field name="partner_id" ref="base.res_partner_address_15"/>
+            <field name="state">return</field>
+            <field name="start_date"  eval="(DateTime.now() + timedelta(days=-95)).strftime('%Y-%m-%d 8:00:00')"/>
+            <field name="end_date"  eval="(DateTime.now() + timedelta(days=-90)).strftime('%Y-%m-%d 8:00:00')"/>
+        </record>
+
+        <record model="library.rent" id="demo_book_rental_02">
+            <field name="book_id" ref="demo_book00"/>
+            <field name="partner_id" ref="base.res_partner_address_5"/>
+            <field name="state">confirm</field>
+            <field name="start_date"  eval="(DateTime.now() + timedelta(days=5)).strftime('%Y-%m-%d 8:00:00')"/>
+            <field name="end_date"  eval="(DateTime.now() + timedelta(days=15)).strftime('%Y-%m-%d 8:00:00')"/>
+        </record>
+
+        <record model="library.rent" id="demo_book_rental_03">
+            <field name="book_id" ref="demo_book02"/>
+            <field name="partner_id" ref="base.res_partner_address_10"/>
+            <field name="state">draft</field>
+            <field name="start_date"  eval="(DateTime.now() + timedelta(days=5)).strftime('%Y-%m-%d 8:00:00')"/>
+            <field name="end_date"  eval="(DateTime.now() + timedelta(days=15)).strftime('%Y-%m-%d 8:00:00')"/>
+        </record>
+
+        <record model="library.rent" id="demo_book_rental_04">
+            <field name="book_id" ref="demo_book03"/>
+            <field name="partner_id" ref="base.res_partner_address_11"/>
+            <field name="state">cancel</field>
+            <field name="start_date"  eval="(DateTime.now() + timedelta(days=5)).strftime('%Y-%m-%d 8:00:00')"/>
+            <field name="end_date"  eval="(DateTime.now() + timedelta(days=15)).strftime('%Y-%m-%d 8:00:00')"/>
+        </record>
+
+        <record model="library.rent" id="demo_book_rental_05">
+            <field name="book_id" ref="demo_book00"/>
+            <field name="partner_id" ref="base.res_partner_address_16"/>
+            <field name="state">rent</field>
+            <field name="start_date"  eval="(DateTime.now() + timedelta(days=5)).strftime('%Y-%m-%d 8:00:00')"/>
+            <field name="end_date"  eval="(DateTime.now() + timedelta(days=15)).strftime('%Y-%m-%d 8:00:00')"/>
+        </record>
+
+    </data>
+
+</odoo>

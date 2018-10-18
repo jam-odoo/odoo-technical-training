@@ -16,16 +16,24 @@ class Rental(models.Model):
     _description= 'Library Books Rentals'
     _order = 'sequence, start_date desc, id'
     _rec_name = 'book_id'
+    _inherit = ['mail.thread',  'mail.activity.mixin']
 
     def _get_end_date(self):
         return fields.Datetime.now() + relativedelta(days=14)
 
     sequence = fields.Integer(string="Sequence", default=10)
     active = fields.Boolean(string='Is Active ?', default=True)
-    book_id = fields.Many2one(comodel_name='library.book', string='Book', required=True, index=True)
-    partner_id = fields.Many2one(comodel_name='res.partner', string='Customer')
-    start_date = fields.Datetime(string='Start Date', required=True, default=fields.Datetime.now())
-    end_date = fields.Datetime(string='End Date', required=True, default=_get_end_date)
+    user_id = fields.Many2one(string="Rented By", comodel_name="res.users", default=lambda self:self.env.user,
+                            readonly=True, states={'draft': [('readonly', False)], 'cancel': [('readonly', False)]})
+    book_id = fields.Many2one(comodel_name='library.book', string='Book',
+                            required=True, index=True, track_visibility="always",
+                            readonly=True, states={'draft': [('readonly', False)], 'cancel': [('readonly', False)]})
+    partner_id = fields.Many2one(comodel_name='res.partner', string='Customer', track_visibility="onchange",
+                            readonly=True, states={'draft': [('readonly', False)], 'cancel': [('readonly', False)]})
+    start_date = fields.Datetime(string='Start Date', required=True, default=fields.Datetime.now(), track_visibility="onchange",
+                            readonly=True, states={'draft': [('readonly', False)], 'cancel': [('readonly', False)]})
+    end_date = fields.Datetime(string='End Date', required=True, default=_get_end_date, track_visibility="onchange",
+                            readonly=True, states={'draft': [('readonly', False)], 'cancel': [('readonly', False)]})
     state = fields.Selection(selection=[
                                 ('draft', 'Drafted'),
                                 ('confirm', 'Confirmed'),
@@ -33,9 +41,41 @@ class Rental(models.Model):
                                 ('exrent', 'Extened Rental'),
                                 ('return', 'Returned'),
                                 ('cancel', 'Cancelled')
-                            ], string='State', required=True, default='draft')
+                            ], string='State', required=True,
+                            default='draft', track_visibility="always")
     rental_days = fields.Integer(string="Number of Days", compute="compute_rental_days", store=True)
 
+    @api.multi
+    def send_notif(self):
+        for rent in self:
+            template_id = self.env.ref('library.rent_send_reminder')
+            if template_id:
+                template_id.send_mail(rent.id, force_send=True)
+
+    @api.multi
+    def action_confirm(self):
+        for rent in self:
+            rent.state = 'confirm'
+
+    @api.multi
+    def action_rent(self):
+        for rent in self:
+            rent.state = 'rent'
+
+    @api.multi
+    def action_return(self):
+        for rent in self:
+            rent.state = 'return'
+
+    @api.multi
+    def action_cancel(self):
+        for rent in self:
+            rent.state = 'cancel'
+
+    @api.multi
+    def action_reset_draft(self):
+        for rent in self:
+            rent.state = 'draft'
 
     @api.onchange('start_date')
     def onchange_start_date(self):

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="rent_send_reminder" model="mail.template">
+            <field name="name">Rental Reminder: Send by email</field>
+            <field name="model_id" ref="library.model_library_rent"/>
+            <field name="email_from">${object.user_id.email_formatted |safe}</field>
+            <field name="partner_to">${object.partner_id.id}</field>
+            <field name="subject">Book Return </field>
+            <field name="body_html" type="html">
+<p>Hi ${object.partner_id.name},<br/>
+    <div style="margin: 0px; padding: 0px;">
+        <br/>Your book'${object.book_id.name}' retntal perios is epxiring on ${object.end_date}.<br/>
+        <p style="margin: 0px; padding: 0px; font-size: 13px;">
+        <br/></p>
+        <p style="margin: 0px; padding: 0px; font-size: 13px;">Please take this as reminder to return this</p><p style="margin: 0px; padding: 0px; font-size: 13px;"><br/></p><p style="margin: 0px; padding: 0px; font-size: 13px;">Bests</p></div>
+            </p>
+</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="user_signature" eval="False"/>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>

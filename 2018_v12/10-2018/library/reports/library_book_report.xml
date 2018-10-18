@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <report id="report_library_book"
+                string="Book Overview"
+                model="library.book"
+                report_type="qweb-html"
+                file="library.book_report_template"
+                name="library.book_overview_report"/>
+    </data>
+</odoo>
