@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <template id="books_assets" name="books_assets" inherit_id="website.assets_frontend">
+            <xpath expr="link[last()]" position="after">
+                <link rel="stylesheet" type="text/scss" href="/library/static/src/css/style.scss"/>
+            </xpath>
+             <xpath expr="script[last()]" position="after">
+                <script type="text/javascript" src="/library/static/src/js/library.js"></script>
+            </xpath>
+        </template>
+
+        <template id="library.books" name="Books">
+            <t t-call="website.layout">
+                <h1>
+                    This is list of books....
+                </h1>
+                <table class="table">                
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Title</th>
+                            <th>Auhtors</th>
+                            <th>Price</th>
+                            <th>Cover Types</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="books" t-as="book">
+                            <td>
+                                <span t-field="book.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="', '.join([ at.name for at in book.sudo().author_ids])"/>
+                            </td>
+                            <td>
+                                <span t-field="book.purchase_price"/>
+                            </td>
+                            <td>
+                                <span t-field="book.cover"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </t>
+        </template>
+
+    </data>
+</odoo>

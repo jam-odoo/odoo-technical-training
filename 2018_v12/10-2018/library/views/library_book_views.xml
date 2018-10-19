@@ -24,7 +24,8 @@
         <menuitem id="menu_library_books_tags"
                 name="Tags"
                 parent="root_library_config"
-                action="action_view_library_book_tags"/>
+                action="action_view_library_book_tags"
+                />
 
         <record model="ir.ui.view" id="view_library_book_list">
             <field name="name">Library Book List View </field>
@@ -88,7 +89,7 @@
                 <form>
                     <sheet>
                         <div class="oe_button_box">
-                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive" groups="library.rule_model_library_rent_mananger">
                                 <field name="active" widget="boolean_button"
                                     options='{"terminology": "archive"}'/>
                             </button>

@@ -5,3 +5,4 @@ access_library_rent,access_library_rent_user,library.model_library_rent,group_li
 access_library_book_tags_manager,access_library_book_tags,library.model_library_book_tags,group_library_manager,1,1,1,1
 access_library_book_manager,access_library_book_manager,library.model_library_book,group_library_manager,1,1,1,1
 access_library_rent_manager,access_library_rent_manager,library.model_library_rent,group_library_manager,1,1,1,1
+access_library_book_all,access_library_book_all,library.model_library_book,,1,0,0,0

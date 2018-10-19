@@ -10,7 +10,7 @@
     'category': 'Library',
     'author': 'Odoo Inc',
     'description': '''Library, Books, Custoemr Managment''',
-    'depends': ['base', 'contacts', 'mail'],
+    'depends': ['base', 'contacts', 'website'],
     'data': [
         'security/library_security.xml',
         'security/ir.model.access.csv',
@@ -22,6 +22,7 @@
         'data/mail_data.xml',
         'reports/book_report_template.xml',
         'reports/library_book_report.xml',
+        'views/templates.xml',
     ],
     'demo': [
         'demo/library_demo.xml',
