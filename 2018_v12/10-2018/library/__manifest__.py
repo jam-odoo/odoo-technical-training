@@ -12,6 +12,8 @@
     'description': '''Library, Books, Custoemr Managment''',
     'depends': ['base', 'contacts', 'mail'],
     'data': [
+        'security/library_security.xml',
+        'security/ir.model.access.csv',
         'views/library_menu_view.xml',
         'views/library_rental_views.xml',
         'views/library_book_views.xml',
