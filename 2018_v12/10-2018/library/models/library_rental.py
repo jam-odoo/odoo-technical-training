@@ -22,6 +22,7 @@ class Rental(models.Model):
         return fields.Datetime.now() + relativedelta(days=14)
 
     sequence = fields.Integer(string="Sequence", default=10)
+    code =  fields.Char(string="Code")
     active = fields.Boolean(string='Is Active ?', default=True)
     user_id = fields.Many2one(string="Rented By", comodel_name="res.users", default=lambda self:self.env.user,
                             readonly=True, states={'draft': [('readonly', False)], 'cancel': [('readonly', False)]})
