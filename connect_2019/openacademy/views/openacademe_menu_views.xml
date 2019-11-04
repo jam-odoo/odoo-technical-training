@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Top menu item -->
+        <menuitem name="OpenAcademy"
+                    id="openacademy.menu_root"
+                    web_icon="openacademy,static/description/icon.png"/>
+
+        <!-- menu categories -->
+        <menuitem name="Courses"
+                    id="openacademy.menu_course_top"
+                    parent="openacademy.menu_root" />
+
+        <!-- session scheduling root -->
+        <menuitem name="Scheduling"
+                    id="openacademy.menu_scheduling"
+                    parent="openacademy.menu_root"
+                    groups="group_manager" />
+
+        <!-- configuration root -->
+        <menuitem id="configuration_menu"
+                    name="Configuration"
+                    parent="openacademy.menu_root" />
+
+    </data>
+</odoo>

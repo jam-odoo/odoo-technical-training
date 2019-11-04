@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_add_attendee_wizard_form">
+            <field name="name">wizard.form</field>
+            <field name="model">add.attendee.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Add Attendees">
+                    <sheet>
+                        <separator string='Sesssios'/>
+                        <field name="session_ids" readonly="1" nolabel="1"/>
+                        <separator string='Attendees'/>
+                        <field name="attendee_ids" nolabel="1"/>
+                    </sheet>
+                    <footer>
+                        <button name="subscribe" type="object" string="Subscribe" class="oe_highlight" />
+                        or
+                        <button special="cancel" string="Cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <act_window id="action_view_add_attendee_wizard"
+                    name="Add Attendees"
+                    res_model="add.attendee.wizard"
+                    binding_model="openacademy.session"
+                    binding_views="list"
+                    view_mode="form"
+                    target="new"/>
+    </data>
+</odoo>
