@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+            id="report_session"
+            model="academy.session"
+            string="Session Report"
+            name="odoo_academy.report_session_document"
+            file="odoo_academy.report_session"
+            report_type="qweb-html"/>
+    
+    <template id="report_session_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 t-field="doc.name" class="mt16"/>
+                        <div class="row mt32 mb32" id="session_info">
+                            <div class="col-auto mw-100 mb-2">
+                                <strong>Session Duration:</strong>
+                                <t t-if="doc.start_date">
+                                    <span t-field="doc.start_date"/>
+                                </t>
+                                to
+                                <t t-if="doc.end_date">
+                                    <span t-field="doc.end_date"/>
+                                </t>
+                            </div>
+                            
+                            <div t-if="doc.instructor_id" class="col-auto mw-100 mb-2">
+                                <strong>Instructor:</strong>
+                                <span t-field="doc.instructor_id.name"/>
+                            </div>
+                        </div>
+                        <h4>Students</h4>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th name="th_name">Name</th>
+                                    <th name="th_phone">Phone</th>
+                                    <th name="th_email">Email</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="doc.student_ids" t-as="student">
+                                    <tr>
+                                        <!-- Typo in Video Exercise: moving t-if out of the <td> tag -->
+                                        <!-- Reason: if the t-if is in the <td> tag, then if False, will shift columns -->
+                                        <td name="td_name">
+                                            <t t-if="student.name">
+                                                <span t-field="student.name"/>
+                                            </t>
+                                        </td>
+                                        <td name="td_phone">
+                                            <t t-if="student.phone">
+                                                <span t-field="student.phone"/>
+                                            </t>
+                                        </td>
+                                        <td name="td_email">
+                                            <t t-if="student.email">
+                                                <span t-field="student.email"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

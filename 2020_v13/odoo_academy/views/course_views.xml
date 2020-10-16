@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="course_view_form">
+            <field name="name">academy.course.form</field>
+            <field name="model">academy.course</field>
+            <field name="arch" type="xml">
+                <form string="Course Form">
+                    <sheet>
+                        <h1><field name="name"/></h1>
+                        <group>
+                            <group>
+                                <field name="active"/>
+                                <field name="level"/>
+                            </group>
+                            <group>
+                                <field name="base_price"/>
+                                <field name="additional_fee"/>
+                                <field name="total_price" force_save="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="Sessions">
+                                <field name="session_ids"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="course_view_list">
+            <field name="name">academy.course.list</field>
+            <field name="model">academy.course</field>
+            <field name="arch" type="xml">
+                <tree string="Course List">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="level"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="course_view_search">
+            <field name="name">academy.course.search</field>
+            <field name="model">academy.course</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="description"/>
+                </search>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="course_view_pivot">
+            <field name="name">academy.course.pivot</field>
+            <field name="model">academy.course</field>
+            <field name="arch" type="xml">
+                <pivot>
+                    <field name="level" type="row"/>
+                    <field name="name" type="row"/>
+                    <field name="base_price" type="measure"/>
+                    <field name="additional_fee" type="measure"/>
+                    <field name="total_price" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+    </data>
+</odoo>

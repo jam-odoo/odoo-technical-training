@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="course_website">
+            <t t-call="website.layout">
+                <t t-set="title">Academy</t>
+                <div class="oe_structure">
+                    <div class="container">
+                        <h1>Courses</h1>
+                        <t t-foreach="courses" t-as="course">
+                            <h3>
+                                <t t-esc="course.id"/>
+                                <t t-esc="course.name"/>
+                            </h3>
+                            <p>Description:
+                                <span t-field="course.description"/>
+                            </p>
+                            
+                            <p>Level:
+                                <span t-field="course.level"/>
+                            </p>
+                            
+                            <strong>Sessions</strong>
+                            <t t-foreach="course.session_ids" t-as="session">
+                                <p>
+                                    <a t-attf-href="/academy/{{ slug(session)}}">
+                                        <t t-esc="session.name"/>
+                                    </a>
+                                </p>
+                                <p>Last modified:
+                                    <i t-field="session.write_date" t-field-options='{"format": "long"}'/>
+                                </p>
+                            </t>
+                            <t t-if="not course.session_ids">
+                                <p>No Session Currently</p>
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+        
+        <template id="session_website">
+            <t t-call="website.layout">
+                <t t-set="title">Session</t>
+                <div class="oe_structure">
+                    <div class="container">
+                        <h3 t-field="session.name"/>
+                        <p>Last Modified:
+                            <i t-field="session.write_date" t-field-options='{"format": "long"}'/>
+                        </p>
+                        <p>Course:
+                            <t t-esc="session.course_id.name"/>
+                        </p>
+                        <h3>Students:</h3>
+                        <ul>
+                            <t t-foreach="session.student_ids" t-as="student">
+                                <li>
+                                    <span t-field="student.name"/>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
